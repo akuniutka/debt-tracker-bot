@@ -10,7 +10,7 @@ import java.util.List;
 @XmlRootElement(name = "GetCursOnDateXmlResult")
 @Data
 public class GetCursOnDateXmlResult {
-    @XmlElementWrapper(name = "Valutedata", namespace = "")
+    @XmlElementWrapper(name = "ValuteData", namespace = "")
     @XmlElement(name = "ValuteCursOnDate", namespace = "")
     private List<ValuteCursOnDate> valuteData = new ArrayList<>();
 }
