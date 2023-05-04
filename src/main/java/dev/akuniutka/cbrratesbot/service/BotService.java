@@ -2,6 +2,8 @@ package dev.akuniutka.cbrratesbot.service;
 
 
 import dev.akuniutka.cbrratesbot.dto.ValuteCursOnDate;
+import dev.akuniutka.cbrratesbot.entity.ActiveChat;
+import dev.akuniutka.cbrratesbot.repository.ActiveChatRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -14,12 +16,14 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import javax.annotation.PostConstruct;
+import java.util.Set;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class BotService extends TelegramLongPollingBot {
     private final CbrService cbrService;
+    private final ActiveChatRepository activeChatRepository;
     @Value("${bot.api.key}")
     private String apiKey;
     @Value("${bot.name}")
@@ -40,10 +44,28 @@ public class BotService extends TelegramLongPollingBot {
                 }
             }
             execute(response);
+            if (activeChatRepository.findActiveChatByChatId(chatId).isEmpty()) {
+                ActiveChat activeChat = new ActiveChat();
+                activeChat.setChatId(chatId);
+                activeChatRepository.save(activeChat);
+            }
         } catch (TelegramApiException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void sendNotificationToAllActiveChats(String message, Set<Long> chatIds) {
+        for (Long id : chatIds) {
+            SendMessage sendMessage = new SendMessage();
+            sendMessage.setChatId(String.valueOf(id));
+            sendMessage.setText(message);
+            try {
+                execute(sendMessage);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
         }
     }
 
