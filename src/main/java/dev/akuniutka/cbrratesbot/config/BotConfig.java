@@ -1,10 +1,11 @@
 package dev.akuniutka.cbrratesbot.config;
 
-import dev.akuniutka.cbrratesbot.dto.GetCursOnDateXml;
-import dev.akuniutka.cbrratesbot.dto.GetCursOnDateXmlResponse;
-import dev.akuniutka.cbrratesbot.dto.GetCursOnDateXmlResult;
-import dev.akuniutka.cbrratesbot.dto.ValuteCursOnDate;
+import dev.akuniutka.cbrratesbot.dto.ExchangeRate;
+import dev.akuniutka.cbrratesbot.dto.DateForFilter;
+import dev.akuniutka.cbrratesbot.dto.CbrServiceResponse;
+import dev.akuniutka.cbrratesbot.dto.ExchangeRatesContainer;
 import dev.akuniutka.cbrratesbot.service.CbrService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -17,6 +18,7 @@ import javax.xml.soap.SOAPException;
 import java.nio.charset.StandardCharsets;
 
 @Configuration
+@Slf4j
 public class BotConfig {
     @Bean
     public CbrService cbrService() throws SOAPException {
@@ -27,14 +29,16 @@ public class BotConfig {
         cbrService.setMessageFactory(newSoapMessageFactory);
 
         jaxb2Marshaller.setClassesToBeBound(
-                GetCursOnDateXml.class,
-                GetCursOnDateXmlResponse.class,
-                GetCursOnDateXmlResult.class,
-                ValuteCursOnDate.class
+                DateForFilter.class,
+                CbrServiceResponse.class,
+                ExchangeRatesContainer.class,
+                ExchangeRate.class
         );
 
         cbrService.setMarshaller(jaxb2Marshaller);
         cbrService.setUnmarshaller(jaxb2Marshaller);
+        log.info("CbrService created");
+
         return cbrService;
     }
 

@@ -3,14 +3,13 @@ package dev.akuniutka.cbrratesbot.dto;
 import lombok.Data;
 
 import javax.xml.bind.annotation.*;
-import java.util.ArrayList;
 import java.util.List;
 
+@Data
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "GetCursOnDateXmlResult")
-@Data
-public class GetCursOnDateXmlResult {
+public class ExchangeRatesContainer {
     @XmlElementWrapper(name = "ValuteData", namespace = "")
     @XmlElement(name = "ValuteCursOnDate", namespace = "")
-    private List<ValuteCursOnDate> valuteData = new ArrayList<>();
+    private List<ExchangeRate> exchangeRates;
 }

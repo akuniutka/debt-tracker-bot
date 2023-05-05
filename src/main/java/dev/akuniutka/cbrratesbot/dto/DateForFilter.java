@@ -8,10 +8,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-@XmlRootElement(name = "GetCursOnDateXML", namespace = "http://web.cbr.ru/")
-@XmlAccessorType(XmlAccessType.FIELD)
 @Data
-public class GetCursOnDateXml {
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "GetCursOnDateXML", namespace = "http://web.cbr.ru/")
+public class DateForFilter {
     @XmlElement(name = "On_date", required = true, namespace = "http://web.cbr.ru/")
-    private XMLGregorianCalendar onDate;
+    private XMLGregorianCalendar value;
 }

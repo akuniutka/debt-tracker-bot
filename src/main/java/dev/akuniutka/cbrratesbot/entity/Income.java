@@ -14,5 +14,5 @@ public class Income {
     @Column(name = "CHAT_ID")
     private Long chatId;
     @Column(name = "INCOME")
-    private BigDecimal income;
+    private BigDecimal value;
 }

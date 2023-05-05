@@ -7,18 +7,18 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+@Data
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "ValuteCursOnDate")
-@Data
-public class ValuteCursOnDate {
+public class ExchangeRate {
     @XmlElement(name = "Vname")
-    private String name;
+    private String currency;
     @XmlElement(name = "Vnom")
-    private int nominal;
+    private int units;
     @XmlElement(name = "Vcurs")
-    private double course;
+    private double value;
     @XmlElement(name = "Vcode")
-    private String code;
+    private String currencyNumericCode;
     @XmlElement(name = "VchCode")
-    private String chCode;
+    private String currencyAlphabeticCode;
 }

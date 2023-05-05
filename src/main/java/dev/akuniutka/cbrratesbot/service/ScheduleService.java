@@ -1,9 +1,10 @@
 package dev.akuniutka.cbrratesbot.service;
 
-import dev.akuniutka.cbrratesbot.dto.ValuteCursOnDate;
+import dev.akuniutka.cbrratesbot.dto.ExchangeRate;
 import dev.akuniutka.cbrratesbot.entity.ActiveChat;
 import dev.akuniutka.cbrratesbot.repository.ActiveChatRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -15,35 +16,36 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class ScheduleService {
     private final ActiveChatRepository activeChatRepository;
     private final BotService botService;
     private final CbrService cbrService;
-    private final List<ValuteCursOnDate> previousRates = new ArrayList<>();
+    private final List<ExchangeRate> previousRates = new ArrayList<>();
 
     @Scheduled(cron = "0 0 0/3 ? * *")
-    public void notifyAboutChangesInCurrencyRate() {
+    public void notifyAboutChangesInExchangeRate() {
         try {
-            List<ValuteCursOnDate> currentRates = cbrService.getCurrenciesFromCbr();
+            List<ExchangeRate> currentRates = cbrService.getExchangeRates();
             Set<Long> activeChatIds =
                     activeChatRepository.findAll().stream().map(ActiveChat::getChatId).collect(Collectors.toSet());
             if (!previousRates.isEmpty()) {
                 for (int index = 0; index < currentRates.size(); index++) {
-                    if (currentRates.get(index).getCourse() - previousRates.get(index).getCourse() >= 10.0) {
+                    if (currentRates.get(index).getValue() - previousRates.get(index).getValue() >= 10.0) {
                         botService.sendNotificationToAllActiveChats("Курс " +
-                                currentRates.get(index).getName() + " увеличился на 10 рублей", activeChatIds
+                                currentRates.get(index).getCurrency() + " увеличился на 10+ рублей", activeChatIds
                         );
-                    } else if (previousRates.get(index).getCourse() - currentRates.get(index).getCourse() >= 10.0) {
+                    } else if (previousRates.get(index).getValue() - currentRates.get(index).getValue() >= 10.0) {
                         botService.sendNotificationToAllActiveChats("Курс " +
-                                currentRates.get(index).getName() + " уменьшися на 10 рублей", activeChatIds
+                                currentRates.get(index).getCurrency() + " уменьшися на 10+ рублей", activeChatIds
                         );
                     }
                 }
-            } else {
-                previousRates.addAll(currentRates);
+                previousRates.clear();
             }
-        } catch (DatatypeConfigurationException e) {
-            e.printStackTrace();
+            previousRates.addAll(currentRates);
+        } catch (DatatypeConfigurationException | IllegalStateException e) {
+            log.error("error while reading data from the Bank of Russia", e);
         }
     }
 }

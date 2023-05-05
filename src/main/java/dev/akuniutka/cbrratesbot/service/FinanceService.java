@@ -1,9 +1,9 @@
 package dev.akuniutka.cbrratesbot.service;
 
 import dev.akuniutka.cbrratesbot.entity.Income;
-import dev.akuniutka.cbrratesbot.entity.Spend;
+import dev.akuniutka.cbrratesbot.entity.Expense;
 import dev.akuniutka.cbrratesbot.repository.IncomeRepository;
-import dev.akuniutka.cbrratesbot.repository.SpendRepository;
+import dev.akuniutka.cbrratesbot.repository.ExpenseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,22 +14,22 @@ import java.math.BigDecimal;
 public class FinanceService {
     private static final String ADD_INCOME = "/addincome";
     private final IncomeRepository incomeRepository;
-    private final SpendRepository spendRepository;
+    private final ExpenseRepository expenseRepository;
 
-    public String addFinanceOpeeration(String operationType, String price, Long chatId) {
+    public String addFinanceOperation(String operationType, String value, Long chatId) {
         String message;
         if (ADD_INCOME.equalsIgnoreCase(operationType)) {
             Income income = new Income();
             income.setChatId(chatId);
-            income.setIncome(new BigDecimal((price)));
+            income.setValue(new BigDecimal(value));
             incomeRepository.save(income);
-            message = "Доход в размере " + price +  " был успешно добавлен";
+            message = "Доход в размере " + value +  " был успешно добавлен";
         } else {
-            Spend spend = new Spend();
-            spend.setChatId(chatId);
-            spend.setSpend(new BigDecimal(price));
-            spendRepository.save(spend);
-            message = "Расход в размере " + price +  " был успешно добавлен";
+            Expense expense = new Expense();
+            expense.setChatId(chatId);
+            expense.setValue(new BigDecimal(value));
+            expenseRepository.save(expense);
+            message = "Расход в размере " + value +  " был успешно добавлен";
         }
         return message;
     }

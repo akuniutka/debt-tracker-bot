@@ -1,7 +1,7 @@
 package dev.akuniutka.cbrratesbot.service;
 
 
-import dev.akuniutka.cbrratesbot.dto.ValuteCursOnDate;
+import dev.akuniutka.cbrratesbot.dto.ExchangeRate;
 import dev.akuniutka.cbrratesbot.entity.ActiveChat;
 import dev.akuniutka.cbrratesbot.repository.ActiveChatRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import javax.annotation.PostConstruct;
+import javax.xml.datatype.DatatypeConfigurationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class BotService extends TelegramLongPollingBot {
     private static final String CURRENT_RATES = "/currentrates";
     private static final String ADD_INCOME = "/addincome";
-    private static final String ADD_SPEND = "/addspend";
+    private static final String ADD_EXPENSE = "/addexpense";
     private final CbrService cbrService;
     private final FinanceService financeService;
     private final ActiveChatRepository activeChatRepository;
@@ -36,39 +37,47 @@ public class BotService extends TelegramLongPollingBot {
     private String apiKey;
     @Value("${bot.name}")
     private String name;
-    private final Map<Long, List<String>> previousCommands = new ConcurrentHashMap<>();
+    private final Map<Long, List<String>> commandsHistory = new ConcurrentHashMap<>();
 
     @Override
     public void onUpdateReceived(Update update) {
         Message message = update.getMessage();
+        log.debug("new commad from telegram chat {}: {}", message.getChatId(), message.getText());
         try {
             SendMessage response = new SendMessage();
             Long chatId = message.getChatId();
             response.setChatId(String.valueOf(chatId));
             if (CURRENT_RATES.equalsIgnoreCase(message.getText())) {
-                for (ValuteCursOnDate valuteCursOnDate : cbrService.getCurrenciesFromCbr()) {
+                for (ExchangeRate exchangeRate : cbrService.getExchangeRates()) {
                     response.setText(StringUtils.defaultIfBlank(response.getText(), "") +
-                            valuteCursOnDate.getName() + " - " + valuteCursOnDate.getCourse() + "\n"
+                            exchangeRate.getCurrency() + " - " + exchangeRate.getValue() + "\n"
                     );
                 }
             } else if (ADD_INCOME.equalsIgnoreCase((message.getText()))) {
                 response.setText("Отправьте мне сумму полученного дохода");
-            } else if (ADD_SPEND.equalsIgnoreCase(message.getText())) {
+            } else if (ADD_EXPENSE.equalsIgnoreCase(message.getText())) {
                 response.setText("Отправьте мне сумму расходов");
             } else {
-                response.setText(financeService.addFinanceOpeeration(getPreviousCpmmand(message.getChatId()), message.getText(), message.getChatId()));
+                response.setText(
+                        financeService.addFinanceOperation(
+                                getPreviousCommand(message.getChatId()),
+                                message.getText(),
+                                message.getChatId()
+                        )
+                );
             }
-            putPreviousCommand(message.getChatId(), message.getText());
+            addCommandToHistory(message.getChatId(), message.getText());
             execute(response);
             if (activeChatRepository.findActiveChatByChatId(chatId).isEmpty()) {
                 ActiveChat activeChat = new ActiveChat();
                 activeChat.setChatId(chatId);
                 activeChatRepository.save(activeChat);
+                log.info("added chat {} to the list of active chats", chatId);
             }
         } catch (TelegramApiException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+            log.error("error while sending message to Telegram", e);
+        } catch (DatatypeConfigurationException | IllegalStateException e) {
+            log.error("error while reading data from the Bank of Russia", e);
         }
     }
 
@@ -80,7 +89,7 @@ public class BotService extends TelegramLongPollingBot {
             try {
                 execute(sendMessage);
             } catch (TelegramApiException e) {
-                e.printStackTrace();
+                log.error("error while sending message to Telegram", e);
             }
         }
     }
@@ -100,17 +109,17 @@ public class BotService extends TelegramLongPollingBot {
         return apiKey;
     }
 
-    private void putPreviousCommand(Long chatId, String command) {
-        if (previousCommands.get(chatId) == null) {
+    private void addCommandToHistory(Long chatId, String command) {
+        if (commandsHistory.get(chatId) == null) {
             List<String> commands = new ArrayList<>();
             commands.add(command);
-            previousCommands.put(chatId, commands);
+            commandsHistory.put(chatId, commands);
         } else {
-            previousCommands.get(chatId).add(command);
+            commandsHistory.get(chatId).add(command);
         }
     }
 
-    private String getPreviousCpmmand (Long chatId) {
-        return previousCommands.get(chatId).get(previousCommands.get(chatId).size() - 1);
+    private String getPreviousCommand(Long chatId) {
+        return commandsHistory.get(chatId).get(commandsHistory.get(chatId).size() - 1);
     }
 }
