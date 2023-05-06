@@ -27,6 +27,7 @@ public class CbrService extends WebServiceTemplate {
         XMLGregorianCalendar xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
         dateForFilter.setValue(xmlGregorianCalendar);
 
+        log.debug(dateForFilter.toString());
         CbrServiceResponse response = (CbrServiceResponse) marshalSendAndReceive(cbrApiUrl, dateForFilter);
 
         if (response == null) {
