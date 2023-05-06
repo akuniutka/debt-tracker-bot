@@ -42,7 +42,7 @@ public class BotService extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         Message message = update.getMessage();
-        log.debug("new commad from telegram chat {}: {}", message.getChatId(), message.getText());
+        log.debug("New command from telegram chat {}: {}", message.getChatId(), message.getText());
         try {
             SendMessage response = new SendMessage();
             Long chatId = message.getChatId();
@@ -72,12 +72,12 @@ public class BotService extends TelegramLongPollingBot {
                 ActiveChat activeChat = new ActiveChat();
                 activeChat.setChatId(chatId);
                 activeChatRepository.save(activeChat);
-                log.info("added chat {} to the list of active chats", chatId);
+                log.info("Added chat {} to the list of active chats", chatId);
             }
         } catch (TelegramApiException e) {
-            log.error("error while sending message to Telegram", e);
+            log.error("Error while sending message to Telegram", e);
         } catch (DatatypeConfigurationException | IllegalStateException e) {
-            log.error("error while reading data from the Bank of Russia", e);
+            log.error("Error while reading data from the Bank of Russia", e);
         }
     }
 
@@ -89,14 +89,14 @@ public class BotService extends TelegramLongPollingBot {
             try {
                 execute(sendMessage);
             } catch (TelegramApiException e) {
-                log.error("error while sending message to Telegram", e);
+                log.error("Error while sending message to Telegram", e);
             }
         }
     }
 
     @PostConstruct
     public void start() {
-        log.info("username: {}, token: {}", name, apiKey);
+        log.info("Username: {}, token: {}", name, apiKey);
     }
 
     @Override

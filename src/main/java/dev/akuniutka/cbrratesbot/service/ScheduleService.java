@@ -45,7 +45,7 @@ public class ScheduleService {
             }
             previousRates.addAll(currentRates);
         } catch (DatatypeConfigurationException | IllegalStateException e) {
-            log.error("error while reading data from the Bank of Russia", e);
+            log.error("Error while reading data from the Bank of Russia", e);
         }
     }
 }
