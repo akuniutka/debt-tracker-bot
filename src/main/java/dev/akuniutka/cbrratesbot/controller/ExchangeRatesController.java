@@ -1,4 +1,4 @@
-package dev.akuniutka.cbrratesbot.controllers;
+package dev.akuniutka.cbrratesbot.controller;
 
 import dev.akuniutka.cbrratesbot.dto.ExchangeRate;
 import dev.akuniutka.cbrratesbot.service.CbrService;
