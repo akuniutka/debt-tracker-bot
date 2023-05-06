@@ -13,6 +13,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Slf4j
 public class CbrService extends WebServiceTemplate {
@@ -37,5 +38,13 @@ public class CbrService extends WebServiceTemplate {
         final List<ExchangeRate> exchangeRates = response.getExchangeRatesContainer().getExchangeRates();
         exchangeRates.forEach(exchangeRate -> exchangeRate.setCurrency(exchangeRate.getCurrency().trim()));
         return exchangeRates;
+    }
+
+    public ExchangeRate getExchangeRate(String currency) throws
+            DatatypeConfigurationException, IllegalStateException, NoSuchElementException {
+        return getExchangeRates().stream()
+                .filter(exchangeRate -> currency.equalsIgnoreCase(exchangeRate.getCurrencyAlphabeticCode()))
+                .findFirst()
+                .orElseThrow(NoSuchElementException::new);
     }
 }
