@@ -105,21 +105,11 @@ public class BotService extends TelegramLongPollingBot {
     }
 
     private void addCommandToHistory(Long chatId, String command) {
-        if (commandsHistory.get(chatId) == null) {
-            List<String> commands = new ArrayList<>();
-            commands.add(command);
-            commandsHistory.put(chatId, commands);
-        } else {
-            commandsHistory.get(chatId).add(command);
-        }
+        commandsHistory.computeIfAbsent(chatId, key -> new ArrayList<>()).add(command);
     }
 
     private String getPreviousCommand(Long chatId) {
-        List<String> chatHistory = commandsHistory.get(chatId);
-        if (chatHistory == null || chatHistory.isEmpty()) {
-            return null;
-        } else {
-            return chatHistory.get(chatHistory.size() - 1);
-        }
+        List<String> chatHistory = commandsHistory.computeIfAbsent(chatId, key -> new ArrayList<>());
+        return chatHistory.isEmpty() ? null : chatHistory.get(chatHistory.size() - 1);
     }
 }

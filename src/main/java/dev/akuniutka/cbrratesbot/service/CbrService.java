@@ -5,6 +5,8 @@ import dev.akuniutka.cbrratesbot.dto.DateForFilter;
 import dev.akuniutka.cbrratesbot.dto.CbrServiceResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -13,7 +15,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Slf4j
 public class CbrService extends WebServiceTemplate {
@@ -41,10 +42,12 @@ public class CbrService extends WebServiceTemplate {
     }
 
     public ExchangeRate getExchangeRate(String currency) throws
-            DatatypeConfigurationException, IllegalStateException, NoSuchElementException {
+            DatatypeConfigurationException, IllegalStateException, ResponseStatusException {
         return getExchangeRates().stream()
-                .filter(exchangeRate -> currency.equalsIgnoreCase(exchangeRate.getCurrencyAlphabeticCode()))
+                .filter(exchangeRate -> exchangeRate.getCurrencyAlphabeticCode().equalsIgnoreCase(currency))
                 .findFirst()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Exchange rate for " + currency + " not found")
+                );
     }
 }
