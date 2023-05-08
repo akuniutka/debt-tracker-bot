@@ -1,5 +1,6 @@
 package dev.akuniutka.cbrratesbot.controller;
 
+import dev.akuniutka.cbrratesbot.config.BotTestsConfig;
 import dev.akuniutka.cbrratesbot.dto.ExchangeRate;
 import dev.akuniutka.cbrratesbot.service.CbrService;
 import org.junit.jupiter.api.Test;
@@ -7,11 +8,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -23,67 +27,60 @@ import static org.hamcrest.Matchers.is;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(ExchangeRatesController.class)
+@Import(BotTestsConfig.class)
 class ExchangeRatesControllerTest {
+
+    private static final Random RANDOM = new Random();
 
     @Autowired
     private MockMvc mvc;
+
+    @Autowired
+    private List<ExchangeRate> exchangeRates;
 
     @MockBean
     private CbrService cbrService;
 
     @Test
     void whenGetExchangeRatesShouldReturnListOfExchangeRates() throws Exception {
-        ExchangeRate usd = new ExchangeRate();
-        usd.setCurrency("Доллар США");
-        usd.setCurrencyAlphabeticCode("USD");
-        usd.setCurrencyNumericCode("840");
-        usd.setUnits(1);
-        usd.setValue(60.0);
-        ExchangeRate eur = new ExchangeRate();
-        eur.setCurrency("Евро");
-        eur.setCurrencyAlphabeticCode("EUR");
-        eur.setCurrencyNumericCode("978");
-        eur.setUnits(1);
-        eur.setValue(80.0);
+        int testSampleSize = RANDOM.nextInt(2, exchangeRates.size() + 1);
+        List<ExchangeRate> testSample = new ArrayList<>();
+        while (testSample.size() < testSampleSize) {
+            ExchangeRate exchangeRate = exchangeRates.get(RANDOM.nextInt(exchangeRates.size()));
+            if (!testSample.contains(exchangeRate)) {
+                testSample.add(exchangeRate);
+            }
+        }
 
-        List<ExchangeRate> exchangeRates = Arrays.asList(usd, eur);
+        given(cbrService.getExchangeRates()).willReturn(testSample);
 
-        given(cbrService.getExchangeRates()).willReturn(exchangeRates);
-
-        mvc.perform(get("/exchangeRates"))
+        ResultActions resultActions = mvc.perform(get("/exchangeRates"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].currency", is(usd.getCurrency())))
-                .andExpect(jsonPath("$[0].currencyAlphabeticCode", is(usd.getCurrencyAlphabeticCode())))
-                .andExpect(jsonPath("$[0].currencyNumericCode", is(usd.getCurrencyNumericCode())))
-                .andExpect(jsonPath("$[0].units", is(usd.getUnits())))
-                .andExpect(jsonPath("$[0].value", is(usd.getValue())))
-                .andExpect(jsonPath("$[1].currency", is(eur.getCurrency())))
-                .andExpect(jsonPath("$[1].currencyAlphabeticCode", is(eur.getCurrencyAlphabeticCode())))
-                .andExpect(jsonPath("$[1].currencyNumericCode", is(eur.getCurrencyNumericCode())))
-                .andExpect(jsonPath("$[1].units", is(eur.getUnits())))
-                .andExpect(jsonPath("$[1].value", is(eur.getValue())));
+                .andExpect(jsonPath("$", hasSize(testSampleSize)));
+        for (int i = 0; i < testSampleSize; i++) {
+            resultActions
+                    .andExpect(jsonPath("$[" + i +"].currency", is(testSample.get(i).getCurrency())))
+                    .andExpect(jsonPath("$[" + i + "].currencyAlphabeticCode", is(testSample.get(i).getCurrencyAlphabeticCode())))
+                    .andExpect(jsonPath("$["+ i + "].currencyNumericCode", is(testSample.get(i).getCurrencyNumericCode())))
+                    .andExpect(jsonPath("$["+ i + "].units", is(testSample.get(i).getUnits())))
+                    .andExpect(jsonPath("$["+ i + "].value", is(testSample.get(i).getValue())));
+        }
     }
 
     @Test
     void getExchangeRate() throws Exception {
-        ExchangeRate usd = new ExchangeRate();
-        usd.setCurrency("Доллар США");
-        usd.setCurrencyAlphabeticCode("USD");
-        usd.setCurrencyNumericCode("840");
-        usd.setUnits(1);
-        usd.setValue(60.0);
+        ExchangeRate exchangeRate = exchangeRates.get(RANDOM.nextInt(exchangeRates.size()));
 
-        given(cbrService.getExchangeRate("USD")).willReturn(usd);
+        given(cbrService.getExchangeRate(exchangeRate.getCurrency())).willReturn(exchangeRate);
 
-        mvc.perform(get("/exchangeRates/USD"))
+        mvc.perform(get("/exchangeRates/" + exchangeRate.getCurrency()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.currency", is(usd.getCurrency())))
-                .andExpect(jsonPath("$.currencyAlphabeticCode", is(usd.getCurrencyAlphabeticCode())))
-                .andExpect(jsonPath("$.currencyNumericCode", is(usd.getCurrencyNumericCode())))
-                .andExpect(jsonPath("$.units", is(usd.getUnits())))
-                .andExpect(jsonPath("$.value", is(usd.getValue())));
+                .andExpect(jsonPath("$.currency", is(exchangeRate.getCurrency())))
+                .andExpect(jsonPath("$.currencyAlphabeticCode", is(exchangeRate.getCurrencyAlphabeticCode())))
+                .andExpect(jsonPath("$.currencyNumericCode", is(exchangeRate.getCurrencyNumericCode())))
+                .andExpect(jsonPath("$.units", is(exchangeRate.getUnits())))
+                .andExpect(jsonPath("$.value", is(exchangeRate.getValue())));
     }
 }
