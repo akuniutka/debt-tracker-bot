@@ -72,9 +72,9 @@ class ExchangeRatesControllerTest {
     void getExchangeRate() throws Exception {
         ExchangeRate exchangeRate = exchangeRates.get(RANDOM.nextInt(exchangeRates.size()));
 
-        given(cbrService.getExchangeRate(exchangeRate.getCurrency())).willReturn(exchangeRate);
+        given(cbrService.getExchangeRate(exchangeRate.getCurrencyAlphabeticCode())).willReturn(exchangeRate);
 
-        mvc.perform(get("/exchangeRates/" + exchangeRate.getCurrency()))
+        mvc.perform(get("/exchangeRates/" + exchangeRate.getCurrencyAlphabeticCode()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.currency", is(exchangeRate.getCurrency())))
