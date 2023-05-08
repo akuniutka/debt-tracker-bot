@@ -42,11 +42,11 @@ public class BotConfig {
         return cbrService;
     }
 
-    @Bean
-    public CharacterEncodingFilter characterEncodingFilter() {
-        CharacterEncodingFilter filter = new CharacterEncodingFilter();
-        filter.setEncoding(StandardCharsets.UTF_8.name());
-        filter.setForceEncoding(true);
-        return filter;
-    }
+//    @Bean
+//    public CharacterEncodingFilter characterEncodingFilter() {
+//        CharacterEncodingFilter filter = new CharacterEncodingFilter();
+//        filter.setEncoding(StandardCharsets.UTF_8.name());
+//        filter.setForceEncoding(true);
+//        return filter;
+//    }
 }
