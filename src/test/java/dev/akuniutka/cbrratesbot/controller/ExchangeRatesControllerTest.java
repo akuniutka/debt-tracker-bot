@@ -43,7 +43,7 @@ class ExchangeRatesControllerTest {
 
     @Test
     void whenGetExchangeRatesShouldReturnListOfExchangeRates() throws Exception {
-        int testSampleSize = RANDOM.nextInt(2, exchangeRates.size() + 1);
+        int testSampleSize = RANDOM.nextInt( exchangeRates.size() - 1) + 2;
         List<ExchangeRate> testSample = new ArrayList<>();
         while (testSample.size() < testSampleSize) {
             ExchangeRate exchangeRate = exchangeRates.get(RANDOM.nextInt(exchangeRates.size()));
