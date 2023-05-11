@@ -3,16 +3,16 @@ package dev.akuniutka.cbrratesbot.service;
 import dev.akuniutka.cbrratesbot.repository.ExpenseRepository;
 import dev.akuniutka.cbrratesbot.repository.IncomeRepository;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(MockitoExtension.class)
 class FinanceServiceTest {
 
     private static final Random RANDOM = new Random();
