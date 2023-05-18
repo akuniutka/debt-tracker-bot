@@ -11,7 +11,11 @@ import java.math.BigDecimal;
 public class StatsService {
     private final StatsRepository statsRepository;
 
-    public int getCountOfIncomesThatGreater(BigDecimal amount) {
-        return statsRepository.getCountOfIncomesThatGrater(amount);
+    public int getCountOfIncomesGreaterThan(BigDecimal amount) {
+        return statsRepository.getCountOfIncomesGreaterThan(amount);
+    }
+
+    public int getCountOfExpensesGreaterThan(BigDecimal amount) {
+        return statsRepository.getCountOfExpensesGreater(amount);
     }
 }

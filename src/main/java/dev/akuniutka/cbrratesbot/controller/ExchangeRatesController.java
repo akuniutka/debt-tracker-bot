@@ -31,9 +31,15 @@ public class ExchangeRatesController {
         return cbrService.getExchangeRate(currency);
     }
 
-    @GetMapping("/incomes")
+    @GetMapping("/topIncomes")
     @Operation(summary = "Получить количество поступлений выше указанной суммы")
-    public int getCountOfIncomesThatGreater(@RequestParam(name = "amount", defaultValue = "0") BigDecimal amount) {
-        return statsService.getCountOfIncomesThatGreater(amount);
+    public int getCountOfIncomesGreaterThan(@RequestParam(name = "amount", defaultValue = "0") BigDecimal amount) {
+        return statsService.getCountOfIncomesGreaterThan(amount);
+    }
+
+    @GetMapping("/topExpenses")
+    @Operation(summary = "Получить количество расходоы выше указанной суммы")
+    public int getCountOfExpensesGreaterThan(@RequestParam(name = "amount", defaultValue = "0") BigDecimal amount) {
+        return statsService.getCountOfExpensesGreaterThan(amount);
     }
 }
