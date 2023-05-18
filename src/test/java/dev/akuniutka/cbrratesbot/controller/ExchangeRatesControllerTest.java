@@ -3,6 +3,7 @@ package dev.akuniutka.cbrratesbot.controller;
 import dev.akuniutka.cbrratesbot.config.BotTestsConfig;
 import dev.akuniutka.cbrratesbot.dto.ExchangeRate;
 import dev.akuniutka.cbrratesbot.service.CbrService;
+import dev.akuniutka.cbrratesbot.service.StatsService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,9 @@ class ExchangeRatesControllerTest {
 
     @MockBean
     private CbrService cbrService;
+
+    @MockBean
+    private StatsService statsService;
 
     @Test
     void whenGetExchangeRatesShouldReturnListOfExchangeRates() throws Exception {
