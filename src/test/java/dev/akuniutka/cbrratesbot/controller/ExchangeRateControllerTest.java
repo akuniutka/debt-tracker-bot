@@ -3,7 +3,6 @@ package dev.akuniutka.cbrratesbot.controller;
 import dev.akuniutka.cbrratesbot.config.BotTestsConfig;
 import dev.akuniutka.cbrratesbot.dto.ExchangeRate;
 import dev.akuniutka.cbrratesbot.service.CbrService;
-import dev.akuniutka.cbrratesbot.service.StatsService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +26,9 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(ExchangeRatesController.class)
+@WebMvcTest(ExchangeRateController.class)
 @Import(BotTestsConfig.class)
-class ExchangeRatesControllerTest {
+class ExchangeRateControllerTest {
 
     private static final Random RANDOM = new Random();
 
@@ -41,9 +40,6 @@ class ExchangeRatesControllerTest {
 
     @MockBean
     private CbrService cbrService;
-
-    @MockBean
-    private StatsService statsService;
 
     @Test
     void whenGetExchangeRatesShouldReturnListOfExchangeRates() throws Exception {
