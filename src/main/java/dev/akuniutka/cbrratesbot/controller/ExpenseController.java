@@ -16,6 +16,10 @@ import java.math.BigDecimal;
 public class ExpenseController {
     private final StatsService statsService;
 
+    // TODO: add endpoint for retrieving expenses
+    // TODO: add endpoint for adding expense
+
+    // TODO: change response to DTO
     @GetMapping("/count")
     @Operation(summary = "Получить количество расходов выше указанной суммы")
     public int getCountOfExpensesGreaterThan(@RequestParam(name = "greaterThan", defaultValue = "0") BigDecimal amount) {

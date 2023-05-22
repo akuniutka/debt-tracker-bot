@@ -42,7 +42,7 @@ class ExchangeRateControllerTest {
     private CbrService cbrService;
 
     @Test
-    void whenGetExchangeRatesShouldReturnListOfExchangeRates() throws Exception {
+    void testGetExchangeRates() throws Exception {
         int testSampleSize = RANDOM.nextInt( exchangeRates.size() - 1) + 2;
         List<ExchangeRate> testSample = new ArrayList<>();
         while (testSample.size() < testSampleSize) {
@@ -69,7 +69,7 @@ class ExchangeRateControllerTest {
     }
 
     @Test
-    void getExchangeRate() throws Exception {
+    void testGetExchangeRate() throws Exception {
         ExchangeRate exchangeRate = exchangeRates.get(RANDOM.nextInt(exchangeRates.size()));
 
         given(cbrService.getExchangeRate(exchangeRate.getCurrencyAlphabeticCode())).willReturn(exchangeRate);
