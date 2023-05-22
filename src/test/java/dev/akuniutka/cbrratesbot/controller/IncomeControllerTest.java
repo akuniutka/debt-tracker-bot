@@ -44,12 +44,12 @@ class IncomeControllerTest {
     @Test
     void testGetCountOfIncomesGreaterThanWithAmount() throws Exception {
         int count = RANDOM.nextInt(1000);
-        BigDecimal greaterThan = BigDecimal.valueOf(RANDOM.nextFloat() * 1000).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal amount = BigDecimal.valueOf(RANDOM.nextFloat() * 1000).setScale(2, RoundingMode.HALF_UP);
 
-        given(statsService.getCountOfExpensesGreaterThan(greaterThan)).willReturn(count);
+        given(statsService.getCountOfExpensesGreaterThan(amount)).willReturn(count);
 
         // TODO: add check for the value in response
-        mvc.perform(get("/incomes/count?greaterThan=" + greaterThan))
+        mvc.perform(get("/incomes/count?greaterThan=" + amount))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
