@@ -2,22 +2,26 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.5.14</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>dev.akuniutka</groupId>
     <artifactId>cbr-rates-bot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>The Bank of Russia Rates Bot</name>
     <description>The Bank of Russia Rates Bot</description>
+
     <properties>
         <java.version>11</java.version>
         <testcontainers.version>1.18.0</testcontainers.version>
         <junit-jupiter.version>5.9.3</junit-jupiter.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -50,6 +54,18 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-core -->
+       <!--  <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>8.5.13</version>
+        </dependency> -->
+        <!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-maven-plugin -->
+        <!-- <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-maven-plugin</artifactId>
+            <version>9.18.0</version>
+        </dependency> -->
         <!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
         <dependency>
             <groupId>javax.xml.bind</groupId>
@@ -164,6 +180,14 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>9.18.0</version>
+                <configuration>
+                    <url>jdbc:postgresql://localhost:5432/cbrrates</url>
                 </configuration>
             </plugin>
         </plugins>
