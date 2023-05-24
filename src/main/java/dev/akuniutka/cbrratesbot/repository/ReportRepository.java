@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
-public class StatsRepository {
+public class ReportRepository {
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 

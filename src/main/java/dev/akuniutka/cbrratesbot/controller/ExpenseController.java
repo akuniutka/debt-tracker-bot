@@ -1,28 +1,23 @@
 package dev.akuniutka.cbrratesbot.controller;
 
-import dev.akuniutka.cbrratesbot.service.StatsService;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.math.BigDecimal;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/expenses")
 public class ExpenseController {
-    private final StatsService statsService;
 
     // TODO: add endpoint for retrieving expenses
     // TODO: add endpoint for adding expense
+    // TODO: add endpoint to get expense by id
+    // TODO: add endpoint to delete expense
+    // TODO: add endpoint to update expense
+    // TODO: implement filter for retrieving expenses by chatId, date, and amount
+    // TODO: return 404 if no expense found and 201 if expense created
+    // TODO: create DTO for creating and updating expenses
 
     // TODO: change response to DTO
-    @GetMapping("/count")
-    @Operation(summary = "Получить количество расходов выше указанной суммы")
-    public int getCountOfExpensesGreaterThan(@RequestParam(name = "greaterThan", defaultValue = "0") BigDecimal amount) {
-        return statsService.getCountOfExpensesGreaterThan(amount);
-    }
+
 }

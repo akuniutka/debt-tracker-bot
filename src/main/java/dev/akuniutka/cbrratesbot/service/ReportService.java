@@ -1,6 +1,6 @@
 package dev.akuniutka.cbrratesbot.service;
 
-import dev.akuniutka.cbrratesbot.repository.StatsRepository;
+import dev.akuniutka.cbrratesbot.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -8,14 +8,14 @@ import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
-public class StatsService {
-    private final StatsRepository statsRepository;
+public class ReportService {
+    private final ReportRepository reportRepository;
 
     public int getCountOfIncomesGreaterThan(BigDecimal amount) {
-        return statsRepository.getCountOfIncomesGreaterThan(amount);
+        return reportRepository.getCountOfIncomesGreaterThan(amount);
     }
 
     public int getCountOfExpensesGreaterThan(BigDecimal amount) {
-        return statsRepository.getCountOfExpensesGreater(amount);
+        return reportRepository.getCountOfExpensesGreater(amount);
     }
 }

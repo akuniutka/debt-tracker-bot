@@ -16,12 +16,14 @@ import java.util.NoSuchElementException;
 public class ExchangeRateController {
     private final CbrService cbrService;
 
+    // TODO: return error codes if error occurs
     @GetMapping
     @Operation(summary = "получить текущие курсы валют")
     public List<ExchangeRate> getExchangeRates() throws DatatypeConfigurationException, IllegalStateException {
         return cbrService.getExchangeRates();
     }
 
+    // TODO: return 404 if no currency found
     @GetMapping("/{currency}")
     @Operation(summary = "получить текущий курс заданной валюты")
     public ExchangeRate getExchangeRate(@PathVariable String currency) throws
