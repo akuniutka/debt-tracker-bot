@@ -27,7 +27,7 @@ public class ReportRepository {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("amount", amount);
         Integer count = namedParameterJdbcTemplate.queryForObject(
-                "SELECT COUNT(*) AS COUNT FROM EXPENSES WHERE EXPENSE > :amount",
+                "SELECT COUNT(*) AS COUNT FROM EXPENSES WHERE EXPENSE > :amount;",
                 parameters,
                 (resultSet, i) -> resultSet.getInt("COUNT")
         );

@@ -39,7 +39,7 @@ public class ScheduleService {
                         );
                     } else if (previousRates.get(index).getValue() - currentRates.get(index).getValue() >= 10.0) {
                         botService.sendNotificationToAllActiveChats("Курс " +
-                                currentRates.get(index).getCurrency() + " уменьшися на 10+ рублей", activeChatIds
+                                currentRates.get(index).getCurrency() + " уменьшился на 10+ рублей", activeChatIds
                         );
                     }
                 }

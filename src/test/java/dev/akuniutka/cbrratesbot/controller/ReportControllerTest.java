@@ -13,10 +13,12 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Random;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(ReportController.class)
@@ -36,12 +38,15 @@ class ReportControllerTest {
     void testGetCountOfIncomesGreaterThanWithNoAmount() throws Exception {
         int count = RANDOM.nextInt(1000);
 
-        given(reportService.getCountOfExpensesGreaterThan(BigDecimal.valueOf(0))).willReturn(count);
+        given(reportService.getCountOfIncomesGreaterThan(BigDecimal.valueOf(0))).willReturn(count);
 
-        // TODO: add check for the value in response
         mvc.perform(get("/reports/incomes/count"))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.*", hasSize(1)))
+                .andExpect(jsonPath("$.count", is(count)));
+
     }
 
     @Test
@@ -49,12 +54,15 @@ class ReportControllerTest {
         int count = RANDOM.nextInt(1000);
         BigDecimal amount = BigDecimal.valueOf(RANDOM.nextFloat() * 1000).setScale(2, RoundingMode.HALF_UP);
 
-        given(reportService.getCountOfExpensesGreaterThan(amount)).willReturn(count);
+        given(reportService.getCountOfIncomesGreaterThan(amount)).willReturn(count);
 
-        // TODO: add check for the value in response
         mvc.perform(get("/reports/incomes/count?greaterThan=" + amount))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.*", hasSize(1)))
+                .andExpect(jsonPath("$.count", is(count)));
+
     }
 
     @Test
@@ -63,10 +71,12 @@ class ReportControllerTest {
 
         given(reportService.getCountOfExpensesGreaterThan(BigDecimal.valueOf(0))).willReturn(count);
 
-        // TODO: add check for the value in response
         mvc.perform(get("/reports/expenses/count"))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.*", hasSize(1)))
+                .andExpect(jsonPath("$.count", is(count)));
     }
 
     @Test
@@ -76,9 +86,11 @@ class ReportControllerTest {
 
         given(reportService.getCountOfExpensesGreaterThan(amount)).willReturn(count);
 
-        // TODO: add check for the value in response
         mvc.perform(get("/reports/expenses/count?greaterThan=" + amount))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.*", hasSize(1)))
+                .andExpect(jsonPath("$.count", is(count)));
     }
 }
