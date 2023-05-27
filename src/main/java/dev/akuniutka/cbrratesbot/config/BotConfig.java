@@ -18,6 +18,9 @@ import javax.xml.soap.SOAPException;
 @Configuration
 @Slf4j
 public class BotConfig {
+
+    // TODO: limit Swagger to custom endpoints only (with Docket bean)
+
     @Bean
     public CbrService cbrService() throws SOAPException {
         CbrService cbrService = new CbrService();

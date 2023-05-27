@@ -19,6 +19,7 @@ public class ReportController {
 
     // TODO: add root enpoint to list all reports
     // TODO: /incomes and /expenses endpoints to list income reports and expenses reports respectively
+    // TODO: add Spring Security to limit access to data in reports by chatId
 
     @GetMapping("/incomes/count")
     @Operation(summary = "Получить количество доходных операций")
