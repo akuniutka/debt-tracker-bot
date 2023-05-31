@@ -41,6 +41,8 @@ class ExchangeRateControllerTest {
     @MockBean
     private CbrService cbrService;
 
+
+    // TODO: check size of an individual object in a exchange rates collecection
     @Test
     void testGetExchangeRates() throws Exception {
         int testSampleSize = RANDOM.nextInt( exchangeRates.size() - 1) + 2;

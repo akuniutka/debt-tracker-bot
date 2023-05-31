@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Service
 @Slf4j
@@ -26,12 +27,14 @@ public class FinanceService {
                 Income income = new Income();
                 income.setChatId(chatId);
                 income.setValue(new BigDecimal(value));
+                income.setEntryDate(new Date());
                 incomeRepository.save(income);
                 message = "Доход в размере " + value + " был успешно добавлен";
             } else if (ADD_EXPENSE.equals((operationType))) {
                 Expense expense = new Expense();
                 expense.setChatId(chatId);
                 expense.setValue(new BigDecimal(value));
+                expense.setEntryDate(new Date());
                 expenseRepository.save(expense);
                 message = "Расход в размере " + value + " был успешно добавлен";
             }
