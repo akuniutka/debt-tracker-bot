@@ -23,13 +23,13 @@ public class ReportController {
 
     @GetMapping("/incomes/count")
     @Operation(summary = "Получить количество доходных операций")
-    public CountDto getCountOfIncomesGreaterThan(@RequestParam(name = "greaterThan", defaultValue = "0") BigDecimal amount) {
+    public CountDto getCountOfIncomesGreaterThan(@RequestParam(name = "amount", required = false) BigDecimal amount) {
         return new CountDto(reportService.getCountOfIncomesGreaterThan(amount));
     }
 
     @GetMapping("/expenses/count")
     @Operation(summary = "Получить количество расходных операций")
-    public CountDto getCountOfExpensesGreaterThan(@RequestParam(name = "greaterThan", defaultValue = "0") BigDecimal amount) {
+    public CountDto getCountOfExpensesGreaterThan(@RequestParam(name = "amount", required = false) BigDecimal amount) {
         return new CountDto(reportService.getCountOfExpensesGreaterThan(amount));
     }
 }

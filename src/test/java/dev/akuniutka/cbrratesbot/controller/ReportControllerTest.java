@@ -38,7 +38,7 @@ class ReportControllerTest {
     void testGetCountOfIncomesGreaterThanWithNoAmount() throws Exception {
         int count = RANDOM.nextInt(1000);
 
-        given(reportService.getCountOfIncomesGreaterThan(BigDecimal.valueOf(0))).willReturn(count);
+        given(reportService.getCountOfIncomesGreaterThan( null)).willReturn((long) count);
 
         mvc.perform(get("/reports/incomes/count"))
                 .andDo(print())
@@ -54,9 +54,9 @@ class ReportControllerTest {
         int count = RANDOM.nextInt(1000);
         BigDecimal amount = BigDecimal.valueOf(RANDOM.nextFloat() * 1000).setScale(2, RoundingMode.HALF_UP);
 
-        given(reportService.getCountOfIncomesGreaterThan(amount)).willReturn(count);
+        given(reportService.getCountOfIncomesGreaterThan(amount)).willReturn((long) count);
 
-        mvc.perform(get("/reports/incomes/count?greaterThan=" + amount))
+        mvc.perform(get("/reports/incomes/count?amount=" + amount))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
@@ -69,7 +69,7 @@ class ReportControllerTest {
     void testGetCountOfExpensesGreaterThanWithNoAmount() throws Exception {
         int count = RANDOM.nextInt(1000);
 
-        given(reportService.getCountOfExpensesGreaterThan(BigDecimal.valueOf(0))).willReturn(count);
+        given(reportService.getCountOfExpensesGreaterThan(null)).willReturn((long) count);
 
         mvc.perform(get("/reports/expenses/count"))
                 .andDo(print())
@@ -84,9 +84,9 @@ class ReportControllerTest {
         int count = RANDOM.nextInt(1000);
         BigDecimal amount = BigDecimal.valueOf(RANDOM.nextFloat() * 1000).setScale(2, RoundingMode.HALF_UP);
 
-        given(reportService.getCountOfExpensesGreaterThan(amount)).willReturn(count);
+        given(reportService.getCountOfExpensesGreaterThan(amount)).willReturn((long) count);
 
-        mvc.perform(get("/reports/expenses/count?greaterThan=" + amount))
+        mvc.perform(get("/reports/expenses/count?amount=" + amount))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))

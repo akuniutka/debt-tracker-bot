@@ -11,11 +11,15 @@ import java.math.BigDecimal;
 public class ReportService {
     private final ReportRepository reportRepository;
 
-    public int getCountOfIncomesGreaterThan(BigDecimal amount) {
-        return reportRepository.getCountOfIncomesGreaterThan(amount);
+    public long getCountOfIncomesGreaterThan(BigDecimal amount) {
+        if (amount == null) {
+            return reportRepository.getCountOfIncomes();
+        } else {
+            return reportRepository.getCountOfIncomesGreaterThan(amount);
+        }
     }
 
-    public int getCountOfExpensesGreaterThan(BigDecimal amount) {
+    public long getCountOfExpensesGreaterThan(BigDecimal amount) {
         return reportRepository.getCountOfExpensesGreater(amount);
     }
 }
