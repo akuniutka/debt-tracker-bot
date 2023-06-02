@@ -19,7 +19,7 @@ public class Expense {
     private Long chatId;
 
     @Column(name = "AMOUNT", nullable = false)
-    private BigDecimal value;
+    private BigDecimal amount;
 
     @Column(name = "ENTRY_DATE", nullable = false)
     private Date entryDate;

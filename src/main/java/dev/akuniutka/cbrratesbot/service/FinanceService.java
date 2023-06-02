@@ -20,23 +20,23 @@ public class FinanceService {
     private final IncomeRepository incomeRepository;
     private final ExpenseRepository expenseRepository;
 
-    public String addFinanceOperation(String operationType, String value, Long chatId) {
+    public String addFinanceOperation(String operationType, String amount, Long chatId) {
         String message = "Неверная команда";
         try {
             if (ADD_INCOME.equals(operationType)) {
                 Income income = new Income();
                 income.setChatId(chatId);
-                income.setValue(new BigDecimal(value));
+                income.setAmount(new BigDecimal(amount));
                 income.setEntryDate(new Date());
                 incomeRepository.save(income);
-                message = "Доход в размере " + value + " был успешно добавлен";
+                message = "Доход в размере " + amount + " был успешно добавлен";
             } else if (ADD_EXPENSE.equals((operationType))) {
                 Expense expense = new Expense();
                 expense.setChatId(chatId);
-                expense.setValue(new BigDecimal(value));
+                expense.setAmount(new BigDecimal(amount));
                 expense.setEntryDate(new Date());
                 expenseRepository.save(expense);
-                message = "Расход в размере " + value + " был успешно добавлен";
+                message = "Расход в размере " + amount + " был успешно добавлен";
             }
         } catch (NumberFormatException e) {
             log.error("Wrong number format", e);

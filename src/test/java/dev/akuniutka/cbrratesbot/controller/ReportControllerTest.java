@@ -38,7 +38,7 @@ class ReportControllerTest {
     void testGetCountOfIncomesGreaterThanWithNoAmount() throws Exception {
         int count = RANDOM.nextInt(1000);
 
-        given(reportService.getCountOfIncomesGreaterThan( null)).willReturn((long) count);
+        given(reportService.getIncomesCount( null, null)).willReturn((long) count);
 
         mvc.perform(get("/reports/incomes/count"))
                 .andDo(print())
@@ -54,9 +54,9 @@ class ReportControllerTest {
         int count = RANDOM.nextInt(1000);
         BigDecimal amount = BigDecimal.valueOf(RANDOM.nextFloat() * 1000).setScale(2, RoundingMode.HALF_UP);
 
-        given(reportService.getCountOfIncomesGreaterThan(amount)).willReturn((long) count);
+        given(reportService.getIncomesCount(amount, null)).willReturn((long) count);
 
-        mvc.perform(get("/reports/incomes/count?amount=" + amount))
+        mvc.perform(get("/reports/incomes/count?amountFrom=" + amount))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
