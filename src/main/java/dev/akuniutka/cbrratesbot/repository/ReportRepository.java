@@ -1,5 +1,6 @@
 package dev.akuniutka.cbrratesbot.repository;
 
+import dev.akuniutka.cbrratesbot.dto.FilterCriteria;
 import dev.akuniutka.cbrratesbot.entity.Income;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -43,51 +44,51 @@ public class ReportRepository {
         return count;
     }
 
-    public long getIncomesCount(Long chatId, BigDecimal amountFrom, BigDecimal amountTo, Date dateFrom, Date dateTo) {
+    public long getIncomesCount(FilterCriteria filter) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> criteria = criteriaBuilder.createQuery(Long.class);
         Root<Income> income = criteria.from(Income.class);
         criteria.select(criteriaBuilder.count(income));
         List<Predicate> predicates = new ArrayList<>();
-        if (chatId != null) {
-            predicates.add(criteriaBuilder.equal(income.get("chatId"), chatId));
+        if (filter.getChatId() != null) {
+            predicates.add(criteriaBuilder.equal(income.get("chatId"), filter.getChatId()));
         }
-        if (amountFrom != null) {
-            predicates.add(criteriaBuilder.greaterThanOrEqualTo(income.get("amount"), amountFrom));
+        if (filter.getAmountFrom() != null) {
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(income.get("amount"), filter.getAmountFrom()));
         }
-        if (amountTo != null) {
-            predicates.add(criteriaBuilder.lessThan(income.get("amount"), amountTo));
+        if (filter.getAmountTo() != null) {
+            predicates.add(criteriaBuilder.lessThan(income.get("amount"), filter.getAmountTo()));
         }
-        if (dateFrom != null) {
-            predicates.add(criteriaBuilder.greaterThanOrEqualTo(income.get("entryDate"), dateFrom));
+        if (filter.getDateFrom() != null) {
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(income.get("entryDate"), filter.getDateFrom()));
         }
-        if (dateTo != null) {
-            predicates.add(criteriaBuilder.lessThan(income.get("entryDate"), dateTo));
+        if (filter.getDateTo() != null) {
+            predicates.add(criteriaBuilder.lessThan(income.get("entryDate"), filter.getDateTo()));
         }
         criteria.where(predicates.toArray(new Predicate[0]));
         return entityManager.createQuery(criteria).getSingleResult();
     }
 
-    public BigDecimal getIncomesSum(Long chatId, BigDecimal amountFrom, BigDecimal amountTo, Date dateFrom, Date dateTo) {
+    public BigDecimal getIncomesSum(FilterCriteria filter) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<BigDecimal> criteria = criteriaBuilder.createQuery(BigDecimal.class);
         Root<Income> income = criteria.from(Income.class);
         criteria.select(criteriaBuilder.sum(income.get("amount")));
         List<Predicate> predicates = new ArrayList<>();
-        if (chatId != null) {
-            predicates.add(criteriaBuilder.equal(income.get("chatId"), chatId));
+        if (filter.getChatId() != null) {
+            predicates.add(criteriaBuilder.equal(income.get("chatId"), filter.getChatId()));
         }
-        if (amountFrom != null) {
-            predicates.add(criteriaBuilder.greaterThanOrEqualTo(income.get("amount"), amountFrom));
+        if (filter.getAmountFrom() != null) {
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(income.get("amount"), filter.getAmountFrom()));
         }
-        if (amountTo != null) {
-            predicates.add(criteriaBuilder.lessThan(income.get("amount"), amountTo));
+        if (filter.getAmountTo() != null) {
+            predicates.add(criteriaBuilder.lessThan(income.get("amount"), filter.getAmountTo()));
         }
-        if (dateFrom != null) {
-            predicates.add(criteriaBuilder.greaterThanOrEqualTo(income.get("entryDate"), dateFrom));
+        if (filter.getDateFrom() != null) {
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(income.get("entryDate"), filter.getDateFrom()));
         }
-        if (dateTo != null) {
-            predicates.add(criteriaBuilder.lessThan(income.get("entryDate"), dateTo));
+        if (filter.getDateTo() != null) {
+            predicates.add(criteriaBuilder.lessThan(income.get("entryDate"), filter.getDateTo()));
         }
         criteria.where(predicates.toArray(new Predicate[0]));
         return entityManager.createQuery(criteria).getSingleResult();

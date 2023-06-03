@@ -1,6 +1,7 @@
 package dev.akuniutka.cbrratesbot.controller;
 
 import dev.akuniutka.cbrratesbot.dto.CountDto;
+import dev.akuniutka.cbrratesbot.dto.FilterCriteria;
 import dev.akuniutka.cbrratesbot.dto.SumDto;
 import dev.akuniutka.cbrratesbot.service.ReportService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -48,7 +49,13 @@ public class ReportController {
             @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateFrom,
             @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTo
     ) {
-        return new CountDto(reportService.getIncomesCount(chatId, amountFrom, amountTo, dateFrom, dateTo));
+        FilterCriteria filter = new FilterCriteria();
+        filter.setChatId(chatId);
+        filter.setAmountFrom(amountFrom);
+        filter.setAmountTo(amountTo);
+        filter.setDateFrom(dateFrom);
+        filter.setDateTo(dateTo);
+        return new CountDto(reportService.getIncomesCount(filter));
     }
 
     @GetMapping("/incomes/sum")
@@ -60,7 +67,14 @@ public class ReportController {
             @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateFrom,
             @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTo
     ) {
-        return new SumDto(reportService.getIncomesSum(chatId, amountFrom, amountTo, dateFrom, dateTo));
+
+        FilterCriteria filter = new FilterCriteria();
+        filter.setChatId(chatId);
+        filter.setAmountFrom(amountFrom);
+        filter.setAmountTo(amountTo);
+        filter.setDateFrom(dateFrom);
+        filter.setDateTo(dateTo);
+        return new SumDto(reportService.getIncomesSum(filter));
     }
 
     // TODO: add amountTo, dateFrom and dateTo filter
