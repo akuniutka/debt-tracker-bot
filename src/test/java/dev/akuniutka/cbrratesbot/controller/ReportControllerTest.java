@@ -35,34 +35,33 @@ class ReportControllerTest {
     // TODO: add tests for MAX, MIN, AVG functions for both incomes and expenses
 
     @Test
-    void testGetCountOfIncomesGreaterThanWithNoAmount() throws Exception {
-        int count = RANDOM.nextInt(1000);
-
-        given(reportService.getIncomesCount( null, null)).willReturn((long) count);
-
-        mvc.perform(get("/reports/incomes/count"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.*", hasSize(1)))
-                .andExpect(jsonPath("$.count", is(count)));
-
-    }
-
-    @Test
-    void testGetCountOfIncomesGreaterThanWithAmount() throws Exception {
+    void testGetCountOfIncomesAboveThresholdV1() throws Exception {
         int count = RANDOM.nextInt(1000);
         BigDecimal amount = BigDecimal.valueOf(RANDOM.nextFloat() * 1000).setScale(2, RoundingMode.HALF_UP);
 
-        given(reportService.getIncomesCount(amount, null)).willReturn((long) count);
+        given(reportService.getCountOfIncomesGreaterThanV1(amount)).willReturn((long) count);
 
-        mvc.perform(get("/reports/incomes/count?amountFrom=" + amount))
+        mvc.perform(get("/reports/incomes/v1/count?amount=" + amount))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.*", hasSize(1)))
                 .andExpect(jsonPath("$.count", is(count)));
+    }
 
+    @Test
+    void testGetCountOfIncomesAboveThresholdV2() throws Exception {
+        int count = RANDOM.nextInt(1000);
+        BigDecimal amount = BigDecimal.valueOf(RANDOM.nextFloat() * 1000).setScale(2, RoundingMode.HALF_UP);
+
+        given(reportService.getCountOfIncomesGreaterThanV2(amount)).willReturn((long) count);
+
+        mvc.perform(get("/reports/incomes/v2/count?amount=" + amount))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.*", hasSize(1)))
+                .andExpect(jsonPath("$.count", is(count)));
     }
 
     @Test

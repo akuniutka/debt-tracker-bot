@@ -21,28 +21,76 @@ public class ReportRepository {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final EntityManager entityManager;
 
-    public long getIncomesCount(BigDecimal amountFrom, BigDecimal amountTo) {
+    public long getCountOfIncomesGreaterThanWithJdbcTemplate(BigDecimal amount) {
+        Long count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM INCOMES WHERE AMOUNT = ?;", Long.class, amount);
+        if (count == null) {
+            throw new RuntimeException("wrong reply from database");
+        }
+        return count;
+    }
+
+    public long getCountOfIncomesGreaterThanWithNamedParameterJdbcTemplate(BigDecimal amount) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("amount", amount);
+        Long count = namedParameterJdbcTemplate.queryForObject(
+                "SELECT COUNT(*) AS COUNT FROM INCOMES WHERE AMOUNT > :amount",
+                parameters,
+                (resultSet, i) -> resultSet.getLong("COUNT")
+        );
+        if (count == null) {
+            throw new RuntimeException("wrong reply from database");
+        }
+        return count;
+    }
+
+    public long getIncomesCount(Long chatId, BigDecimal amountFrom, BigDecimal amountTo, Date dateFrom, Date dateTo) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> criteria = criteriaBuilder.createQuery(Long.class);
         Root<Income> income = criteria.from(Income.class);
         criteria.select(criteriaBuilder.count(income));
         List<Predicate> predicates = new ArrayList<>();
+        if (chatId != null) {
+            predicates.add(criteriaBuilder.equal(income.get("chatId"), chatId));
+        }
         if (amountFrom != null) {
             predicates.add(criteriaBuilder.greaterThanOrEqualTo(income.get("amount"), amountFrom));
         }
         if (amountTo != null) {
             predicates.add(criteriaBuilder.lessThan(income.get("amount"), amountTo));
         }
+        if (dateFrom != null) {
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(income.get("entryDate"), dateFrom));
+        }
+        if (dateTo != null) {
+            predicates.add(criteriaBuilder.lessThan(income.get("entryDate"), dateTo));
+        }
         criteria.where(predicates.toArray(new Predicate[0]));
         return entityManager.createQuery(criteria).getSingleResult();
     }
 
-    public long getCountOfIncomesGreaterOrEqual(BigDecimal amount) {
-        Long count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM INCOMES WHERE AMOUNT >= ?;", Long.class, amount);
-        if (count == null) {
-            throw new RuntimeException("wrong reply from database");
+    public BigDecimal getIncomesSum(Long chatId, BigDecimal amountFrom, BigDecimal amountTo, Date dateFrom, Date dateTo) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<BigDecimal> criteria = criteriaBuilder.createQuery(BigDecimal.class);
+        Root<Income> income = criteria.from(Income.class);
+        criteria.select(criteriaBuilder.sum(income.get("amount")));
+        List<Predicate> predicates = new ArrayList<>();
+        if (chatId != null) {
+            predicates.add(criteriaBuilder.equal(income.get("chatId"), chatId));
         }
-        return count;
+        if (amountFrom != null) {
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(income.get("amount"), amountFrom));
+        }
+        if (amountTo != null) {
+            predicates.add(criteriaBuilder.lessThan(income.get("amount"), amountTo));
+        }
+        if (dateFrom != null) {
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(income.get("entryDate"), dateFrom));
+        }
+        if (dateTo != null) {
+            predicates.add(criteriaBuilder.lessThan(income.get("entryDate"), dateTo));
+        }
+        criteria.where(predicates.toArray(new Predicate[0]));
+        return entityManager.createQuery(criteria).getSingleResult();
     }
 
     public long getCountOfExpensesGreater(BigDecimal amount) {
