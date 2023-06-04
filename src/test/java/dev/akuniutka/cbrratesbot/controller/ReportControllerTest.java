@@ -112,6 +112,42 @@ class ReportControllerTest {
     }
 
     @Test
+    void testGetIncomesSum() throws Exception {
+        List<Long> chatIds = Arrays.asList(null, RANDOM.nextLong());
+        List<BigDecimal> amountsFrom = Arrays.asList(null, getRandomBigDecimal());
+        List<BigDecimal> amountsTo = Arrays.asList(null, getRandomBigDecimal());
+        List<LocalDate> datesFrom = Arrays.asList(null, getRandomLocalDate());
+        List<LocalDate> datesTo = Arrays.asList(null, getRandomLocalDate());
+        BigDecimal sum = getRandomBigDecimal();
+        Map<String, BigDecimal> expected = new HashMap<>();
+
+        for (Long chatId : chatIds) {
+            for (BigDecimal amountFrom : amountsFrom) {
+                for (BigDecimal amountTo : amountsTo) {
+                    for (LocalDate dateFrom : datesFrom) {
+                        for (LocalDate dateTo : datesTo) {
+                            FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
+                            String query = filterCriteriaToQuery(filter);
+                            sum = sum.add(getRandomBigDecimal());
+                            given(reportService.getIncomesSum(filter)).willReturn(sum);
+                            expected.put(query, sum);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (Map.Entry<String, BigDecimal> entry : expected.entrySet()) {
+            mvc.perform(get("/reports/incomes/sum" + entry.getKey()))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType("application/json"))
+                    .andExpect(jsonPath("$.*", hasSize(1)))
+                    .andExpect(jsonPath("$.sum", is(entry.getValue().doubleValue())));
+        }
+    }
+
+    @Test
     void testGetCountOfExpensesGreaterThanWithNoAmount() throws Exception {
         int count = RANDOM.nextInt(1000);
 
