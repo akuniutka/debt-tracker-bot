@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -12,6 +12,6 @@ public class FilterCriteria {
     private Long chatId;
     private BigDecimal amountFrom;
     private BigDecimal amountTo;
-    private LocalDate dateFrom;
-    private LocalDate dateTo;
+    private Date dateFrom;
+    private Date dateTo;
 }

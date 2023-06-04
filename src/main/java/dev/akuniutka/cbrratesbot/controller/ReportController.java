@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.Date;
 
 // TODO: add "/" endpoint to list available reports
 // TODO: add "/incomes" endpoint to list available reports for incomes
@@ -30,8 +30,8 @@ public class ReportController {
     @Operation(summary = "Get the number of entries (both incomes and expenses)")
     public CountDto getCount(
             @RequestParam(name = "chatId", required = false) Long chatId,
-            @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
-            @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo
+            @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateFrom,
+            @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTo
     ) {
         FilterCriteria filter = new FilterCriteria(chatId, null, null, dateFrom, dateTo);
         return new CountDto(reportService.getCount(filter));
@@ -41,8 +41,8 @@ public class ReportController {
     @Operation(summary = "Get the sum of entries (both incomes and expenses)")
     public SumDto getSum(
             @RequestParam(name = "chatId", required = false) Long chatId,
-            @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
-            @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo
+            @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateFrom,
+            @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTo
     ) {
         FilterCriteria filter = new FilterCriteria(chatId, null, null, dateFrom, dateTo);
         return new SumDto(reportService.getSum(filter));
@@ -68,8 +68,8 @@ public class ReportController {
             @RequestParam(name = "chatId", required = false) Long chatId,
             @RequestParam(name = "amountFrom", required = false) BigDecimal amountFrom,
             @RequestParam(name = "amountTo", required = false) BigDecimal amountTo,
-            @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
-            @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo
+            @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateFrom,
+            @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTo
     ) {
         FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
         return new CountDto(reportService.getIncomesCount(filter));
@@ -81,8 +81,8 @@ public class ReportController {
             @RequestParam(name = "chatId", required = false) Long chatId,
             @RequestParam(name = "amountFrom", required = false) BigDecimal amountFrom,
             @RequestParam(name = "amountTo", required = false) BigDecimal amountTo,
-            @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
-            @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo
+            @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateFrom,
+            @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTo
     ) {
 
         FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
@@ -109,8 +109,8 @@ public class ReportController {
             @RequestParam(name = "chatId", required = false) Long chatId,
             @RequestParam(name = "amountFrom", required = false) BigDecimal amountFrom,
             @RequestParam(name = "amountTo", required = false) BigDecimal amountTo,
-            @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
-            @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo
+            @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateFrom,
+            @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTo
     ) {
         FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
         return new CountDto(reportService.getExpensesCount(filter));
@@ -122,8 +122,8 @@ public class ReportController {
             @RequestParam(name = "chatId", required = false) Long chatId,
             @RequestParam(name = "amountFrom", required = false) BigDecimal amountFrom,
             @RequestParam(name = "amountTo", required = false) BigDecimal amountTo,
-            @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
-            @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo
+            @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateFrom,
+            @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTo
     ) {
         FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
         return new SumDto(reportService.getExpensesSum(filter));

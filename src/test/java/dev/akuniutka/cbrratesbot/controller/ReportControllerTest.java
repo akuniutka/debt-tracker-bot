@@ -3,16 +3,15 @@ package dev.akuniutka.cbrratesbot.controller;
 import dev.akuniutka.cbrratesbot.dto.FilterCriteria;
 import dev.akuniutka.cbrratesbot.service.ReportService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -22,10 +21,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ExtendWith(SpringExtension.class)
 @WebMvcTest(ReportController.class)
 class ReportControllerTest {
     private static final Random RANDOM = new Random();
+    private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
 
     @Autowired
     private MockMvc mvc;
@@ -68,16 +67,16 @@ class ReportControllerTest {
         List<Long> chatIds = Arrays.asList(null, RANDOM.nextLong());
         List<BigDecimal> amountsFrom = Arrays.asList(null, getRandomBigDecimal());
         List<BigDecimal> amountsTo = Arrays.asList(null, getRandomBigDecimal());
-        List<LocalDate> datesFrom = Arrays.asList(null, getRandomLocalDate());
-        List<LocalDate> datesTo = Arrays.asList(null, getRandomLocalDate());
+        List<Date> datesFrom = Arrays.asList(null, getRandomDate());
+        List<Date> datesTo = Arrays.asList(null, getRandomDate());
         int count = RANDOM.nextInt(1000);
         Map<String, Integer> expected = new HashMap<>();
 
         for (Long chatId : chatIds) {
             for (BigDecimal amountFrom : amountsFrom) {
                 for (BigDecimal amountTo : amountsTo) {
-                    for (LocalDate dateFrom : datesFrom) {
-                        for (LocalDate dateTo : datesTo) {
+                    for (Date dateFrom : datesFrom) {
+                        for (Date dateTo : datesTo) {
                             FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
                             String query = filterCriteriaToQuery(filter);
                             count += RANDOM.nextInt(1000) + 1;
@@ -113,16 +112,16 @@ class ReportControllerTest {
         List<Long> chatIds = Arrays.asList(null, RANDOM.nextLong());
         List<BigDecimal> amountsFrom = Arrays.asList(null, getRandomBigDecimal());
         List<BigDecimal> amountsTo = Arrays.asList(null, getRandomBigDecimal());
-        List<LocalDate> datesFrom = Arrays.asList(null, getRandomLocalDate());
-        List<LocalDate> datesTo = Arrays.asList(null, getRandomLocalDate());
+        List<Date> datesFrom = Arrays.asList(null, getRandomDate());
+        List<Date> datesTo = Arrays.asList(null, getRandomDate());
         BigDecimal sum = getRandomBigDecimal();
         Map<String, BigDecimal> expected = new HashMap<>();
 
         for (Long chatId : chatIds) {
             for (BigDecimal amountFrom : amountsFrom) {
                 for (BigDecimal amountTo : amountsTo) {
-                    for (LocalDate dateFrom : datesFrom) {
-                        for (LocalDate dateTo : datesTo) {
+                    for (Date dateFrom : datesFrom) {
+                        for (Date dateTo : datesTo) {
                             FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
                             String query = filterCriteriaToQuery(filter);
                             sum = sum.add(getRandomBigDecimal());
@@ -179,16 +178,16 @@ class ReportControllerTest {
         List<Long> chatIds = Arrays.asList(null, RANDOM.nextLong());
         List<BigDecimal> amountsFrom = Arrays.asList(null, getRandomBigDecimal());
         List<BigDecimal> amountsTo = Arrays.asList(null, getRandomBigDecimal());
-        List<LocalDate> datesFrom = Arrays.asList(null, getRandomLocalDate());
-        List<LocalDate> datesTo = Arrays.asList(null, getRandomLocalDate());
+        List<Date> datesFrom = Arrays.asList(null, getRandomDate());
+        List<Date> datesTo = Arrays.asList(null, getRandomDate());
         int count = RANDOM.nextInt(1000);
         Map<String, Integer> expected = new HashMap<>();
 
         for (Long chatId : chatIds) {
             for (BigDecimal amountFrom : amountsFrom) {
                 for (BigDecimal amountTo : amountsTo) {
-                    for (LocalDate dateFrom : datesFrom) {
-                        for (LocalDate dateTo : datesTo) {
+                    for (Date dateFrom : datesFrom) {
+                        for (Date dateTo : datesTo) {
                             FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
                             String query = filterCriteriaToQuery(filter);
                             count += RANDOM.nextInt(1000) + 1;
@@ -224,16 +223,16 @@ class ReportControllerTest {
         List<Long> chatIds = Arrays.asList(null, RANDOM.nextLong());
         List<BigDecimal> amountsFrom = Arrays.asList(null, getRandomBigDecimal());
         List<BigDecimal> amountsTo = Arrays.asList(null, getRandomBigDecimal());
-        List<LocalDate> datesFrom = Arrays.asList(null, getRandomLocalDate());
-        List<LocalDate> datesTo = Arrays.asList(null, getRandomLocalDate());
+        List<Date> datesFrom = Arrays.asList(null, getRandomDate());
+        List<Date> datesTo = Arrays.asList(null, getRandomDate());
         BigDecimal sum = getRandomBigDecimal();
         Map<String, BigDecimal> expected = new HashMap<>();
 
         for (Long chatId : chatIds) {
             for (BigDecimal amountFrom : amountsFrom) {
                 for (BigDecimal amountTo : amountsTo) {
-                    for (LocalDate dateFrom : datesFrom) {
-                        for (LocalDate dateTo : datesTo) {
+                    for (Date dateFrom : datesFrom) {
+                        for (Date dateTo : datesTo) {
                             FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
                             String query = filterCriteriaToQuery(filter);
                             sum = sum.add(getRandomBigDecimal());
@@ -258,14 +257,14 @@ class ReportControllerTest {
     @Test
     void testGetCount() throws Exception {
         List<Long> chatIds = Arrays.asList(null, RANDOM.nextLong());
-        List<LocalDate> datesFrom = Arrays.asList(null, getRandomLocalDate());
-        List<LocalDate> datesTo = Arrays.asList(null, getRandomLocalDate());
+        List<Date> datesFrom = Arrays.asList(null, getRandomDate());
+        List<Date> datesTo = Arrays.asList(null, getRandomDate());
         int count = RANDOM.nextInt(1000);
         Map<String, Integer> expected = new HashMap<>();
 
         for (Long chatId : chatIds) {
-            for (LocalDate dateFrom : datesFrom) {
-                for (LocalDate dateTo : datesTo) {
+            for (Date dateFrom : datesFrom) {
+                for (Date dateTo : datesTo) {
                     FilterCriteria filter = new FilterCriteria(chatId, null, null, dateFrom, dateTo);
                     String query = filterCriteriaToQuery(filter);
                     count += RANDOM.nextInt(1000) + 1;
@@ -288,14 +287,14 @@ class ReportControllerTest {
     @Test
     void testGetSum() throws Exception {
         List<Long> chatIds = Arrays.asList(null, RANDOM.nextLong());
-        List<LocalDate> datesFrom = Arrays.asList(null, getRandomLocalDate());
-        List<LocalDate> datesTo = Arrays.asList(null, getRandomLocalDate());
+        List<Date> datesFrom = Arrays.asList(null, getRandomDate());
+        List<Date> datesTo = Arrays.asList(null, getRandomDate());
         BigDecimal sum = getRandomBigDecimal();
         Map<String, BigDecimal> expected = new HashMap<>();
 
         for (Long chatId : chatIds) {
-            for (LocalDate dateFrom : datesFrom) {
-                for (LocalDate dateTo : datesTo) {
+            for (Date dateFrom : datesFrom) {
+                for (Date dateTo : datesTo) {
                     FilterCriteria filter = new FilterCriteria(chatId, null, null, dateFrom, dateTo);
                     String query = filterCriteriaToQuery(filter);
                     sum = sum.add(getRandomBigDecimal());
@@ -320,8 +319,12 @@ class ReportControllerTest {
         return BigDecimal.valueOf(RANDOM.nextFloat() * 1000).setScale(2, RoundingMode.HALF_UP);
     }
 
-    private LocalDate getRandomLocalDate() {
-        return LocalDate.now().minusDays(1000).plusDays(RANDOM.nextInt(1000));
+    private Date getRandomDate() throws ParseException {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, RANDOM.nextInt(1000) - 1000);
+        Date date = calendar.getTime();
+        String formattedDate = DATE_FORMATTER.format(date);
+        return DATE_FORMATTER.parse(formattedDate);
     }
 
     private String filterCriteriaToQuery(FilterCriteria filter) {
@@ -336,10 +339,10 @@ class ReportControllerTest {
             query.append("&amountTo=").append(filter.getAmountTo());
         }
         if (filter.getDateFrom() != null) {
-            query.append("&dateFrom=").append(filter.getDateFrom());
+            query.append("&dateFrom=").append(DATE_FORMATTER.format(filter.getDateFrom()));
         }
         if (filter.getDateTo() != null) {
-            query.append("&dateTo=").append(filter.getDateTo());
+            query.append("&dateTo=").append(DATE_FORMATTER.format(filter.getDateTo()));
         }
         return query.length() == 0 ? "" : "?" + query.substring(1);
     }
