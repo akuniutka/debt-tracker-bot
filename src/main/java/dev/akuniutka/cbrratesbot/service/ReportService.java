@@ -12,10 +12,12 @@ import java.math.BigDecimal;
 public class ReportService {
     private final ReportRepository reportRepository;
 
+    // TODO: remove the method - there is getIncomesCount() instead of it
     public long getCountOfIncomesGreaterThanV1(BigDecimal amount) {
         return reportRepository.getCountOfIncomesGreaterThanWithJdbcTemplate(amount);
     }
 
+    // TODO: remove the method - there is getIncomesCount() instead of it
     public long getCountOfIncomesGreaterThanV2(BigDecimal amount) {
         return reportRepository.getCountOfIncomesGreaterThanWithNamedParameterJdbcTemplate(amount);
     }
@@ -28,11 +30,17 @@ public class ReportService {
         return reportRepository.getIncomesSum(filter);
     }
 
+    // TODO: remove the method - there is getExpensesCount() instead of it
     public long getCountOfExpensesGreaterThanV1(BigDecimal amount) {
         return reportRepository.getCountOfExpensesGreaterThanWithJdbcTemplate(amount);
     }
 
+    // TODO: remove the method - there is getExpensesCount() instead of it
     public long getCountOfExpensesGreaterThanV2(BigDecimal amount) {
         return reportRepository.getCountOfExpensesGreaterThanWithNamedParameterJdbcTemplate(amount);
+    }
+
+    public long getExpensesCount(FilterCriteria filter) {
+        return reportRepository.getExpensesCount(filter);
     }
 }

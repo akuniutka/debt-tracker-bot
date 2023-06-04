@@ -1,6 +1,7 @@
 package dev.akuniutka.cbrratesbot.repository;
 
 import dev.akuniutka.cbrratesbot.dto.FilterCriteria;
+import dev.akuniutka.cbrratesbot.entity.Expense;
 import dev.akuniutka.cbrratesbot.entity.Income;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,6 +23,7 @@ public class ReportRepository {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final EntityManager entityManager;
 
+    // TODO: remove the method - there is getIncomesCount() instead of it
     public long getCountOfIncomesGreaterThanWithJdbcTemplate(BigDecimal amount) {
         Long count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM INCOMES WHERE AMOUNT = ?;", Long.class, amount);
         if (count == null) {
@@ -30,6 +32,7 @@ public class ReportRepository {
         return count;
     }
 
+    // TODO: remove the method - there is getIncomesCount() instead of it
     public long getCountOfIncomesGreaterThanWithNamedParameterJdbcTemplate(BigDecimal amount) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("amount", amount);
@@ -62,6 +65,7 @@ public class ReportRepository {
         return entityManager.createQuery(criteria).getSingleResult();
     }
 
+    // TODO: remove the method - there is getExpensesCount() instead of it
     public long getCountOfExpensesGreaterThanWithJdbcTemplate(BigDecimal amount) {
         Long count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM EXPENSES WHERE AMOUNT = ?;", Long.class, amount);
         if (count == null) {
@@ -70,6 +74,7 @@ public class ReportRepository {
         return count;
     }
 
+    // TODO: remove the method - there is getExpensesCount() instead of it
     public long getCountOfExpensesGreaterThanWithNamedParameterJdbcTemplate(BigDecimal amount) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("amount", amount);
@@ -82,6 +87,15 @@ public class ReportRepository {
             throw new RuntimeException("wrong reply from database");
         }
         return count;
+    }
+
+    public long getExpensesCount(FilterCriteria filter) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteria = criteriaBuilder.createQuery(Long.class);
+        Root<Expense> expense = criteria.from(Expense.class);
+        criteria.select(criteriaBuilder.count(expense));
+        criteria.where(filterCriteriaToPredicates(criteriaBuilder, expense, filter));
+        return entityManager.createQuery(criteria).getSingleResult();
     }
 
 

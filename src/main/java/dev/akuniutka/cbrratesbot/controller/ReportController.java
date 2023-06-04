@@ -71,14 +71,27 @@ public class ReportController {
     // TODO: add filter by chatId
     // TODO: add SUM for expenses
     @GetMapping("/expenses/v1/count")
-    @Operation(summary = "Get the number of expenses entries with amount above threshold")
+    @Operation(summary = "Get the number of expense entries with amount above threshold")
     public CountDto getCountOfExpensesAboveThresholdV1(@RequestParam(name = "amount") BigDecimal amount) {
         return new CountDto(reportService.getCountOfExpensesGreaterThanV1(amount));
     }
 
     @GetMapping("/expenses/v2/count")
-    @Operation(summary = "Get the number of expenses entries with amount above threshold")
+    @Operation(summary = "Get the number of expense entries with amount above threshold")
     public CountDto getCountOfExpensesAboveThresholdV2(@RequestParam(name = "amount") BigDecimal amount) {
         return new CountDto(reportService.getCountOfExpensesGreaterThanV2(amount));
+    }
+
+    @GetMapping(value = {"/expenses/v3/count", "/expenses/count"})
+    @Operation(summary = "Get the number of expense entries")
+    public CountDto getExpensesCount(
+            @RequestParam(name = "chatId", required = false) Long chatId,
+            @RequestParam(name = "amountFrom", required = false) BigDecimal amountFrom,
+            @RequestParam(name = "amountTo", required = false) BigDecimal amountTo,
+            @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
+            @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo
+    ) {
+        FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
+        return new CountDto(reportService.getExpensesCount(filter));
     }
 }
