@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Random;
+import java.util.*;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -37,7 +37,7 @@ class ReportControllerTest {
     @Test
     void testGetCountOfIncomesAboveThresholdV1() throws Exception {
         int count = RANDOM.nextInt(1000);
-        BigDecimal amount = BigDecimal.valueOf(RANDOM.nextFloat() * 1000).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal amount = getRandomBigDecimal();
 
         given(reportService.getCountOfIncomesGreaterThanV1(amount)).willReturn((long) count);
 
@@ -52,7 +52,7 @@ class ReportControllerTest {
     @Test
     void testGetCountOfIncomesAboveThresholdV2() throws Exception {
         int count = RANDOM.nextInt(1000);
-        BigDecimal amount = BigDecimal.valueOf(RANDOM.nextFloat() * 1000).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal amount = getRandomBigDecimal();
 
         given(reportService.getCountOfIncomesGreaterThanV2(amount)).willReturn((long) count);
 
@@ -62,6 +62,15 @@ class ReportControllerTest {
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.*", hasSize(1)))
                 .andExpect(jsonPath("$.count", is(count)));
+    }
+
+    @Test
+    void testGetIncomesCount() throws Exception {
+        List<Long> chatIds = Arrays.asList(null, RANDOM.nextLong());
+        List<BigDecimal> amountsFrom = Arrays.asList(null, getRandomBigDecimal());
+        List<BigDecimal> amountsTo = Arrays.asList(null, getRandomBigDecimal());
+//        List<Date> datesFrom = Arrays.asList(null);
+//        List<Date> datesTo = Arrays.asList(null);
     }
 
     @Test
@@ -91,5 +100,9 @@ class ReportControllerTest {
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.*", hasSize(1)))
                 .andExpect(jsonPath("$.count", is(count)));
+    }
+
+    private BigDecimal getRandomBigDecimal() {
+        return BigDecimal.valueOf(RANDOM.nextFloat() * 1000).setScale(2, RoundingMode.HALF_UP);
     }
 }

@@ -49,6 +49,7 @@ public class ReportRepository {
         CriteriaQuery<Long> criteria = criteriaBuilder.createQuery(Long.class);
         Root<Income> income = criteria.from(Income.class);
         criteria.select(criteriaBuilder.count(income));
+        // TODO: move creating of predicates list to a separate method
         List<Predicate> predicates = new ArrayList<>();
         if (filter.getChatId() != null) {
             predicates.add(criteriaBuilder.equal(income.get("chatId"), filter.getChatId()));

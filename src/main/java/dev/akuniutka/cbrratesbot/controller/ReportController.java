@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @RestController
 @AllArgsConstructor
@@ -46,8 +46,8 @@ public class ReportController {
             @RequestParam(name = "chatId", required = false) Long chatId,
             @RequestParam(name = "amountFrom", required = false) BigDecimal amountFrom,
             @RequestParam(name = "amountTo", required = false) BigDecimal amountTo,
-            @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateFrom,
-            @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTo
+            @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
+            @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo
     ) {
         FilterCriteria filter = new FilterCriteria();
         filter.setChatId(chatId);
@@ -64,8 +64,8 @@ public class ReportController {
             @RequestParam(name = "chatId", required = false) Long chatId,
             @RequestParam(name = "amountFrom", required = false) BigDecimal amountFrom,
             @RequestParam(name = "amountTo", required = false) BigDecimal amountTo,
-            @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateFrom,
-            @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTo
+            @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
+            @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo
     ) {
 
         FilterCriteria filter = new FilterCriteria();
