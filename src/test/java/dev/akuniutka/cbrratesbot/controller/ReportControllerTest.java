@@ -1,5 +1,6 @@
 package dev.akuniutka.cbrratesbot.controller;
 
+import dev.akuniutka.cbrratesbot.dto.FilterCriteria;
 import dev.akuniutka.cbrratesbot.service.ReportService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -69,8 +71,44 @@ class ReportControllerTest {
         List<Long> chatIds = Arrays.asList(null, RANDOM.nextLong());
         List<BigDecimal> amountsFrom = Arrays.asList(null, getRandomBigDecimal());
         List<BigDecimal> amountsTo = Arrays.asList(null, getRandomBigDecimal());
-//        List<Date> datesFrom = Arrays.asList(null);
-//        List<Date> datesTo = Arrays.asList(null);
+        List<LocalDate> datesFrom = Arrays.asList(null, getRandomLocalDate());
+        List<LocalDate> datesTo = Arrays.asList(null, getRandomLocalDate());
+        int count = RANDOM.nextInt(1000);
+        Map<String, Integer> expected = new HashMap<>();
+
+        for (Long chatId : chatIds) {
+            for (BigDecimal amountFrom : amountsFrom) {
+                for (BigDecimal amountTo : amountsTo) {
+                    for (LocalDate dateFrom : datesFrom) {
+                        for (LocalDate dateTo : datesTo) {
+                            FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
+                            String query = filterCriteriaToQuery(filter);
+                            count += RANDOM.nextInt(1000) + 1;
+                            given(reportService.getIncomesCount(filter)).willReturn((long) count);
+                            expected.put(query, count);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (Map.Entry<String, Integer> entry : expected.entrySet()) {
+            mvc.perform(get("/reports/incomes/count" + entry.getKey()))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType("application/json"))
+                    .andExpect(jsonPath("$.*", hasSize(1)))
+                    .andExpect(jsonPath("$.count", is(entry.getValue())));
+        }
+
+        for (Map.Entry<String, Integer> entry : expected.entrySet()) {
+            mvc.perform(get("/reports/incomes/v3/count" + entry.getKey()))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType("application/json"))
+                    .andExpect(jsonPath("$.*", hasSize(1)))
+                    .andExpect(jsonPath("$.count", is(entry.getValue())));
+        }
     }
 
     @Test
@@ -104,5 +142,29 @@ class ReportControllerTest {
 
     private BigDecimal getRandomBigDecimal() {
         return BigDecimal.valueOf(RANDOM.nextFloat() * 1000).setScale(2, RoundingMode.HALF_UP);
+    }
+
+    private LocalDate getRandomLocalDate() {
+        return LocalDate.now().minusDays(1000).plusDays(RANDOM.nextInt(1000));
+    }
+
+    private String filterCriteriaToQuery(FilterCriteria filter) {
+        StringBuilder query = new StringBuilder();
+        if (filter.getChatId() != null) {
+            query.append("&chatId=").append(filter.getChatId());
+        }
+        if (filter.getAmountFrom() != null) {
+            query.append("&amountFrom=").append(filter.getAmountFrom());
+        }
+        if (filter.getAmountTo() != null) {
+            query.append("&amountTo=").append(filter.getAmountTo());
+        }
+        if (filter.getDateFrom() != null) {
+            query.append("&dateFrom=").append(filter.getDateFrom());
+        }
+        if (filter.getDateTo() != null) {
+            query.append("&dateTo=").append(filter.getDateTo());
+        }
+        return query.length() == 0 ? "" : "?" + query.substring(1);
     }
 }

@@ -21,11 +21,11 @@ import java.time.LocalDate;
 public class ReportController {
     private final ReportService reportService;
 
-    // TODO: add root enpoint to list all reports
+    // TODO: add root endpoint to list all reports
     // TODO: /incomes and /expenses endpoints to list income reports and expenses reports respectively
     // TODO: add Spring Security to limit access to data in reports by chatId
 
-    // TODO: add endpoints for COUNT and SUM of incomes and expeses togather and with filters
+    // TODO: add endpoints for COUNT and SUM of entries (both incomes and expenses) and with filters
 
 
     @GetMapping("/incomes/v1/count")
@@ -49,12 +49,7 @@ public class ReportController {
             @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
             @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo
     ) {
-        FilterCriteria filter = new FilterCriteria();
-        filter.setChatId(chatId);
-        filter.setAmountFrom(amountFrom);
-        filter.setAmountTo(amountTo);
-        filter.setDateFrom(dateFrom);
-        filter.setDateTo(dateTo);
+        FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
         return new CountDto(reportService.getIncomesCount(filter));
     }
 
@@ -68,12 +63,7 @@ public class ReportController {
             @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo
     ) {
 
-        FilterCriteria filter = new FilterCriteria();
-        filter.setChatId(chatId);
-        filter.setAmountFrom(amountFrom);
-        filter.setAmountTo(amountTo);
-        filter.setDateFrom(dateFrom);
-        filter.setDateTo(dateTo);
+        FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
         return new SumDto(reportService.getIncomesSum(filter));
     }
 
