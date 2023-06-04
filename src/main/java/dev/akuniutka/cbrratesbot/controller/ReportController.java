@@ -28,12 +28,14 @@ public class ReportController {
     // TODO: add endpoints for COUNT and SUM of entries (both incomes and expenses) and with filters
 
 
+    // TODO: remove the endpoint - there is a newer version (v3)
     @GetMapping("/incomes/v1/count")
     @Operation(summary = "Get the number of income entries with amount above threshold")
     public CountDto getCountOfIncomesAboveThresholdV1(@RequestParam(name = "amount") BigDecimal amount) {
         return new CountDto(reportService.getCountOfIncomesGreaterThanV1(amount));
     }
 
+    // TODO: remove the endpoint - there is a newer version (v3)
     @GetMapping("/incomes/v2/count")
     @Operation(summary = "Get the number of income entries with amount above threshold")
     public CountDto getCountOfIncomesAboveThresholdV2(@RequestParam(name = "amount") BigDecimal amount) {
@@ -67,15 +69,14 @@ public class ReportController {
         return new SumDto(reportService.getIncomesSum(filter));
     }
 
-    // TODO: add amountTo, dateFrom and dateTo filter
-    // TODO: add filter by chatId
-    // TODO: add SUM for expenses
+    // TODO: remove the endpoint - there is a newer version (v3)
     @GetMapping("/expenses/v1/count")
     @Operation(summary = "Get the number of expense entries with amount above threshold")
     public CountDto getCountOfExpensesAboveThresholdV1(@RequestParam(name = "amount") BigDecimal amount) {
         return new CountDto(reportService.getCountOfExpensesGreaterThanV1(amount));
     }
 
+    // TODO: remove the endpoint - there is a newer version (v3)
     @GetMapping("/expenses/v2/count")
     @Operation(summary = "Get the number of expense entries with amount above threshold")
     public CountDto getCountOfExpensesAboveThresholdV2(@RequestParam(name = "amount") BigDecimal amount) {
@@ -93,5 +94,18 @@ public class ReportController {
     ) {
         FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
         return new CountDto(reportService.getExpensesCount(filter));
+    }
+
+    @GetMapping("/expenses/sum")
+    @Operation(summary = "Get the sum of expense entries")
+    public SumDto getExpensesSum(
+            @RequestParam(name = "chatId", required = false) Long chatId,
+            @RequestParam(name = "amountFrom", required = false) BigDecimal amountFrom,
+            @RequestParam(name = "amountTo", required = false) BigDecimal amountTo,
+            @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
+            @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo
+    ) {
+        FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
+        return new SumDto(reportService.getExpensesSum(filter));
     }
 }

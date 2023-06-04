@@ -43,4 +43,8 @@ public class ReportService {
     public long getExpensesCount(FilterCriteria filter) {
         return reportRepository.getExpensesCount(filter);
     }
+
+    public BigDecimal getExpensesSum(FilterCriteria filter) {
+        return reportRepository.getExpensesSum(filter);
+    }
 }

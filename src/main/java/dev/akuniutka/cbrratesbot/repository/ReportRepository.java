@@ -98,6 +98,15 @@ public class ReportRepository {
         return entityManager.createQuery(criteria).getSingleResult();
     }
 
+    public BigDecimal getExpensesSum(FilterCriteria filter) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<BigDecimal> criteria = criteriaBuilder.createQuery(BigDecimal.class);
+        Root<Expense> expense = criteria.from(Expense.class);
+        criteria.select(criteriaBuilder.sum(expense.get("amount")));
+        criteria.where(filterCriteriaToPredicates(criteriaBuilder, expense, filter));
+        return entityManager.createQuery(criteria).getSingleResult();
+    }
+
 
     private <T> Predicate[] filterCriteriaToPredicates(CriteriaBuilder builder, Root<T> root, FilterCriteria filter) {
         List<Predicate> predicates = new ArrayList<>();
