@@ -62,7 +62,15 @@ public class ReportRepository {
         return entityManager.createQuery(criteria).getSingleResult();
     }
 
-    public long getCountOfExpensesGreater(BigDecimal amount) {
+    public long getCountOfExpensesGreaterThanWithJdbcTemplate(BigDecimal amount) {
+        Long count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM EXPENSES WHERE AMOUNT = ?;", Long.class, amount);
+        if (count == null) {
+            throw new RuntimeException("wrong reply from database");
+        }
+        return count;
+    }
+
+    public long getCountOfExpensesGreaterThanWithNamedParameterJdbcTemplate(BigDecimal amount) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("amount", amount);
         Long count = namedParameterJdbcTemplate.queryForObject(
@@ -75,6 +83,7 @@ public class ReportRepository {
         }
         return count;
     }
+
 
     private <T> Predicate[] filterCriteriaToPredicates(CriteriaBuilder builder, Root<T> root, FilterCriteria filter) {
         List<Predicate> predicates = new ArrayList<>();

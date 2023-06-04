@@ -70,9 +70,15 @@ public class ReportController {
     // TODO: add amountTo, dateFrom and dateTo filter
     // TODO: add filter by chatId
     // TODO: add SUM for expenses
-    @GetMapping("/expenses/count")
-    @Operation(summary = "Получить количество расходных операций")
-    public CountDto getCountOfExpensesGreaterThan(@RequestParam(name = "amount", required = false) BigDecimal amount) {
-        return new CountDto(reportService.getCountOfExpensesGreaterThan(amount));
+    @GetMapping("/expenses/v1/count")
+    @Operation(summary = "Get the number of expenses entries with amount above threshold")
+    public CountDto getCountOfExpensesAboveThresholdV1(@RequestParam(name = "amount") BigDecimal amount) {
+        return new CountDto(reportService.getCountOfExpensesGreaterThanV1(amount));
+    }
+
+    @GetMapping("/expenses/v2/count")
+    @Operation(summary = "Get the number of expenses entries with amount above threshold")
+    public CountDto getCountOfExpensesAboveThresholdV2(@RequestParam(name = "amount") BigDecimal amount) {
+        return new CountDto(reportService.getCountOfExpensesGreaterThanV2(amount));
     }
 }

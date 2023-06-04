@@ -28,7 +28,11 @@ public class ReportService {
         return reportRepository.getIncomesSum(filter);
     }
 
-    public long getCountOfExpensesGreaterThan(BigDecimal amount) {
-        return reportRepository.getCountOfExpensesGreater(amount);
+    public long getCountOfExpensesGreaterThanV1(BigDecimal amount) {
+        return reportRepository.getCountOfExpensesGreaterThanWithJdbcTemplate(amount);
+    }
+
+    public long getCountOfExpensesGreaterThanV2(BigDecimal amount) {
+        return reportRepository.getCountOfExpensesGreaterThanWithNamedParameterJdbcTemplate(amount);
     }
 }

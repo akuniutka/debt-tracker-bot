@@ -148,12 +148,13 @@ class ReportControllerTest {
     }
 
     @Test
-    void testGetCountOfExpensesGreaterThanWithNoAmount() throws Exception {
+    void testGetCountOfExpensesAboveThresholdV1() throws Exception {
         int count = RANDOM.nextInt(1000);
+        BigDecimal amount = getRandomBigDecimal();
 
-        given(reportService.getCountOfExpensesGreaterThan(null)).willReturn((long) count);
+        given(reportService.getCountOfExpensesGreaterThanV1(amount)).willReturn((long) count);
 
-        mvc.perform(get("/reports/expenses/count"))
+        mvc.perform(get("/reports/expenses/v1/count?amount=" + amount))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
@@ -162,19 +163,20 @@ class ReportControllerTest {
     }
 
     @Test
-    void testGetCountOfExpensesGreaterThanWithAmount() throws Exception {
+    void testGetCountOfExpensesAboveThresholdV2() throws Exception {
         int count = RANDOM.nextInt(1000);
-        BigDecimal amount = BigDecimal.valueOf(RANDOM.nextFloat() * 1000).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal amount = getRandomBigDecimal();
 
-        given(reportService.getCountOfExpensesGreaterThan(amount)).willReturn((long) count);
+        given(reportService.getCountOfExpensesGreaterThanV2(amount)).willReturn((long) count);
 
-        mvc.perform(get("/reports/expenses/count?amount=" + amount))
+        mvc.perform(get("/reports/expenses/v2/count?amount=" + amount))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.*", hasSize(1)))
                 .andExpect(jsonPath("$.count", is(count)));
     }
+
 
     private BigDecimal getRandomBigDecimal() {
         return BigDecimal.valueOf(RANDOM.nextFloat() * 1000).setScale(2, RoundingMode.HALF_UP);
