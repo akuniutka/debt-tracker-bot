@@ -25,7 +25,7 @@ public class ReportRepository {
 
     // TODO: remove the method - there is getIncomesCount() instead of it
     public long getCountOfIncomesGreaterThanWithJdbcTemplate(BigDecimal amount) {
-        Long count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM INCOMES WHERE AMOUNT = ?;", Long.class, amount);
+        Long count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM INCOMES WHERE AMOUNT > ?;", Long.class, amount);
         if (count == null) {
             throw new RuntimeException("wrong reply from database");
         }
@@ -67,7 +67,7 @@ public class ReportRepository {
 
     // TODO: remove the method - there is getExpensesCount() instead of it
     public long getCountOfExpensesGreaterThanWithJdbcTemplate(BigDecimal amount) {
-        Long count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM EXPENSES WHERE AMOUNT = ?;", Long.class, amount);
+        Long count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM EXPENSES WHERE AMOUNT > ?;", Long.class, amount);
         if (count == null) {
             throw new RuntimeException("wrong reply from database");
         }

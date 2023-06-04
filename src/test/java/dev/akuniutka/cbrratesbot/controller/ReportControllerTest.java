@@ -2,6 +2,7 @@ package dev.akuniutka.cbrratesbot.controller;
 
 import dev.akuniutka.cbrratesbot.dto.FilterCriteria;
 import dev.akuniutka.cbrratesbot.service.ReportService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -10,8 +11,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -25,12 +26,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ReportControllerTest {
     private static final Random RANDOM = new Random();
     private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
+    private static List<Long> chatIds;
+    private static List<BigDecimal> amountsFrom;
+    private static List<BigDecimal> amountsTo;
+    private static List<Date> datesFrom;
+    private static List<Date> datesTo;
 
     @Autowired
     private MockMvc mvc;
 
     @MockBean
     private ReportService reportService;
+
+    @BeforeAll
+    static void prepareTestData() {
+        chatIds = Arrays.asList(null, RANDOM.nextLong());
+        amountsFrom = Arrays.asList(null, getRandomBigDecimal());
+        amountsTo = Arrays.asList(null, getRandomBigDecimal());
+        datesFrom = Arrays.asList(null, getRandomDate());
+        datesTo = Arrays.asList(null, getRandomDate());
+    }
 
     @Test
     void testGetCountOfIncomesAboveThresholdV1() throws Exception {
@@ -64,11 +79,6 @@ class ReportControllerTest {
 
     @Test
     void testGetIncomesCount() throws Exception {
-        List<Long> chatIds = Arrays.asList(null, RANDOM.nextLong());
-        List<BigDecimal> amountsFrom = Arrays.asList(null, getRandomBigDecimal());
-        List<BigDecimal> amountsTo = Arrays.asList(null, getRandomBigDecimal());
-        List<Date> datesFrom = Arrays.asList(null, getRandomDate());
-        List<Date> datesTo = Arrays.asList(null, getRandomDate());
         int count = RANDOM.nextInt(1000);
         Map<String, Integer> expected = new HashMap<>();
 
@@ -109,11 +119,6 @@ class ReportControllerTest {
 
     @Test
     void testGetIncomesSum() throws Exception {
-        List<Long> chatIds = Arrays.asList(null, RANDOM.nextLong());
-        List<BigDecimal> amountsFrom = Arrays.asList(null, getRandomBigDecimal());
-        List<BigDecimal> amountsTo = Arrays.asList(null, getRandomBigDecimal());
-        List<Date> datesFrom = Arrays.asList(null, getRandomDate());
-        List<Date> datesTo = Arrays.asList(null, getRandomDate());
         BigDecimal sum = getRandomBigDecimal();
         Map<String, BigDecimal> expected = new HashMap<>();
 
@@ -175,11 +180,6 @@ class ReportControllerTest {
 
     @Test
     void testGetExpensesCount() throws Exception {
-        List<Long> chatIds = Arrays.asList(null, RANDOM.nextLong());
-        List<BigDecimal> amountsFrom = Arrays.asList(null, getRandomBigDecimal());
-        List<BigDecimal> amountsTo = Arrays.asList(null, getRandomBigDecimal());
-        List<Date> datesFrom = Arrays.asList(null, getRandomDate());
-        List<Date> datesTo = Arrays.asList(null, getRandomDate());
         int count = RANDOM.nextInt(1000);
         Map<String, Integer> expected = new HashMap<>();
 
@@ -220,11 +220,6 @@ class ReportControllerTest {
 
     @Test
     void testGetExpensesSum() throws Exception {
-        List<Long> chatIds = Arrays.asList(null, RANDOM.nextLong());
-        List<BigDecimal> amountsFrom = Arrays.asList(null, getRandomBigDecimal());
-        List<BigDecimal> amountsTo = Arrays.asList(null, getRandomBigDecimal());
-        List<Date> datesFrom = Arrays.asList(null, getRandomDate());
-        List<Date> datesTo = Arrays.asList(null, getRandomDate());
         BigDecimal sum = getRandomBigDecimal();
         Map<String, BigDecimal> expected = new HashMap<>();
 
@@ -256,9 +251,6 @@ class ReportControllerTest {
 
     @Test
     void testGetCount() throws Exception {
-        List<Long> chatIds = Arrays.asList(null, RANDOM.nextLong());
-        List<Date> datesFrom = Arrays.asList(null, getRandomDate());
-        List<Date> datesTo = Arrays.asList(null, getRandomDate());
         int count = RANDOM.nextInt(1000);
         Map<String, Integer> expected = new HashMap<>();
 
@@ -286,9 +278,6 @@ class ReportControllerTest {
 
     @Test
     void testGetSum() throws Exception {
-        List<Long> chatIds = Arrays.asList(null, RANDOM.nextLong());
-        List<Date> datesFrom = Arrays.asList(null, getRandomDate());
-        List<Date> datesTo = Arrays.asList(null, getRandomDate());
         BigDecimal sum = getRandomBigDecimal();
         Map<String, BigDecimal> expected = new HashMap<>();
 
@@ -315,16 +304,13 @@ class ReportControllerTest {
     }
 
 
-    private BigDecimal getRandomBigDecimal() {
+    private static BigDecimal getRandomBigDecimal() {
         return BigDecimal.valueOf(RANDOM.nextFloat() * 1000).setScale(2, RoundingMode.HALF_UP);
     }
 
-    private Date getRandomDate() throws ParseException {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, RANDOM.nextInt(1000) - 1000);
-        Date date = calendar.getTime();
-        String formattedDate = DATE_FORMATTER.format(date);
-        return DATE_FORMATTER.parse(formattedDate);
+    private static Date getRandomDate() {
+        LocalDate date = LocalDate.now().minusDays(1000).plusDays(RANDOM.nextInt(1000));
+        return java.sql.Date.valueOf(date);
     }
 
     private String filterCriteriaToQuery(FilterCriteria filter) {
