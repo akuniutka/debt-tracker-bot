@@ -49,24 +49,7 @@ public class ReportRepository {
         CriteriaQuery<Long> criteria = criteriaBuilder.createQuery(Long.class);
         Root<Income> income = criteria.from(Income.class);
         criteria.select(criteriaBuilder.count(income));
-        // TODO: move creating of predicates list to a separate method
-        List<Predicate> predicates = new ArrayList<>();
-        if (filter.getChatId() != null) {
-            predicates.add(criteriaBuilder.equal(income.get("chatId"), filter.getChatId()));
-        }
-        if (filter.getAmountFrom() != null) {
-            predicates.add(criteriaBuilder.greaterThanOrEqualTo(income.get("amount"), filter.getAmountFrom()));
-        }
-        if (filter.getAmountTo() != null) {
-            predicates.add(criteriaBuilder.lessThan(income.get("amount"), filter.getAmountTo()));
-        }
-        if (filter.getDateFrom() != null) {
-            predicates.add(criteriaBuilder.greaterThanOrEqualTo(income.get("entryDate"), filter.getDateFrom()));
-        }
-        if (filter.getDateTo() != null) {
-            predicates.add(criteriaBuilder.lessThan(income.get("entryDate"), filter.getDateTo()));
-        }
-        criteria.where(predicates.toArray(new Predicate[0]));
+        criteria.where(filterCriteriaToPredicates(criteriaBuilder, income, filter));
         return entityManager.createQuery(criteria).getSingleResult();
     }
 
@@ -75,23 +58,7 @@ public class ReportRepository {
         CriteriaQuery<BigDecimal> criteria = criteriaBuilder.createQuery(BigDecimal.class);
         Root<Income> income = criteria.from(Income.class);
         criteria.select(criteriaBuilder.sum(income.get("amount")));
-        List<Predicate> predicates = new ArrayList<>();
-        if (filter.getChatId() != null) {
-            predicates.add(criteriaBuilder.equal(income.get("chatId"), filter.getChatId()));
-        }
-        if (filter.getAmountFrom() != null) {
-            predicates.add(criteriaBuilder.greaterThanOrEqualTo(income.get("amount"), filter.getAmountFrom()));
-        }
-        if (filter.getAmountTo() != null) {
-            predicates.add(criteriaBuilder.lessThan(income.get("amount"), filter.getAmountTo()));
-        }
-        if (filter.getDateFrom() != null) {
-            predicates.add(criteriaBuilder.greaterThanOrEqualTo(income.get("entryDate"), filter.getDateFrom()));
-        }
-        if (filter.getDateTo() != null) {
-            predicates.add(criteriaBuilder.lessThan(income.get("entryDate"), filter.getDateTo()));
-        }
-        criteria.where(predicates.toArray(new Predicate[0]));
+        criteria.where(filterCriteriaToPredicates(criteriaBuilder, income, filter));
         return entityManager.createQuery(criteria).getSingleResult();
     }
 
@@ -107,5 +74,25 @@ public class ReportRepository {
             throw new RuntimeException("wrong reply from database");
         }
         return count;
+    }
+
+    private <T> Predicate[] filterCriteriaToPredicates(CriteriaBuilder builder, Root<T> root, FilterCriteria filter) {
+        List<Predicate> predicates = new ArrayList<>();
+        if (filter.getChatId() != null) {
+            predicates.add(builder.equal(root.get("chatId"), filter.getChatId()));
+        }
+        if (filter.getAmountFrom() != null) {
+            predicates.add(builder.greaterThanOrEqualTo(root.get("amount"), filter.getAmountFrom()));
+        }
+        if (filter.getAmountTo() != null) {
+            predicates.add(builder.lessThan(root.get("amount"), filter.getAmountTo()));
+        }
+        if (filter.getDateFrom() != null) {
+            predicates.add(builder.greaterThanOrEqualTo(root.get("entryDate"), filter.getDateFrom()));
+        }
+        if (filter.getDateTo() != null) {
+            predicates.add(builder.lessThan(root.get("entryDate"), filter.getDateTo()));
+        }
+        return predicates.toArray(new Predicate[0]);
     }
 }
