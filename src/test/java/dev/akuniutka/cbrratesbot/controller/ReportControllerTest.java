@@ -258,6 +258,35 @@ class ReportControllerTest {
         }
     }
 
+    @Test
+    void testGetEntriesCount() throws Exception {
+        List<Long> chatIds = Arrays.asList(null, RANDOM.nextLong());
+        List<LocalDate> datesFrom = Arrays.asList(null, getRandomLocalDate());
+        List<LocalDate> datesTo = Arrays.asList(null, getRandomLocalDate());
+        int count = RANDOM.nextInt(1000);
+        Map<String, Integer> expected = new HashMap<>();
+
+        for (Long chatId : chatIds) {
+            for (LocalDate dateFrom : datesFrom) {
+                for (LocalDate dateTo : datesTo) {
+                    FilterCriteria filter = new FilterCriteria(chatId, null, null, dateFrom, dateTo);
+                    String query = filterCriteriaToQuery(filter);
+                    count += RANDOM.nextInt(1000) + 1;
+                    given(reportService.getEntriesCount(filter)).willReturn((long) count);
+                    expected.put(query, count);
+                }
+            }
+        }
+
+        for (Map.Entry<String, Integer> entry : expected.entrySet()) {
+            mvc.perform(get("/reports/count" + entry.getKey()))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType("application/json"))
+                    .andExpect(jsonPath("$.*", hasSize(1)))
+                    .andExpect(jsonPath("$.count", is(entry.getValue())));
+        }
+    }
 
     private BigDecimal getRandomBigDecimal() {
         return BigDecimal.valueOf(RANDOM.nextFloat() * 1000).setScale(2, RoundingMode.HALF_UP);

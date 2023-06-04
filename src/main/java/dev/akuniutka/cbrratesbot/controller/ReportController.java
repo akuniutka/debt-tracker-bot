@@ -15,18 +15,28 @@ import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+// TODO: add "/" endpoint to list available reports
+// TODO: add "/incomes" endpoint to list available reports for incomes
+// TODO: add "/expenses" endpoint to list aialable reports for expenses
+// TODO: add Spring Security to limit access by chat ID
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/reports")
 public class ReportController {
     private final ReportService reportService;
 
-    // TODO: add root endpoint to list all reports
-    // TODO: /incomes and /expenses endpoints to list income reports and expenses reports respectively
-    // TODO: add Spring Security to limit access to data in reports by chatId
-
     // TODO: add endpoints for COUNT and SUM of entries (both incomes and expenses) and with filters
-
+    @GetMapping("/count")
+    @Operation(summary = "Get the number of entries (both incomes and expenses)")
+    public CountDto getEntriesCount(
+            @RequestParam(name = "chatId", required = false) Long chatId,
+            @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
+            @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo
+    ) {
+        FilterCriteria filter = new FilterCriteria(chatId, null, null, dateFrom, dateTo);
+        return new CountDto(reportService.getEntriesCount(filter));
+    }
 
     // TODO: remove the endpoint - there is a newer version (v3)
     @GetMapping("/incomes/v1/count")
