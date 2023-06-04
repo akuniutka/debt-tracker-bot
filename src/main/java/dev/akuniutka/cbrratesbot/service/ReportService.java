@@ -48,7 +48,11 @@ public class ReportService {
         return reportRepository.getExpensesSum(filter);
     }
 
-    public long getEntriesCount(FilterCriteria filter) {
+    public long getCount(FilterCriteria filter) {
         return reportRepository.getIncomesCount(filter) + reportRepository.getExpensesCount(filter);
+    }
+
+    public BigDecimal getSum(FilterCriteria filter) {
+        return reportRepository.getIncomesSum(filter).subtract(reportRepository.getExpensesSum(filter));
     }
 }

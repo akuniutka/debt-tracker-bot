@@ -26,16 +26,26 @@ import java.time.LocalDate;
 public class ReportController {
     private final ReportService reportService;
 
-    // TODO: add endpoints for COUNT and SUM of entries (both incomes and expenses) and with filters
     @GetMapping("/count")
     @Operation(summary = "Get the number of entries (both incomes and expenses)")
-    public CountDto getEntriesCount(
+    public CountDto getCount(
             @RequestParam(name = "chatId", required = false) Long chatId,
             @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
             @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo
     ) {
         FilterCriteria filter = new FilterCriteria(chatId, null, null, dateFrom, dateTo);
-        return new CountDto(reportService.getEntriesCount(filter));
+        return new CountDto(reportService.getCount(filter));
+    }
+
+    @GetMapping("/sum")
+    @Operation(summary = "Get the sum of entries (both incomes and expenses)")
+    public SumDto getSum(
+            @RequestParam(name = "chatId", required = false) Long chatId,
+            @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
+            @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo
+    ) {
+        FilterCriteria filter = new FilterCriteria(chatId, null, null, dateFrom, dateTo);
+        return new SumDto(reportService.getSum(filter));
     }
 
     // TODO: remove the endpoint - there is a newer version (v3)

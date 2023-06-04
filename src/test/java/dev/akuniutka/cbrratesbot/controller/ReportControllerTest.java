@@ -33,9 +33,6 @@ class ReportControllerTest {
     @MockBean
     private ReportService reportService;
 
-    // TODO: add tests for SUM function for both incomes and expenses
-    // TODO: add tests for MAX, MIN, AVG functions for both incomes and expenses
-
     @Test
     void testGetCountOfIncomesAboveThresholdV1() throws Exception {
         int count = RANDOM.nextInt(1000);
@@ -259,7 +256,7 @@ class ReportControllerTest {
     }
 
     @Test
-    void testGetEntriesCount() throws Exception {
+    void testGetCount() throws Exception {
         List<Long> chatIds = Arrays.asList(null, RANDOM.nextLong());
         List<LocalDate> datesFrom = Arrays.asList(null, getRandomLocalDate());
         List<LocalDate> datesTo = Arrays.asList(null, getRandomLocalDate());
@@ -272,7 +269,7 @@ class ReportControllerTest {
                     FilterCriteria filter = new FilterCriteria(chatId, null, null, dateFrom, dateTo);
                     String query = filterCriteriaToQuery(filter);
                     count += RANDOM.nextInt(1000) + 1;
-                    given(reportService.getEntriesCount(filter)).willReturn((long) count);
+                    given(reportService.getCount(filter)).willReturn((long) count);
                     expected.put(query, count);
                 }
             }
@@ -287,6 +284,37 @@ class ReportControllerTest {
                     .andExpect(jsonPath("$.count", is(entry.getValue())));
         }
     }
+
+    @Test
+    void testGetSum() throws Exception {
+        List<Long> chatIds = Arrays.asList(null, RANDOM.nextLong());
+        List<LocalDate> datesFrom = Arrays.asList(null, getRandomLocalDate());
+        List<LocalDate> datesTo = Arrays.asList(null, getRandomLocalDate());
+        BigDecimal sum = getRandomBigDecimal();
+        Map<String, BigDecimal> expected = new HashMap<>();
+
+        for (Long chatId : chatIds) {
+            for (LocalDate dateFrom : datesFrom) {
+                for (LocalDate dateTo : datesTo) {
+                    FilterCriteria filter = new FilterCriteria(chatId, null, null, dateFrom, dateTo);
+                    String query = filterCriteriaToQuery(filter);
+                    sum = sum.add(getRandomBigDecimal());
+                    given(reportService.getSum(filter)).willReturn(sum);
+                    expected.put(query, sum);
+                }
+            }
+        }
+
+        for (Map.Entry<String, BigDecimal> entry : expected.entrySet()) {
+            mvc.perform(get("/reports/sum" + entry.getKey()))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType("application/json"))
+                    .andExpect(jsonPath("$.*", hasSize(1)))
+                    .andExpect(jsonPath("$.sum", is(entry.getValue().doubleValue())));
+        }
+    }
+
 
     private BigDecimal getRandomBigDecimal() {
         return BigDecimal.valueOf(RANDOM.nextFloat() * 1000).setScale(2, RoundingMode.HALF_UP);
