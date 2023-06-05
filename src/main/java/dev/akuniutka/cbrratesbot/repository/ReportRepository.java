@@ -24,27 +24,19 @@ public class ReportRepository {
     private final EntityManager entityManager;
 
     // TODO: remove the method - there is getIncomesCount() instead of it
-    public long getCountOfIncomesGreaterThanWithJdbcTemplate(BigDecimal amount) {
-        Long count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM INCOMES WHERE AMOUNT > ?;", Long.class, amount);
-        if (count == null) {
-            throw new RuntimeException("wrong reply from database");
-        }
-        return count;
+    public Long getCountOfIncomesGreaterThanWithJdbcTemplate(BigDecimal amount) {
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM INCOMES WHERE AMOUNT > ?;", Long.class, amount);
     }
 
     // TODO: remove the method - there is getIncomesCount() instead of it
-    public long getCountOfIncomesGreaterThanWithNamedParameterJdbcTemplate(BigDecimal amount) {
+    public Long getCountOfIncomesGreaterThanWithNamedParameterJdbcTemplate(BigDecimal amount) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("amount", amount);
-        Long count = namedParameterJdbcTemplate.queryForObject(
+        return namedParameterJdbcTemplate.queryForObject(
                 "SELECT COUNT(*) AS COUNT FROM INCOMES WHERE AMOUNT > :amount",
                 parameters,
                 (resultSet, i) -> resultSet.getLong("COUNT")
         );
-        if (count == null) {
-            throw new RuntimeException("wrong reply from database");
-        }
-        return count;
     }
 
     public long getIncomesCount(FilterCriteria filter) {
@@ -66,27 +58,19 @@ public class ReportRepository {
     }
 
     // TODO: remove the method - there is getExpensesCount() instead of it
-    public long getCountOfExpensesGreaterThanWithJdbcTemplate(BigDecimal amount) {
-        Long count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM EXPENSES WHERE AMOUNT > ?;", Long.class, amount);
-        if (count == null) {
-            throw new RuntimeException("wrong reply from database");
-        }
-        return count;
+    public Long getCountOfExpensesGreaterThanWithJdbcTemplate(BigDecimal amount) {
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM EXPENSES WHERE AMOUNT > ?;", Long.class, amount);
     }
 
     // TODO: remove the method - there is getExpensesCount() instead of it
-    public long getCountOfExpensesGreaterThanWithNamedParameterJdbcTemplate(BigDecimal amount) {
+    public Long getCountOfExpensesGreaterThanWithNamedParameterJdbcTemplate(BigDecimal amount) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("amount", amount);
-        Long count = namedParameterJdbcTemplate.queryForObject(
+        return namedParameterJdbcTemplate.queryForObject(
                 "SELECT COUNT(*) AS COUNT FROM EXPENSES WHERE AMOUNT > :amount;",
                 parameters,
                 (resultSet, i) -> resultSet.getLong("COUNT")
         );
-        if (count == null) {
-            throw new RuntimeException("wrong reply from database");
-        }
-        return count;
     }
 
     public long getExpensesCount(FilterCriteria filter) {
