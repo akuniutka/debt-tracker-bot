@@ -19,12 +19,9 @@ class ActiveChatRepositoryTest {
 
     @Test
     void testFindActiveChatByCharIdIfExists() {
-        ActiveChat activeChat = new ActiveChat();
-        activeChat.setChatId(12345L);
-        activeChatRepository.save(activeChat);
-        Optional<ActiveChat> activeChatByChatId = activeChatRepository.findActiveChatByChatId(12345L);
+        Optional<ActiveChat> activeChatByChatId = activeChatRepository.findActiveChatByChatId(888888888L);
         assertTrue(activeChatByChatId.isPresent());
-        assertEquals(12345L, activeChatByChatId.get().getChatId());
+        assertEquals(888888888L, activeChatByChatId.get().getChatId());
     }
 
     @Test
@@ -32,7 +29,7 @@ class ActiveChatRepositoryTest {
         ActiveChat activeChat = new ActiveChat();
         activeChat.setChatId(12345L);
         activeChatRepository.save(activeChat);
-        Optional<ActiveChat> activeChatByChatId = activeChatRepository.findActiveChatByChatId(54321L);
+        Optional<ActiveChat> activeChatByChatId = activeChatRepository.findActiveChatByChatId(999999999L);
         assertFalse(activeChatByChatId.isPresent());
     }
 
