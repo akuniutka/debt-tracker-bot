@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @Import(ReportRepository.class)
-@TestPropertySource(locations = "classpath:application-integrationtest.properties")
+@TestPropertySource(properties = {"spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.H2Dialect"})
 class ReportRepositoryTest {
     private static List<Long> chatIds;
     private static List<BigDecimal> amountsFrom;
