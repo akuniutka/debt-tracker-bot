@@ -1,5 +1,6 @@
 package dev.akuniutka.cbrratesbot.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.akuniutka.cbrratesbot.config.BotTestsConfig;
 import dev.akuniutka.cbrratesbot.dto.ExchangeRate;
 import dev.akuniutka.cbrratesbot.service.CbrService;
@@ -18,15 +19,13 @@ import java.util.Random;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ExchangeRateController.class)
 @Import(BotTestsConfig.class)
 class ExchangeRateControllerTest {
-
     private static final Random RANDOM = new Random();
 
     @Autowired
@@ -39,7 +38,7 @@ class ExchangeRateControllerTest {
     private CbrService cbrService;
 
 
-    // TODO: check size of an individual object in a exchange rates collecection
+    // TODO: check size of an individual object in a exchange rates collection
     @Test
     void testGetExchangeRates() throws Exception {
         int testSampleSize = RANDOM.nextInt( exchangeRates.size() - 1) + 2;
@@ -70,16 +69,13 @@ class ExchangeRateControllerTest {
     @Test
     void testGetExchangeRate() throws Exception {
         ExchangeRate exchangeRate = exchangeRates.get(RANDOM.nextInt(exchangeRates.size()));
+        String expectedJson = new ObjectMapper().writeValueAsString(exchangeRate);
 
         given(cbrService.getExchangeRate(exchangeRate.getCurrencyAlphabeticCode())).willReturn(exchangeRate);
 
         mvc.perform(get("/exchangeRates/{currency}", exchangeRate.getCurrencyAlphabeticCode()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.currency", is(exchangeRate.getCurrency())))
-                .andExpect(jsonPath("$.currencyAlphabeticCode", is(exchangeRate.getCurrencyAlphabeticCode())))
-                .andExpect(jsonPath("$.currencyNumericCode", is(exchangeRate.getCurrencyNumericCode())))
-                .andExpect(jsonPath("$.units", is(exchangeRate.getUnits())))
-                .andExpect(jsonPath("$.value", is(exchangeRate.getValue())));
+                .andExpect(content().json(expectedJson));
     }
 }

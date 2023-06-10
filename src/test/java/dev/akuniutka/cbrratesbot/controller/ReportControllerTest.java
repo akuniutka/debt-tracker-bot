@@ -15,8 +15,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -69,8 +67,7 @@ class ReportControllerTest {
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content().contentType("application/json"))
-                    .andExpect(jsonPath("$.*", hasSize(1)))
-                    .andExpect(jsonPath("$.count", is(entry.getValue())));
+                    .andExpect(content().json("{\"count\":" + entry.getValue() + "}"));
         }
     }
 
@@ -96,8 +93,7 @@ class ReportControllerTest {
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content().contentType("application/json"))
-                    .andExpect(jsonPath("$.*", hasSize(1)))
-                    .andExpect(jsonPath("$.sum", is(entry.getValue().doubleValue())));
+                    .andExpect(content().json("{\"sum\":" + entry.getValue().doubleValue() + "}"));
         }
     }
 
@@ -127,8 +123,7 @@ class ReportControllerTest {
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content().contentType("application/json"))
-                    .andExpect(jsonPath("$.*", hasSize(1)))
-                    .andExpect(jsonPath("$.count", is(entry.getValue())));
+                    .andExpect(content().json("{\"count\":" + entry.getValue() + "}"));
         }
     }
 
@@ -158,8 +153,7 @@ class ReportControllerTest {
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content().contentType("application/json"))
-                    .andExpect(jsonPath("$.*", hasSize(1)))
-                    .andExpect(jsonPath("$.sum", is(entry.getValue().doubleValue())));
+                    .andExpect(content().json("{\"sum\":" + entry.getValue().doubleValue() + "}"));
         }
     }
 
@@ -189,8 +183,7 @@ class ReportControllerTest {
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content().contentType("application/json"))
-                    .andExpect(jsonPath("$.*", hasSize(1)))
-                    .andExpect(jsonPath("$.count", is(entry.getValue())));
+                    .andExpect(content().json("{\"count\":" + entry.getValue() + "}"));
         }
     }
 
@@ -220,8 +213,7 @@ class ReportControllerTest {
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content().contentType("application/json"))
-                    .andExpect(jsonPath("$.*", hasSize(1)))
-                    .andExpect(jsonPath("$.sum", is(entry.getValue().doubleValue())));
+                    .andExpect(content().json("{\"sum\":" + entry.getValue().doubleValue() + "}"));
         }
     }
 
