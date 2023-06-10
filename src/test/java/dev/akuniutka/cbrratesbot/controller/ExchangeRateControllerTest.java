@@ -73,7 +73,7 @@ class ExchangeRateControllerTest {
 
         given(cbrService.getExchangeRate(exchangeRate.getCurrencyAlphabeticCode())).willReturn(exchangeRate);
 
-        mvc.perform(get("/exchangeRates/" + exchangeRate.getCurrencyAlphabeticCode()))
+        mvc.perform(get("/exchangeRates/{currency}", exchangeRate.getCurrencyAlphabeticCode()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.currency", is(exchangeRate.getCurrency())))
