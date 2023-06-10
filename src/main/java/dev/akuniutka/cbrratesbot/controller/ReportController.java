@@ -17,7 +17,7 @@ import java.util.Date;
 
 // TODO: add "/" endpoint to list available reports
 // TODO: add "/incomes" endpoint to list available reports for incomes
-// TODO: add "/expenses" endpoint to list aialable reports for expenses
+// TODO: add "/expenses" endpoint to list available reports for expenses
 // TODO: add Spring Security to limit access by chat ID
 
 @RestController
@@ -48,21 +48,7 @@ public class ReportController {
         return new SumDto(reportService.getSum(filter));
     }
 
-    // TODO: remove the endpoint - there is a newer version (v3)
-    @GetMapping("/incomes/v1/count")
-    @Operation(summary = "Get the number of income entries with amount above threshold")
-    public CountDto getCountOfIncomesAboveThresholdV1(@RequestParam(name = "amount") BigDecimal amount) {
-        return new CountDto(reportService.getCountOfIncomesGreaterThanV1(amount));
-    }
-
-    // TODO: remove the endpoint - there is a newer version (v3)
-    @GetMapping("/incomes/v2/count")
-    @Operation(summary = "Get the number of income entries with amount above threshold")
-    public CountDto getCountOfIncomesAboveThresholdV2(@RequestParam(name = "amount") BigDecimal amount) {
-        return new CountDto(reportService.getCountOfIncomesGreaterThanV2(amount));
-    }
-
-    @GetMapping(value = {"/incomes/v3/count", "/incomes/count"})
+    @GetMapping("/incomes/count")
     @Operation(summary = "Get the number of income entries")
     public CountDto getIncomesCount(
             @RequestParam(name = "chatId", required = false) Long chatId,
@@ -84,26 +70,11 @@ public class ReportController {
             @RequestParam(name = "dateFrom", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateFrom,
             @RequestParam(name = "dateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTo
     ) {
-
         FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
         return new SumDto(reportService.getIncomesSum(filter));
     }
 
-    // TODO: remove the endpoint - there is a newer version (v3)
-    @GetMapping("/expenses/v1/count")
-    @Operation(summary = "Get the number of expense entries with amount above threshold")
-    public CountDto getCountOfExpensesAboveThresholdV1(@RequestParam(name = "amount") BigDecimal amount) {
-        return new CountDto(reportService.getCountOfExpensesGreaterThanV1(amount));
-    }
-
-    // TODO: remove the endpoint - there is a newer version (v3)
-    @GetMapping("/expenses/v2/count")
-    @Operation(summary = "Get the number of expense entries with amount above threshold")
-    public CountDto getCountOfExpensesAboveThresholdV2(@RequestParam(name = "amount") BigDecimal amount) {
-        return new CountDto(reportService.getCountOfExpensesGreaterThanV2(amount));
-    }
-
-    @GetMapping(value = {"/expenses/v3/count", "/expenses/count"})
+    @GetMapping("/expenses/count")
     @Operation(summary = "Get the number of expense entries")
     public CountDto getExpensesCount(
             @RequestParam(name = "chatId", required = false) Long chatId,

@@ -40,20 +40,6 @@ class ReportRepositoryTest {
     }
 
     @Test
-    void testGetCountOfIncomesGreaterThanWithJdbcTemplate() {
-        BigDecimal amount = BigDecimal.valueOf(300.00);
-
-        assertEquals(2L, reportRepository.getCountOfIncomesGreaterThanWithJdbcTemplate(amount));
-    }
-
-    @Test
-    void testGetCountOfIncomesGreaterThanWithNamedParameterJdbcTemplate() {
-        BigDecimal amount = BigDecimal.valueOf(300.00);
-
-        assertEquals(2L, reportRepository.getCountOfIncomesGreaterThanWithNamedParameterJdbcTemplate(amount));
-    }
-
-    @Test
     void testGetIncomesCount() {
         for (Long chatId : chatIds) {
             for (BigDecimal amountFrom : amountsFrom) {
@@ -97,20 +83,6 @@ class ReportRepositoryTest {
                 }
             }
         }
-    }
-
-    @Test
-    void testGetCountOfExpensesGreaterThanWithJdbcTemplate() {
-        BigDecimal amount = BigDecimal.valueOf(300.00);
-
-        assertEquals(2L, reportRepository.getCountOfExpensesGreaterThanWithJdbcTemplate(amount));
-    }
-
-    @Test
-    void testGetCountOfExpensesGreaterThanWithNamedParameterJdbcTemplate() {
-        BigDecimal amount = BigDecimal.valueOf(300.00);
-
-        assertEquals(2L, reportRepository.getCountOfExpensesGreaterThanWithNamedParameterJdbcTemplate(amount));
     }
 
     @Test

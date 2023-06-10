@@ -48,208 +48,6 @@ class ReportControllerTest {
     }
 
     @Test
-    void testGetCountOfIncomesAboveThresholdV1() throws Exception {
-        int count = RANDOM.nextInt(1000);
-        BigDecimal amount = getRandomBigDecimal();
-
-        given(reportService.getCountOfIncomesGreaterThanV1(amount)).willReturn((long) count);
-
-        mvc.perform(get("/reports/incomes/v1/count?amount=" + amount))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.*", hasSize(1)))
-                .andExpect(jsonPath("$.count", is(count)));
-    }
-
-    @Test
-    void testGetCountOfIncomesAboveThresholdV2() throws Exception {
-        int count = RANDOM.nextInt(1000);
-        BigDecimal amount = getRandomBigDecimal();
-
-        given(reportService.getCountOfIncomesGreaterThanV2(amount)).willReturn((long) count);
-
-        mvc.perform(get("/reports/incomes/v2/count?amount=" + amount))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.*", hasSize(1)))
-                .andExpect(jsonPath("$.count", is(count)));
-    }
-
-    @Test
-    void testGetIncomesCount() throws Exception {
-        int count = RANDOM.nextInt(1000);
-        Map<String, Integer> expected = new HashMap<>();
-
-        for (Long chatId : chatIds) {
-            for (BigDecimal amountFrom : amountsFrom) {
-                for (BigDecimal amountTo : amountsTo) {
-                    for (Date dateFrom : datesFrom) {
-                        for (Date dateTo : datesTo) {
-                            FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
-                            String query = filterCriteriaToQuery(filter);
-                            count += RANDOM.nextInt(1000) + 1;
-                            given(reportService.getIncomesCount(filter)).willReturn((long) count);
-                            expected.put(query, count);
-                        }
-                    }
-                }
-            }
-        }
-
-        for (Map.Entry<String, Integer> entry : expected.entrySet()) {
-            mvc.perform(get("/reports/incomes/count" + entry.getKey()))
-                    .andDo(print())
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentType("application/json"))
-                    .andExpect(jsonPath("$.*", hasSize(1)))
-                    .andExpect(jsonPath("$.count", is(entry.getValue())));
-        }
-
-        for (Map.Entry<String, Integer> entry : expected.entrySet()) {
-            mvc.perform(get("/reports/incomes/v3/count" + entry.getKey()))
-                    .andDo(print())
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentType("application/json"))
-                    .andExpect(jsonPath("$.*", hasSize(1)))
-                    .andExpect(jsonPath("$.count", is(entry.getValue())));
-        }
-    }
-
-    @Test
-    void testGetIncomesSum() throws Exception {
-        BigDecimal sum = getRandomBigDecimal();
-        Map<String, BigDecimal> expected = new HashMap<>();
-
-        for (Long chatId : chatIds) {
-            for (BigDecimal amountFrom : amountsFrom) {
-                for (BigDecimal amountTo : amountsTo) {
-                    for (Date dateFrom : datesFrom) {
-                        for (Date dateTo : datesTo) {
-                            FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
-                            String query = filterCriteriaToQuery(filter);
-                            sum = sum.add(getRandomBigDecimal());
-                            given(reportService.getIncomesSum(filter)).willReturn(sum);
-                            expected.put(query, sum);
-                        }
-                    }
-                }
-            }
-        }
-
-        for (Map.Entry<String, BigDecimal> entry : expected.entrySet()) {
-            mvc.perform(get("/reports/incomes/sum" + entry.getKey()))
-                    .andDo(print())
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentType("application/json"))
-                    .andExpect(jsonPath("$.*", hasSize(1)))
-                    .andExpect(jsonPath("$.sum", is(entry.getValue().doubleValue())));
-        }
-    }
-
-    @Test
-    void testGetCountOfExpensesAboveThresholdV1() throws Exception {
-        int count = RANDOM.nextInt(1000);
-        BigDecimal amount = getRandomBigDecimal();
-
-        given(reportService.getCountOfExpensesGreaterThanV1(amount)).willReturn((long) count);
-
-        mvc.perform(get("/reports/expenses/v1/count?amount=" + amount))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.*", hasSize(1)))
-                .andExpect(jsonPath("$.count", is(count)));
-    }
-
-    @Test
-    void testGetCountOfExpensesAboveThresholdV2() throws Exception {
-        int count = RANDOM.nextInt(1000);
-        BigDecimal amount = getRandomBigDecimal();
-
-        given(reportService.getCountOfExpensesGreaterThanV2(amount)).willReturn((long) count);
-
-        mvc.perform(get("/reports/expenses/v2/count?amount=" + amount))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.*", hasSize(1)))
-                .andExpect(jsonPath("$.count", is(count)));
-    }
-
-    @Test
-    void testGetExpensesCount() throws Exception {
-        int count = RANDOM.nextInt(1000);
-        Map<String, Integer> expected = new HashMap<>();
-
-        for (Long chatId : chatIds) {
-            for (BigDecimal amountFrom : amountsFrom) {
-                for (BigDecimal amountTo : amountsTo) {
-                    for (Date dateFrom : datesFrom) {
-                        for (Date dateTo : datesTo) {
-                            FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
-                            String query = filterCriteriaToQuery(filter);
-                            count += RANDOM.nextInt(1000) + 1;
-                            given(reportService.getExpensesCount(filter)).willReturn((long) count);
-                            expected.put(query, count);
-                        }
-                    }
-                }
-            }
-        }
-
-        for (Map.Entry<String, Integer> entry : expected.entrySet()) {
-            mvc.perform(get("/reports/expenses/count" + entry.getKey()))
-                    .andDo(print())
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentType("application/json"))
-                    .andExpect(jsonPath("$.*", hasSize(1)))
-                    .andExpect(jsonPath("$.count", is(entry.getValue())));
-        }
-
-        for (Map.Entry<String, Integer> entry : expected.entrySet()) {
-            mvc.perform(get("/reports/expenses/v3/count" + entry.getKey()))
-                    .andDo(print())
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentType("application/json"))
-                    .andExpect(jsonPath("$.*", hasSize(1)))
-                    .andExpect(jsonPath("$.count", is(entry.getValue())));
-        }
-    }
-
-    @Test
-    void testGetExpensesSum() throws Exception {
-        BigDecimal sum = getRandomBigDecimal();
-        Map<String, BigDecimal> expected = new HashMap<>();
-
-        for (Long chatId : chatIds) {
-            for (BigDecimal amountFrom : amountsFrom) {
-                for (BigDecimal amountTo : amountsTo) {
-                    for (Date dateFrom : datesFrom) {
-                        for (Date dateTo : datesTo) {
-                            FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
-                            String query = filterCriteriaToQuery(filter);
-                            sum = sum.add(getRandomBigDecimal());
-                            given(reportService.getExpensesSum(filter)).willReturn(sum);
-                            expected.put(query, sum);
-                        }
-                    }
-                }
-            }
-        }
-
-        for (Map.Entry<String, BigDecimal> entry : expected.entrySet()) {
-            mvc.perform(get("/reports/expenses/sum" + entry.getKey()))
-                    .andDo(print())
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentType("application/json"))
-                    .andExpect(jsonPath("$.*", hasSize(1)))
-                    .andExpect(jsonPath("$.sum", is(entry.getValue().doubleValue())));
-        }
-    }
-
-    @Test
     void testGetCount() throws Exception {
         int count = RANDOM.nextInt(1000);
         Map<String, Integer> expected = new HashMap<>();
@@ -303,6 +101,129 @@ class ReportControllerTest {
         }
     }
 
+    @Test
+    void testGetIncomesCount() throws Exception {
+        int count = RANDOM.nextInt(1000);
+        Map<String, Integer> expected = new HashMap<>();
+
+        for (Long chatId : chatIds) {
+            for (BigDecimal amountFrom : amountsFrom) {
+                for (BigDecimal amountTo : amountsTo) {
+                    for (Date dateFrom : datesFrom) {
+                        for (Date dateTo : datesTo) {
+                            FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
+                            String query = filterCriteriaToQuery(filter);
+                            count += RANDOM.nextInt(1000) + 1;
+                            given(reportService.getIncomesCount(filter)).willReturn((long) count);
+                            expected.put(query, count);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (Map.Entry<String, Integer> entry : expected.entrySet()) {
+            mvc.perform(get("/reports/incomes/count" + entry.getKey()))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType("application/json"))
+                    .andExpect(jsonPath("$.*", hasSize(1)))
+                    .andExpect(jsonPath("$.count", is(entry.getValue())));
+        }
+    }
+
+    @Test
+    void testGetIncomesSum() throws Exception {
+        BigDecimal sum = getRandomBigDecimal();
+        Map<String, BigDecimal> expected = new HashMap<>();
+
+        for (Long chatId : chatIds) {
+            for (BigDecimal amountFrom : amountsFrom) {
+                for (BigDecimal amountTo : amountsTo) {
+                    for (Date dateFrom : datesFrom) {
+                        for (Date dateTo : datesTo) {
+                            FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
+                            String query = filterCriteriaToQuery(filter);
+                            sum = sum.add(getRandomBigDecimal());
+                            given(reportService.getIncomesSum(filter)).willReturn(sum);
+                            expected.put(query, sum);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (Map.Entry<String, BigDecimal> entry : expected.entrySet()) {
+            mvc.perform(get("/reports/incomes/sum" + entry.getKey()))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType("application/json"))
+                    .andExpect(jsonPath("$.*", hasSize(1)))
+                    .andExpect(jsonPath("$.sum", is(entry.getValue().doubleValue())));
+        }
+    }
+
+    @Test
+    void testGetExpensesCount() throws Exception {
+        int count = RANDOM.nextInt(1000);
+        Map<String, Integer> expected = new HashMap<>();
+
+        for (Long chatId : chatIds) {
+            for (BigDecimal amountFrom : amountsFrom) {
+                for (BigDecimal amountTo : amountsTo) {
+                    for (Date dateFrom : datesFrom) {
+                        for (Date dateTo : datesTo) {
+                            FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
+                            String query = filterCriteriaToQuery(filter);
+                            count += RANDOM.nextInt(1000) + 1;
+                            given(reportService.getExpensesCount(filter)).willReturn((long) count);
+                            expected.put(query, count);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (Map.Entry<String, Integer> entry : expected.entrySet()) {
+            mvc.perform(get("/reports/expenses/count" + entry.getKey()))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType("application/json"))
+                    .andExpect(jsonPath("$.*", hasSize(1)))
+                    .andExpect(jsonPath("$.count", is(entry.getValue())));
+        }
+    }
+
+    @Test
+    void testGetExpensesSum() throws Exception {
+        BigDecimal sum = getRandomBigDecimal();
+        Map<String, BigDecimal> expected = new HashMap<>();
+
+        for (Long chatId : chatIds) {
+            for (BigDecimal amountFrom : amountsFrom) {
+                for (BigDecimal amountTo : amountsTo) {
+                    for (Date dateFrom : datesFrom) {
+                        for (Date dateTo : datesTo) {
+                            FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
+                            String query = filterCriteriaToQuery(filter);
+                            sum = sum.add(getRandomBigDecimal());
+                            given(reportService.getExpensesSum(filter)).willReturn(sum);
+                            expected.put(query, sum);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (Map.Entry<String, BigDecimal> entry : expected.entrySet()) {
+            mvc.perform(get("/reports/expenses/sum" + entry.getKey()))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType("application/json"))
+                    .andExpect(jsonPath("$.*", hasSize(1)))
+                    .andExpect(jsonPath("$.sum", is(entry.getValue().doubleValue())));
+        }
+    }
 
     private static BigDecimal getRandomBigDecimal() {
         return BigDecimal.valueOf(RANDOM.nextFloat() * 1000).setScale(2, RoundingMode.HALF_UP);

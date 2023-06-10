@@ -4,8 +4,6 @@ import dev.akuniutka.cbrratesbot.dto.FilterCriteria;
 import dev.akuniutka.cbrratesbot.entity.Expense;
 import dev.akuniutka.cbrratesbot.entity.Income;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -19,25 +17,7 @@ import java.util.*;
 @Repository
 @RequiredArgsConstructor
 public class ReportRepository {
-    private final JdbcTemplate jdbcTemplate;
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final EntityManager entityManager;
-
-    // TODO: remove the method - there is getIncomesCount() instead of it
-    public Long getCountOfIncomesGreaterThanWithJdbcTemplate(BigDecimal amount) {
-        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM INCOMES WHERE AMOUNT > ?;", Long.class, amount);
-    }
-
-    // TODO: remove the method - there is getIncomesCount() instead of it
-    public Long getCountOfIncomesGreaterThanWithNamedParameterJdbcTemplate(BigDecimal amount) {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("amount", amount);
-        return namedParameterJdbcTemplate.queryForObject(
-                "SELECT COUNT(*) AS COUNT FROM INCOMES WHERE AMOUNT > :amount",
-                parameters,
-                (resultSet, i) -> resultSet.getLong("COUNT")
-        );
-    }
 
     public long getIncomesCount(FilterCriteria filter) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -57,22 +37,6 @@ public class ReportRepository {
         return entityManager.createQuery(criteria).getSingleResult();
     }
 
-    // TODO: remove the method - there is getExpensesCount() instead of it
-    public Long getCountOfExpensesGreaterThanWithJdbcTemplate(BigDecimal amount) {
-        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM EXPENSES WHERE AMOUNT > ?;", Long.class, amount);
-    }
-
-    // TODO: remove the method - there is getExpensesCount() instead of it
-    public Long getCountOfExpensesGreaterThanWithNamedParameterJdbcTemplate(BigDecimal amount) {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("amount", amount);
-        return namedParameterJdbcTemplate.queryForObject(
-                "SELECT COUNT(*) AS COUNT FROM EXPENSES WHERE AMOUNT > :amount;",
-                parameters,
-                (resultSet, i) -> resultSet.getLong("COUNT")
-        );
-    }
-
     public long getExpensesCount(FilterCriteria filter) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> criteria = criteriaBuilder.createQuery(Long.class);
@@ -90,7 +54,6 @@ public class ReportRepository {
         criteria.where(filterCriteriaToPredicates(criteriaBuilder, expense, filter));
         return entityManager.createQuery(criteria).getSingleResult();
     }
-
 
     private <T> Predicate[] filterCriteriaToPredicates(CriteriaBuilder builder, Root<T> root, FilterCriteria filter) {
         List<Predicate> predicates = new ArrayList<>();
