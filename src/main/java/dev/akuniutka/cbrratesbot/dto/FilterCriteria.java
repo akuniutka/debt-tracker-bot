@@ -1,17 +1,18 @@
 package dev.akuniutka.cbrratesbot.dto;
 
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class FilterCriteria extends SimpleFilterCriteria {
     private BigDecimal amountFrom;
     private BigDecimal amountTo;
 
-    public FilterCriteria() {}
-
-    public FilterCriteria(Long chatId, String dateFrom, String dateTo, BigDecimal amountFrom, BigDecimal amountTo) {
+    public FilterCriteria(Long chatId, LocalDate dateFrom, LocalDate dateTo, BigDecimal amountFrom, BigDecimal amountTo) {
         super(chatId, dateFrom, dateTo);
         setAmountFrom(amountFrom);
         setAmountTo(amountTo);
@@ -33,11 +34,9 @@ public class FilterCriteria extends SimpleFilterCriteria {
         this.amountTo = amountTo;
     }
 
-    public static FilterCriteria of(SimpleFilterCriteria oldFilter) {
-        FilterCriteria newFilter = new FilterCriteria();
-        newFilter.chatId = oldFilter.chatId;
-        newFilter.dateFrom = oldFilter.dateFrom;
-        newFilter.dateTo = oldFilter.dateTo;
-        return newFilter;
+    public static FilterCriteria of(SimpleFilterCriteria filter) {
+        return new FilterCriteria(
+                filter.getChatId(), filter.getDateFrom(), filter.getDateTo(), null, null
+        );
     }
 }

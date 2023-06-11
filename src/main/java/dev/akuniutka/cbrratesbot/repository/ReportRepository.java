@@ -61,10 +61,12 @@ public class ReportRepository {
             predicates.add(builder.equal(root.get("chatId"), filter.getChatId()));
         }
         if (filter.getDateFrom() != null) {
-            predicates.add(builder.greaterThanOrEqualTo(root.get("entryDate"), filter.getDateFrom()));
+            Date date = java.sql.Date.valueOf(filter.getDateFrom());
+            predicates.add(builder.greaterThanOrEqualTo(root.get("entryDate"), date));
         }
         if (filter.getDateTo() != null) {
-            predicates.add(builder.lessThan(root.get("entryDate"), filter.getDateTo()));
+            Date date = java.sql.Date.valueOf(filter.getDateTo());
+            predicates.add(builder.lessThan(root.get("entryDate"), date));
         }
         if (filter.getAmountFrom() != null) {
             predicates.add(builder.greaterThanOrEqualTo(root.get("amount"), filter.getAmountFrom()));

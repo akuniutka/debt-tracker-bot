@@ -10,6 +10,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,10 +21,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestPropertySource(properties = {"spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.H2Dialect"})
 class ReportRepositoryTest {
     private static List<Long> chatIds;
+    private static List<LocalDate> datesFrom;
+    private static List<LocalDate> datesTo;
     private static List<BigDecimal> amountsFrom;
     private static List<BigDecimal> amountsTo;
-    private static List<String> datesFrom;
-    private static List<String> datesTo;
 
     @Autowired
     private ReportRepository reportRepository;
@@ -33,17 +34,17 @@ class ReportRepositoryTest {
         chatIds = Arrays.asList(null, 123456789L);
         amountsFrom = Arrays.asList(null, BigDecimal.valueOf(100.00));
         amountsTo = Arrays.asList(null, BigDecimal.valueOf(500.00));
-        datesFrom = Arrays.asList(null, "2023-01-01");
-        datesTo = Arrays.asList(null, "2023-06-01");
+        datesFrom = Arrays.asList(null, LocalDate.of(2023,1,1));
+        datesTo = Arrays.asList(null, LocalDate.of(2023,6,1));
     }
 
     @Test
     void testGetIncomesCount() {
         for (Long chatId : chatIds) {
-            for (BigDecimal amountFrom : amountsFrom) {
-                for (BigDecimal amountTo : amountsTo) {
-                    for (String dateFrom : datesFrom) {
-                        for (String dateTo : datesTo) {
+            for (LocalDate dateFrom : datesFrom) {
+                for (LocalDate dateTo : datesTo) {
+                    for (BigDecimal amountFrom : amountsFrom) {
+                        for (BigDecimal amountTo : amountsTo) {
                             FilterCriteria filter = new FilterCriteria(chatId, dateFrom, dateTo, amountFrom, amountTo);
                             Long count = 3L;
                             count += chatId == null ? 2 : 0;
@@ -63,10 +64,10 @@ class ReportRepositoryTest {
     @Test
     void testGetIncomesSum() {
         for (Long chatId : chatIds) {
-            for (BigDecimal amountFrom : amountsFrom) {
-                for (BigDecimal amountTo : amountsTo) {
-                    for (String dateFrom : datesFrom) {
-                        for (String dateTo : datesTo) {
+            for (LocalDate dateFrom : datesFrom) {
+                for (LocalDate dateTo : datesTo) {
+                    for (BigDecimal amountFrom : amountsFrom) {
+                        for (BigDecimal amountTo : amountsTo) {
                             FilterCriteria filter = new FilterCriteria(chatId, dateFrom, dateTo, amountFrom, amountTo);
                             BigDecimal sum = BigDecimal.valueOf(700.00).setScale(2, RoundingMode.HALF_UP);
                             sum = sum.add(BigDecimal.valueOf(chatId == null ? 600.00 : 0.0));
@@ -86,10 +87,10 @@ class ReportRepositoryTest {
     @Test
     void testGetExpensesCount() {
         for (Long chatId : chatIds) {
-            for (BigDecimal amountFrom : amountsFrom) {
-                for (BigDecimal amountTo : amountsTo) {
-                    for (String dateFrom : datesFrom) {
-                        for (String dateTo : datesTo) {
+            for (LocalDate dateFrom : datesFrom) {
+                for (LocalDate dateTo : datesTo) {
+                    for (BigDecimal amountFrom : amountsFrom) {
+                        for (BigDecimal amountTo : amountsTo) {
                             FilterCriteria filter = new FilterCriteria(chatId, dateFrom, dateTo, amountFrom, amountTo);
                             Long count = 3L;
                             count += chatId == null ? 2 : 0;
@@ -109,10 +110,10 @@ class ReportRepositoryTest {
     @Test
     void testGetExpensesSum() {
         for (Long chatId : chatIds) {
-            for (BigDecimal amountFrom : amountsFrom) {
-                for (BigDecimal amountTo : amountsTo) {
-                    for (String dateFrom : datesFrom) {
-                        for (String dateTo : datesTo) {
+            for (LocalDate dateFrom : datesFrom) {
+                for (LocalDate dateTo : datesTo) {
+                    for (BigDecimal amountFrom : amountsFrom) {
+                        for (BigDecimal amountTo : amountsTo) {
                             FilterCriteria filter = new FilterCriteria(chatId, dateFrom, dateTo, amountFrom, amountTo);
                             BigDecimal sum = BigDecimal.valueOf(700.00).setScale(2, RoundingMode.HALF_UP);
                             sum = sum.add(BigDecimal.valueOf(chatId == null ? 600.00 : 0.0));

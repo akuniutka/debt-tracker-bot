@@ -1,20 +1,20 @@
 package dev.akuniutka.cbrratesbot.dto;
 
-import lombok.EqualsAndHashCode;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
+@NoArgsConstructor
 @EqualsAndHashCode
 public class SimpleFilterCriteria {
-    protected Long chatId;
-    protected LocalDate dateFrom;
-    protected LocalDate dateTo;
+    private Long chatId;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate dateFrom;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate dateTo;
 
-    public SimpleFilterCriteria() {}
-
-    public SimpleFilterCriteria(Long chatId, String dateFrom, String dateTo) {
+    public SimpleFilterCriteria(Long chatId, LocalDate dateFrom, LocalDate dateTo) {
         this.chatId = chatId;
         setDateFrom(dateFrom);
         setDateTo(dateTo);
@@ -28,19 +28,19 @@ public class SimpleFilterCriteria {
         this.chatId = chatId;
     }
 
-    public Date getDateFrom() {
-        return dateFrom == null ? null : java.sql.Date.valueOf(dateFrom);
+    public LocalDate getDateFrom() {
+        return dateFrom;
     }
 
-    public void setDateFrom(String dateFrom) {
-        this.dateFrom = dateFrom == null ? null : LocalDate.parse(dateFrom, DateTimeFormatter.ISO_LOCAL_DATE);
+    public void setDateFrom(LocalDate dateFrom) {
+        this.dateFrom = dateFrom;
     }
 
-    public Date getDateTo() {
-        return dateTo == null ? null : java.sql.Date.valueOf(dateTo);
+    public LocalDate getDateTo() {
+        return dateTo;
     }
 
-    public void setDateTo(String dateTo) {
-        this.dateTo = dateTo == null ? null : LocalDate.parse(dateTo, DateTimeFormatter.ISO_LOCAL_DATE);
+    public void setDateTo(LocalDate dateTo) {
+        this.dateTo = dateTo;
     }
 }
