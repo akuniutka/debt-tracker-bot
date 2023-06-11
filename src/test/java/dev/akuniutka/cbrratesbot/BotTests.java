@@ -6,7 +6,7 @@ import org.springframework.test.context.TestPropertySource;
 
 // TODO: implement 100% test coverage of the bot
 
-@SpringBootTest(classes = Bot.class)
+@SpringBootTest
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
 class BotTests {
 
