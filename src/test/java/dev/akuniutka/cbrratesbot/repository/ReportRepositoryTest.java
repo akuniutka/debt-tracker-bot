@@ -10,6 +10,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Date;
@@ -21,6 +22,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @Import(ReportRepository.class)
 @TestPropertySource(properties = {"spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.H2Dialect"})
 class ReportRepositoryTest {
+    // TODO: do not forget to remove
+    private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
     private static List<Long> chatIds;
     private static List<BigDecimal> amountsFrom;
     private static List<BigDecimal> amountsTo;
@@ -46,7 +49,13 @@ class ReportRepositoryTest {
                 for (BigDecimal amountTo : amountsTo) {
                     for (Date dateFrom : datesFrom) {
                         for (Date dateTo : datesTo) {
-                            FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
+                            FilterCriteria filter = new FilterCriteria(
+                                    chatId,
+                                    dateFrom == null ? null : DATE_FORMATTER.format(dateFrom),
+                                    dateTo == null ? null : DATE_FORMATTER.format(dateTo),
+                                    amountFrom,
+                                    amountTo
+                            );
                             Long count = 3L;
                             count += chatId == null ? 2 : 0;
                             count += amountFrom == null ? 2 : 0;
@@ -69,7 +78,13 @@ class ReportRepositoryTest {
                 for (BigDecimal amountTo : amountsTo) {
                     for (Date dateFrom : datesFrom) {
                         for (Date dateTo : datesTo) {
-                            FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
+                            FilterCriteria filter = new FilterCriteria(
+                                    chatId,
+                                    dateFrom == null ? null : DATE_FORMATTER.format(dateFrom),
+                                    dateTo == null ? null : DATE_FORMATTER.format(dateTo),
+                                    amountFrom,
+                                    amountTo
+                            );
                             BigDecimal sum = BigDecimal.valueOf(700.00).setScale(2, RoundingMode.HALF_UP);
                             sum = sum.add(BigDecimal.valueOf(chatId == null ? 600.00 : 0.0));
                             sum = sum.add(BigDecimal.valueOf(amountFrom == null ? 125.00 : 0.0));
@@ -92,7 +107,13 @@ class ReportRepositoryTest {
                 for (BigDecimal amountTo : amountsTo) {
                     for (Date dateFrom : datesFrom) {
                         for (Date dateTo : datesTo) {
-                            FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
+                            FilterCriteria filter = new FilterCriteria(
+                                    chatId,
+                                    dateFrom == null ? null : DATE_FORMATTER.format(dateFrom),
+                                    dateTo == null ? null : DATE_FORMATTER.format(dateTo),
+                                    amountFrom,
+                                    amountTo
+                            );
                             Long count = 3L;
                             count += chatId == null ? 2 : 0;
                             count += amountFrom == null ? 2 : 0;
@@ -115,7 +136,13 @@ class ReportRepositoryTest {
                 for (BigDecimal amountTo : amountsTo) {
                     for (Date dateFrom : datesFrom) {
                         for (Date dateTo : datesTo) {
-                            FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
+                            FilterCriteria filter = new FilterCriteria(
+                                    chatId,
+                                    dateFrom == null ? null : DATE_FORMATTER.format(dateFrom),
+                                    dateTo == null ? null : DATE_FORMATTER.format(dateTo),
+                                    amountFrom,
+                                    amountTo
+                            );
                             BigDecimal sum = BigDecimal.valueOf(700.00).setScale(2, RoundingMode.HALF_UP);
                             sum = sum.add(BigDecimal.valueOf(chatId == null ? 600.00 : 0.0));
                             sum = sum.add(BigDecimal.valueOf(amountFrom == null ? 125.00 : 0.0));

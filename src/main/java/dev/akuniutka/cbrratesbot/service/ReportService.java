@@ -1,6 +1,7 @@
 package dev.akuniutka.cbrratesbot.service;
 
 import dev.akuniutka.cbrratesbot.dto.FilterCriteria;
+import dev.akuniutka.cbrratesbot.dto.SimpleFilterCriteria;
 import dev.akuniutka.cbrratesbot.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,12 +13,14 @@ import java.math.BigDecimal;
 public class ReportService {
     private final ReportRepository reportRepository;
 
-    public long getCount(FilterCriteria filter) {
-        return reportRepository.getIncomesCount(filter) + reportRepository.getExpensesCount(filter);
+    public long getCount(SimpleFilterCriteria filter) {
+        FilterCriteria newFilter2 = FilterCriteria.of(filter);
+        return reportRepository.getIncomesCount(newFilter2) + reportRepository.getExpensesCount(newFilter2);
     }
 
-    public BigDecimal getSum(FilterCriteria filter) {
-        return reportRepository.getIncomesSum(filter).subtract(reportRepository.getExpensesSum(filter));
+    public BigDecimal getSum(SimpleFilterCriteria filter) {
+        FilterCriteria newFilter2 = FilterCriteria.of(filter);
+        return reportRepository.getIncomesSum(newFilter2).subtract(reportRepository.getExpensesSum(newFilter2));
     }
 
     public long getIncomesCount(FilterCriteria filter) {

@@ -1,6 +1,7 @@
 package dev.akuniutka.cbrratesbot.controller;
 
 import dev.akuniutka.cbrratesbot.dto.FilterCriteria;
+import dev.akuniutka.cbrratesbot.dto.SimpleFilterCriteria;
 import dev.akuniutka.cbrratesbot.service.ReportService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -53,8 +54,12 @@ class ReportControllerTest {
         for (Long chatId : chatIds) {
             for (Date dateFrom : datesFrom) {
                 for (Date dateTo : datesTo) {
-                    FilterCriteria filter = new FilterCriteria(chatId, null, null, dateFrom, dateTo);
-                    String query = filterCriteriaToQuery(filter);
+                    SimpleFilterCriteria filter = new SimpleFilterCriteria(
+                            chatId,
+                            dateFrom == null ? null : DATE_FORMATTER.format(dateFrom),
+                            dateTo == null ? null : DATE_FORMATTER.format(dateTo)
+                    );
+                    String query = filterCriteriaToQuery(FilterCriteria.of(filter));
                     count += RANDOM.nextInt(1000) + 1;
                     given(reportService.getCount(filter)).willReturn(count);
                     expected.put(query, count);
@@ -79,8 +84,12 @@ class ReportControllerTest {
         for (Long chatId : chatIds) {
             for (Date dateFrom : datesFrom) {
                 for (Date dateTo : datesTo) {
-                    FilterCriteria filter = new FilterCriteria(chatId, null, null, dateFrom, dateTo);
-                    String query = filterCriteriaToQuery(filter);
+                    SimpleFilterCriteria filter = new SimpleFilterCriteria(
+                            chatId,
+                            dateFrom == null ? null : DATE_FORMATTER.format(dateFrom),
+                            dateTo == null ? null : DATE_FORMATTER.format(dateTo)
+                    );
+                    String query = filterCriteriaToQuery(FilterCriteria.of(filter));
                     sum = sum.add(getRandomBigDecimal());
                     given(reportService.getSum(filter)).willReturn(sum);
                     expected.put(query, sum);
@@ -107,7 +116,13 @@ class ReportControllerTest {
                 for (BigDecimal amountTo : amountsTo) {
                     for (Date dateFrom : datesFrom) {
                         for (Date dateTo : datesTo) {
-                            FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
+                            FilterCriteria filter = new FilterCriteria(
+                                    chatId,
+                                    dateFrom == null ? null : DATE_FORMATTER.format(dateFrom),
+                                    dateTo == null ? null : DATE_FORMATTER.format(dateTo),
+                                    amountFrom,
+                                    amountTo
+                            );
                             String query = filterCriteriaToQuery(filter);
                             count += RANDOM.nextInt(1000) + 1;
                             given(reportService.getIncomesCount(filter)).willReturn(count);
@@ -137,7 +152,13 @@ class ReportControllerTest {
                 for (BigDecimal amountTo : amountsTo) {
                     for (Date dateFrom : datesFrom) {
                         for (Date dateTo : datesTo) {
-                            FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
+                            FilterCriteria filter = new FilterCriteria(
+                                    chatId,
+                                    dateFrom == null ? null : DATE_FORMATTER.format(dateFrom),
+                                    dateTo == null ? null : DATE_FORMATTER.format(dateTo),
+                                    amountFrom,
+                                    amountTo
+                            );
                             String query = filterCriteriaToQuery(filter);
                             sum = sum.add(getRandomBigDecimal());
                             given(reportService.getIncomesSum(filter)).willReturn(sum);
@@ -167,7 +188,13 @@ class ReportControllerTest {
                 for (BigDecimal amountTo : amountsTo) {
                     for (Date dateFrom : datesFrom) {
                         for (Date dateTo : datesTo) {
-                            FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
+                            FilterCriteria filter = new FilterCriteria(
+                                    chatId,
+                                    dateFrom == null ? null : DATE_FORMATTER.format(dateFrom),
+                                    dateTo == null ? null : DATE_FORMATTER.format(dateTo),
+                                    amountFrom,
+                                    amountTo
+                            );
                             String query = filterCriteriaToQuery(filter);
                             count += RANDOM.nextInt(1000) + 1;
                             given(reportService.getExpensesCount(filter)).willReturn(count);
@@ -197,7 +224,13 @@ class ReportControllerTest {
                 for (BigDecimal amountTo : amountsTo) {
                     for (Date dateFrom : datesFrom) {
                         for (Date dateTo : datesTo) {
-                            FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
+                            FilterCriteria filter = new FilterCriteria(
+                                    chatId,
+                                    dateFrom == null ? null : DATE_FORMATTER.format(dateFrom),
+                                    dateTo == null ? null : DATE_FORMATTER.format(dateTo),
+                                    amountFrom,
+                                    amountTo
+                            );
                             String query = filterCriteriaToQuery(filter);
                             sum = sum.add(getRandomBigDecimal());
                             given(reportService.getExpensesSum(filter)).willReturn(sum);
