@@ -47,8 +47,8 @@ class ReportControllerTest {
 
     @Test
     void testGetCount() throws Exception {
-        int count = RANDOM.nextInt(1000);
-        Map<String, Integer> expected = new HashMap<>();
+        long count = RANDOM.nextInt(1000);
+        Map<String, Long> expected = new HashMap<>();
 
         for (Long chatId : chatIds) {
             for (Date dateFrom : datesFrom) {
@@ -56,13 +56,13 @@ class ReportControllerTest {
                     FilterCriteria filter = new FilterCriteria(chatId, null, null, dateFrom, dateTo);
                     String query = filterCriteriaToQuery(filter);
                     count += RANDOM.nextInt(1000) + 1;
-                    given(reportService.getCount(filter)).willReturn((long) count);
+                    given(reportService.getCount(filter)).willReturn(count);
                     expected.put(query, count);
                 }
             }
         }
 
-        for (Map.Entry<String, Integer> entry : expected.entrySet()) {
+        for (Map.Entry<String, Long> entry : expected.entrySet()) {
             mvc.perform(get("/reports/count" + entry.getKey()))
                     .andDo(print())
                     .andExpect(status().isOk())
@@ -93,14 +93,14 @@ class ReportControllerTest {
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content().contentType("application/json"))
-                    .andExpect(content().json("{\"sum\":" + entry.getValue().doubleValue() + "}"));
+                    .andExpect(content().json("{\"sum\":" + entry.getValue() + "}"));
         }
     }
 
     @Test
     void testGetIncomesCount() throws Exception {
-        int count = RANDOM.nextInt(1000);
-        Map<String, Integer> expected = new HashMap<>();
+        long count = RANDOM.nextInt(1000);
+        Map<String, Long> expected = new HashMap<>();
 
         for (Long chatId : chatIds) {
             for (BigDecimal amountFrom : amountsFrom) {
@@ -110,7 +110,7 @@ class ReportControllerTest {
                             FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
                             String query = filterCriteriaToQuery(filter);
                             count += RANDOM.nextInt(1000) + 1;
-                            given(reportService.getIncomesCount(filter)).willReturn((long) count);
+                            given(reportService.getIncomesCount(filter)).willReturn(count);
                             expected.put(query, count);
                         }
                     }
@@ -118,7 +118,7 @@ class ReportControllerTest {
             }
         }
 
-        for (Map.Entry<String, Integer> entry : expected.entrySet()) {
+        for (Map.Entry<String, Long> entry : expected.entrySet()) {
             mvc.perform(get("/reports/incomes/count" + entry.getKey()))
                     .andDo(print())
                     .andExpect(status().isOk())
@@ -153,14 +153,14 @@ class ReportControllerTest {
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content().contentType("application/json"))
-                    .andExpect(content().json("{\"sum\":" + entry.getValue().doubleValue() + "}"));
+                    .andExpect(content().json("{\"sum\":" + entry.getValue() + "}"));
         }
     }
 
     @Test
     void testGetExpensesCount() throws Exception {
-        int count = RANDOM.nextInt(1000);
-        Map<String, Integer> expected = new HashMap<>();
+        long count = RANDOM.nextInt(1000);
+        Map<String, Long> expected = new HashMap<>();
 
         for (Long chatId : chatIds) {
             for (BigDecimal amountFrom : amountsFrom) {
@@ -170,7 +170,7 @@ class ReportControllerTest {
                             FilterCriteria filter = new FilterCriteria(chatId, amountFrom, amountTo, dateFrom, dateTo);
                             String query = filterCriteriaToQuery(filter);
                             count += RANDOM.nextInt(1000) + 1;
-                            given(reportService.getExpensesCount(filter)).willReturn((long) count);
+                            given(reportService.getExpensesCount(filter)).willReturn(count);
                             expected.put(query, count);
                         }
                     }
@@ -178,7 +178,7 @@ class ReportControllerTest {
             }
         }
 
-        for (Map.Entry<String, Integer> entry : expected.entrySet()) {
+        for (Map.Entry<String, Long> entry : expected.entrySet()) {
             mvc.perform(get("/reports/expenses/count" + entry.getKey()))
                     .andDo(print())
                     .andExpect(status().isOk())
@@ -213,7 +213,7 @@ class ReportControllerTest {
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content().contentType("application/json"))
-                    .andExpect(content().json("{\"sum\":" + entry.getValue().doubleValue() + "}"));
+                    .andExpect(content().json("{\"sum\":" + entry.getValue() + "}"));
         }
     }
 
