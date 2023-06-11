@@ -60,17 +60,17 @@ public class ReportRepository {
         if (filter.getChatId() != null) {
             predicates.add(builder.equal(root.get("chatId"), filter.getChatId()));
         }
-        if (filter.getAmountFrom() != null) {
-            predicates.add(builder.greaterThanOrEqualTo(root.get("amount"), filter.getAmountFrom()));
-        }
-        if (filter.getAmountTo() != null) {
-            predicates.add(builder.lessThan(root.get("amount"), filter.getAmountTo()));
-        }
         if (filter.getDateFrom() != null) {
             predicates.add(builder.greaterThanOrEqualTo(root.get("entryDate"), filter.getDateFrom()));
         }
         if (filter.getDateTo() != null) {
             predicates.add(builder.lessThan(root.get("entryDate"), filter.getDateTo()));
+        }
+        if (filter.getAmountFrom() != null) {
+            predicates.add(builder.greaterThanOrEqualTo(root.get("amount"), filter.getAmountFrom()));
+        }
+        if (filter.getAmountTo() != null) {
+            predicates.add(builder.lessThan(root.get("amount"), filter.getAmountTo()));
         }
         return predicates.toArray(new Predicate[0]);
     }

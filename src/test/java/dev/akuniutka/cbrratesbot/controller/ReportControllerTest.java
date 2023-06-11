@@ -26,10 +26,10 @@ class ReportControllerTest {
     private static final Random RANDOM = new Random();
     private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
     private static List<Long> chatIds;
+    private static List<String> datesFrom;
+    private static List<String> datesTo;
     private static List<BigDecimal> amountsFrom;
     private static List<BigDecimal> amountsTo;
-    private static List<Date> datesFrom;
-    private static List<Date> datesTo;
 
     @Autowired
     private MockMvc mvc;
@@ -40,10 +40,10 @@ class ReportControllerTest {
     @BeforeAll
     static void prepareTestData() {
         chatIds = Arrays.asList(null, RANDOM.nextLong());
-        amountsFrom = Arrays.asList(null, getRandomBigDecimal());
-        amountsTo = Arrays.asList(null, getRandomBigDecimal());
         datesFrom = Arrays.asList(null, getRandomDate());
         datesTo = Arrays.asList(null, getRandomDate());
+        amountsFrom = Arrays.asList(null, getRandomBigDecimal());
+        amountsTo = Arrays.asList(null, getRandomBigDecimal());
     }
 
     @Test
@@ -52,13 +52,9 @@ class ReportControllerTest {
         Map<String, Long> expected = new HashMap<>();
 
         for (Long chatId : chatIds) {
-            for (Date dateFrom : datesFrom) {
-                for (Date dateTo : datesTo) {
-                    SimpleFilterCriteria filter = new SimpleFilterCriteria(
-                            chatId,
-                            dateFrom == null ? null : DATE_FORMATTER.format(dateFrom),
-                            dateTo == null ? null : DATE_FORMATTER.format(dateTo)
-                    );
+            for (String dateFrom : datesFrom) {
+                for (String dateTo : datesTo) {
+                    SimpleFilterCriteria filter = new SimpleFilterCriteria(chatId, dateFrom, dateTo);
                     String query = filterCriteriaToQuery(FilterCriteria.of(filter));
                     count += RANDOM.nextInt(1000) + 1;
                     given(reportService.getCount(filter)).willReturn(count);
@@ -82,13 +78,9 @@ class ReportControllerTest {
         Map<String, BigDecimal> expected = new HashMap<>();
 
         for (Long chatId : chatIds) {
-            for (Date dateFrom : datesFrom) {
-                for (Date dateTo : datesTo) {
-                    SimpleFilterCriteria filter = new SimpleFilterCriteria(
-                            chatId,
-                            dateFrom == null ? null : DATE_FORMATTER.format(dateFrom),
-                            dateTo == null ? null : DATE_FORMATTER.format(dateTo)
-                    );
+            for (String dateFrom : datesFrom) {
+                for (String dateTo : datesTo) {
+                    SimpleFilterCriteria filter = new SimpleFilterCriteria(chatId, dateFrom, dateTo);
                     String query = filterCriteriaToQuery(FilterCriteria.of(filter));
                     sum = sum.add(getRandomBigDecimal());
                     given(reportService.getSum(filter)).willReturn(sum);
@@ -112,17 +104,11 @@ class ReportControllerTest {
         Map<String, Long> expected = new HashMap<>();
 
         for (Long chatId : chatIds) {
-            for (BigDecimal amountFrom : amountsFrom) {
-                for (BigDecimal amountTo : amountsTo) {
-                    for (Date dateFrom : datesFrom) {
-                        for (Date dateTo : datesTo) {
-                            FilterCriteria filter = new FilterCriteria(
-                                    chatId,
-                                    dateFrom == null ? null : DATE_FORMATTER.format(dateFrom),
-                                    dateTo == null ? null : DATE_FORMATTER.format(dateTo),
-                                    amountFrom,
-                                    amountTo
-                            );
+            for (String dateFrom : datesFrom) {
+                for (String dateTo : datesTo) {
+                    for (BigDecimal amountFrom : amountsFrom) {
+                        for (BigDecimal amountTo : amountsTo) {
+                            FilterCriteria filter = new FilterCriteria(chatId, dateFrom, dateTo, amountFrom, amountTo);
                             String query = filterCriteriaToQuery(filter);
                             count += RANDOM.nextInt(1000) + 1;
                             given(reportService.getIncomesCount(filter)).willReturn(count);
@@ -148,17 +134,11 @@ class ReportControllerTest {
         Map<String, BigDecimal> expected = new HashMap<>();
 
         for (Long chatId : chatIds) {
-            for (BigDecimal amountFrom : amountsFrom) {
-                for (BigDecimal amountTo : amountsTo) {
-                    for (Date dateFrom : datesFrom) {
-                        for (Date dateTo : datesTo) {
-                            FilterCriteria filter = new FilterCriteria(
-                                    chatId,
-                                    dateFrom == null ? null : DATE_FORMATTER.format(dateFrom),
-                                    dateTo == null ? null : DATE_FORMATTER.format(dateTo),
-                                    amountFrom,
-                                    amountTo
-                            );
+            for (String dateFrom : datesFrom) {
+                for (String dateTo : datesTo) {
+                    for (BigDecimal amountFrom : amountsFrom) {
+                        for (BigDecimal amountTo : amountsTo) {
+                            FilterCriteria filter = new FilterCriteria(chatId, dateFrom, dateTo, amountFrom, amountTo);
                             String query = filterCriteriaToQuery(filter);
                             sum = sum.add(getRandomBigDecimal());
                             given(reportService.getIncomesSum(filter)).willReturn(sum);
@@ -184,17 +164,11 @@ class ReportControllerTest {
         Map<String, Long> expected = new HashMap<>();
 
         for (Long chatId : chatIds) {
-            for (BigDecimal amountFrom : amountsFrom) {
-                for (BigDecimal amountTo : amountsTo) {
-                    for (Date dateFrom : datesFrom) {
-                        for (Date dateTo : datesTo) {
-                            FilterCriteria filter = new FilterCriteria(
-                                    chatId,
-                                    dateFrom == null ? null : DATE_FORMATTER.format(dateFrom),
-                                    dateTo == null ? null : DATE_FORMATTER.format(dateTo),
-                                    amountFrom,
-                                    amountTo
-                            );
+            for (String dateFrom : datesFrom) {
+                for (String dateTo : datesTo) {
+                    for (BigDecimal amountFrom : amountsFrom) {
+                        for (BigDecimal amountTo : amountsTo) {
+                            FilterCriteria filter = new FilterCriteria(chatId, dateFrom, dateTo, amountFrom, amountTo);
                             String query = filterCriteriaToQuery(filter);
                             count += RANDOM.nextInt(1000) + 1;
                             given(reportService.getExpensesCount(filter)).willReturn(count);
@@ -220,17 +194,11 @@ class ReportControllerTest {
         Map<String, BigDecimal> expected = new HashMap<>();
 
         for (Long chatId : chatIds) {
-            for (BigDecimal amountFrom : amountsFrom) {
-                for (BigDecimal amountTo : amountsTo) {
-                    for (Date dateFrom : datesFrom) {
-                        for (Date dateTo : datesTo) {
-                            FilterCriteria filter = new FilterCriteria(
-                                    chatId,
-                                    dateFrom == null ? null : DATE_FORMATTER.format(dateFrom),
-                                    dateTo == null ? null : DATE_FORMATTER.format(dateTo),
-                                    amountFrom,
-                                    amountTo
-                            );
+            for (String dateFrom : datesFrom) {
+                for (String dateTo : datesTo) {
+                    for (BigDecimal amountFrom : amountsFrom) {
+                        for (BigDecimal amountTo : amountsTo) {
+                            FilterCriteria filter = new FilterCriteria(chatId, dateFrom, dateTo, amountFrom, amountTo);
                             String query = filterCriteriaToQuery(filter);
                             sum = sum.add(getRandomBigDecimal());
                             given(reportService.getExpensesSum(filter)).willReturn(sum);
@@ -254,9 +222,9 @@ class ReportControllerTest {
         return BigDecimal.valueOf(RANDOM.nextFloat() * 1000).setScale(2, RoundingMode.HALF_UP);
     }
 
-    private static Date getRandomDate() {
+    private static String getRandomDate() {
         LocalDate date = LocalDate.now().minusDays(1000).plusDays(RANDOM.nextInt(1000));
-        return java.sql.Date.valueOf(date);
+        return date.toString();
     }
 
     private String filterCriteriaToQuery(FilterCriteria filter) {
@@ -264,17 +232,17 @@ class ReportControllerTest {
         if (filter.getChatId() != null) {
             query.append("&chatId=").append(filter.getChatId());
         }
-        if (filter.getAmountFrom() != null) {
-            query.append("&amountFrom=").append(filter.getAmountFrom());
-        }
-        if (filter.getAmountTo() != null) {
-            query.append("&amountTo=").append(filter.getAmountTo());
-        }
         if (filter.getDateFrom() != null) {
             query.append("&dateFrom=").append(DATE_FORMATTER.format(filter.getDateFrom()));
         }
         if (filter.getDateTo() != null) {
             query.append("&dateTo=").append(DATE_FORMATTER.format(filter.getDateTo()));
+        }
+        if (filter.getAmountFrom() != null) {
+            query.append("&amountFrom=").append(filter.getAmountFrom());
+        }
+        if (filter.getAmountTo() != null) {
+            query.append("&amountTo=").append(filter.getAmountTo());
         }
         return query.length() == 0 ? "" : "?" + query.substring(1);
     }
