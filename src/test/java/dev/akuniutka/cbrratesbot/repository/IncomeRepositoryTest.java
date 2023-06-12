@@ -4,15 +4,14 @@ import dev.akuniutka.cbrratesbot.entity.Income;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-// TODO: remove after migrating to Hibernate 6 (in Spring Boot 3?) which introduced automatic dialect resolution
-@TestPropertySource(properties = {"spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.H2Dialect"})
+@Import(ReportRepository.class)
 class IncomeRepositoryTest {
 
     @Autowired
