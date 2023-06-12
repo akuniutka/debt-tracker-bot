@@ -11,6 +11,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
+// TODO: remove after migrating to Hibernate 6 (in Spring Boot 3?) which introduced automatic dialect resolution
 @TestPropertySource(properties = {"spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.H2Dialect"})
 class IncomeRepositoryTest {
 
