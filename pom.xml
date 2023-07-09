@@ -18,6 +18,7 @@
     <description>Debt Tracker</description>
     <modules>
         <module>debt-tracker-misc</module>
+        <module>debt-tracker-core</module>
     </modules>
 
     <properties>

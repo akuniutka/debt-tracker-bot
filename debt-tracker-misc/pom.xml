@@ -10,7 +10,6 @@
     </parent>
 
     <artifactId>debt-tracker-misc</artifactId>
-    <packaging>jar</packaging>
 
     <properties>
         <testcontainers.version>1.18.0</testcontainers.version>
