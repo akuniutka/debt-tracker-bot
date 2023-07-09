@@ -51,7 +51,7 @@ public class BotService extends TelegramLongPollingBot {
             String answer;
             if (CURRENT_RATES.equalsIgnoreCase(command)) {
                 answer = cbrService.getExchangeRates().stream()
-                        .map(exchangeRate -> exchangeRate.getCurrency() + " - " + exchangeRate.getCurrency())
+                        .map(exchangeRate -> exchangeRate.getCurrency() + " - " + exchangeRate.getValue())
                         .collect(Collectors.joining("\n"));
             } else if (ADD_INCOME.equalsIgnoreCase(command)) {
                 answer = "Отправьте мне сумму полученного дохода";
