@@ -3,6 +3,8 @@ package dev.akuniutka.cbrratesbot.service;
 
 import dev.akuniutka.cbrratesbot.entity.ActiveChat;
 import dev.akuniutka.cbrratesbot.repository.ActiveChatRepository;
+import dev.akuniutka.debttracker.entity.User;
+import dev.akuniutka.debttracker.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +31,7 @@ public class BotService extends TelegramLongPollingBot {
     private final CbrService cbrService;
     private final FinanceService financeService;
     private final ActiveChatRepository activeChatRepository;
+    private final UserService userService;
     @Value("${bot.api.key}")
     private String apiKey;
     @Value("${bot.name}")
@@ -39,8 +42,11 @@ public class BotService extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         Message message = update.getMessage();
         Long chatId = message.getChatId();
+        String userName = message.getFrom().getUserName();
+        User user = userService.getUser(chatId, userName);
+        log.debug("Message from user: {}", user);
         String command = message.getText();
-        log.debug("New command from telegram chat {}: {}", chatId, command);
+        log.debug("New command from Telegram chat {}: {}", chatId, command);
         try {
             if (activeChatRepository.findActiveChatByChatId(chatId).isEmpty()) {
                 ActiveChat activeChat = new ActiveChat();
