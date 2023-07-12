@@ -5,19 +5,17 @@ import dev.akuniutka.debttracker.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
 
     public User getUser(Long id) {
-        Optional<User> user = userRepository.findUserById(id);
-        if (user.isEmpty()) {
-            user = Optional.of(new User(id));
-            userRepository.save(user.get());
+        User user = userRepository.findUserById(id).orElse(new User());
+        if (user.getId() == null) {
+            user.setId(id);
+            userRepository.save(user);
         }
-        return user.get();
+        return user;
     }
 }
