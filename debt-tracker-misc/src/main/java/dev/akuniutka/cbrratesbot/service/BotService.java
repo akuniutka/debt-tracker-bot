@@ -42,8 +42,8 @@ public class BotService extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         Message message = update.getMessage();
         Long chatId = message.getChatId();
-        String userName = message.getFrom().getUserName();
-        User user = userService.getUser(chatId, userName);
+        // TODO: to add retrieving telegram user_id from chat_id
+        User user = userService.getUser(chatId);
         log.debug("Message from user: {}", user);
         String command = message.getText();
         log.debug("New command from Telegram chat {}: {}", chatId, command);
