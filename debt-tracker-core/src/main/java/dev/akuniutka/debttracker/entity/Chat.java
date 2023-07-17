@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "USERS")
-public class User {
+@Table(name = "CHAT")
+public class Chat {
     @Id
     private Long id;
 
@@ -22,9 +22,9 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        User user = (User) o;
+        Chat chat = (Chat) o;
 
-        return Objects.equals(id, user.id);
+        return Objects.equals(id, chat.id);
     }
 
     @Override
