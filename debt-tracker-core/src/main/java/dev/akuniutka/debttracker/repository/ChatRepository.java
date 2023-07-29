@@ -9,5 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface ChatRepository extends JpaRepository<Chat, Long>, Dao<Chat> {
-    Optional<Chat> findChatById(Long id);
+    default Optional<Chat> get(Long id) {
+        return findById(id);
+    }
 }

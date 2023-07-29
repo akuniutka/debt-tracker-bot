@@ -10,19 +10,23 @@ public class Chat {
     @Id
     private Long id;
     @Transient
-    private Dao<Chat> chatDao;
+    private Dao<Chat> dao;
 
-    public Chat(Long id, Dao<Chat> chatDao) {
-        if (id == null && chatDao == null) {
-            throw new IllegalArgumentException("Id and DAO object are null while creating Chat object");
+    public static Chat getChatByIdOrCreateNew(Long id, Dao<Chat> dao) {
+        if (id == null && dao == null) {
+            throw new IllegalArgumentException("Id and DAO object are null");
         } else if (id == null) {
-            throw new IllegalArgumentException("Id is null while creating Chat object");
-        } else if (chatDao == null) {
-            throw new IllegalArgumentException("DAO object is null while creating Chat object");
+            throw new IllegalArgumentException("Id is null");
+        } else if (dao == null) {
+            throw new IllegalArgumentException("DAO object is null");
         }
-        this.id = id;
-        this.chatDao = chatDao;
-        save();
+        Chat chat = dao.get(id).orElse(new Chat());
+        chat.dao = dao;
+        if (chat.id == null) {
+            chat.id = id;
+            chat.dao.save(chat);
+        }
+        return chat;
     }
 
     public Long getId() {
@@ -45,8 +49,4 @@ public class Chat {
     }
 
     protected Chat() {}
-
-    private void save() {
-        chatDao.save(this);
-    }
 }

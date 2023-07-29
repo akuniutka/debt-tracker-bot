@@ -4,6 +4,8 @@ import dev.akuniutka.debttracker.dao.Dao;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ChatTest {
@@ -13,33 +15,48 @@ class ChatTest {
     private final static ChatDao NULL_DAO = null;
 
     @Test
-    void testChat() {
-        Chat chat = new Chat(ID, CHAT_DAO);
+    void testGetChatByIdOrCreateNew$ChatDoesNotExist() {
+        CHAT_DAO.clear();
+        Chat chat = Chat.getChatByIdOrCreateNew(ID, CHAT_DAO);
         assertNotNull(chat);
         assertEquals(ID, chat.getId());
         assertSame(chat, CHAT_DAO.chat);
     }
 
     @Test
-    void testChatBothIdAndChatDaoAreNull() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new Chat(NULL_ID, NULL_DAO));
-        String expected = "Id and DAO object are null while creating Chat object";
+    void testGetChatByIdOrCreateNew$ChatAlreadyExists() {
+        CHAT_DAO.clear();
+        Chat expected = Chat.getChatByIdOrCreateNew(ID, CHAT_DAO);
+        Chat actual = Chat.getChatByIdOrCreateNew(ID, CHAT_DAO);
+        assertSame(expected, actual);
+    }
+
+    @Test
+    void testGetChatByIdOrCreateNew$BothIdAndDaoAreNull() {
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> Chat.getChatByIdOrCreateNew(NULL_ID, NULL_DAO)
+        );
+        String expected = "Id and DAO object are null";
         String actual = exception.getMessage();
         assertEquals(expected, actual);
     }
 
     @Test
-    void testChatIdIsNull() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new Chat(NULL_ID, CHAT_DAO));
-        String expected = "Id is null while creating Chat object";
+    void testGetChatByIdOrCreateNew$IdIsNull() {
+        Exception exception = assertThrows(
+                IllegalArgumentException.class, () -> Chat.getChatByIdOrCreateNew(NULL_ID, CHAT_DAO)
+        );
+        String expected = "Id is null";
         String actual = exception.getMessage();
         assertEquals(expected, actual);
     }
 
     @Test
-    void testChatChatDaoIsNull() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new Chat(ID, NULL_DAO));
-        String expected = "DAO object is null while creating Chat object";
+    void testGetChatByIdOrCreateNew$DaoIsNull() {
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> Chat.getChatByIdOrCreateNew(ID, NULL_DAO)
+        );
+        String expected = "DAO object is null";
         String actual = exception.getMessage();
         assertEquals(expected, actual);
     }
@@ -84,10 +101,23 @@ class ChatTest {
 
     private static class ChatDao implements Dao<Chat> {
         Chat chat;
+
+        @Override
+        public Optional<Chat> get(Long id) {
+            if (chat == null || !chat.getId().equals(id)) {
+                return Optional.empty();
+            }
+            return Optional.of(chat);
+        }
+
         @Override
         public Chat save(Chat chat) {
             this.chat = chat;
             return chat;
+        }
+
+        void clear() {
+            chat = null;
         }
     }
 }
