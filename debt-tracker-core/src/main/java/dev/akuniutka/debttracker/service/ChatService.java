@@ -11,11 +11,6 @@ public class ChatService {
     private final ChatRepository chatRepository;
 
     public Chat getChat(Long id) {
-        Chat chat = chatRepository.findChatById(id).orElse(new Chat());
-        if (chat.getId() == null) {
-            chat.setId(id);
-            chatRepository.save(chat);
-        }
-        return chat;
+        return chatRepository.findChatById(id).orElse(new Chat(id, chatRepository));
     }
 }
