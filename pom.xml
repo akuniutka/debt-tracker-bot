@@ -21,6 +21,7 @@
         <module>debt-tracker-core</module>
         <module>debt-tracker-persistence</module>
         <module>debt-tracker-service</module>
+        <module>debt-tracker-web</module>
     </modules>
 
     <properties>

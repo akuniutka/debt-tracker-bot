@@ -5,6 +5,8 @@ import dev.akuniutka.debttracker.repository.ChatRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class ChatService {
@@ -12,5 +14,9 @@ public class ChatService {
 
     public Chat getChatOrCreateNew(Long id) {
         return Chat.getChatOrCreateNew(id, chatRepository);
+    }
+
+    public Optional<Chat> getChat(Long id) {
+        return chatRepository.findById(id);
     }
 }

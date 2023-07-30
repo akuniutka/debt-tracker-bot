@@ -9,7 +9,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CHAT_ID")
+    @JoinColumn(name = "CHAT_ID", nullable = false)
     private Chat chat;
     private String name;
 
