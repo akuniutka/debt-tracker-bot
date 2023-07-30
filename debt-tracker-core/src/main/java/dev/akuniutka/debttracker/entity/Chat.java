@@ -3,6 +3,8 @@ package dev.akuniutka.debttracker.entity;
 import dev.akuniutka.debttracker.dao.Dao;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -11,31 +13,75 @@ import java.util.Objects;
 public class Chat {
     @Id
     private Long id;
-    @Transient
-    private Dao<Chat> dao;
+    @Column(name = "CHAT_STATUS", nullable = false)
+    private ChatStatus chatStatus;
+    @Column(name = "OPERATION_TYPE")
+    private OperationType operationType;
     @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @MapKey(name = "name")
     private Map<String, Account> accounts;
 
-    public static Chat getChatOrCreateNew(Long id, Dao<Chat> dao) {
-        if (id == null && dao == null) {
-            throw new IllegalArgumentException("Id and DAO object are null");
-        } else if (id == null) {
+    public Chat(Long id) {
+        this();
+        if (id == null) {
             throw new IllegalArgumentException("Id is null");
-        } else if (dao == null) {
-            throw new IllegalArgumentException("DAO object is null");
         }
-        Chat chat = dao.get(id).orElse(new Chat());
-        chat.dao = dao;
-        if (chat.id == null) {
-            chat.id = id;
-            chat.dao.save(chat);
-        }
-        return chat;
+        this.id = id;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public String getReply(String message, Dao<Income> incomeDao, Dao<Expense> expenseDao) {
+        String reply = "";
+        BigDecimal amount;
+        if (chatStatus == ChatStatus.WAITING_FOR_COMMAND) {
+            if ("/currentrates".equals(message)) {
+                reply = "Пока не реализовано";
+            } else if ("/addincome".equals(message)) {
+                reply = "Отправьте мне сумму полученного дохода";
+                chatStatus = ChatStatus.WAITING_FOR_AMOUNT_OF_INCOME;
+                operationType = OperationType.INCOME;
+            } else if ("/addexpense".equals(message)) {
+                reply = "Отправьте мне сумму расходов";
+                chatStatus = ChatStatus.WAITING_FOR_AMOUNT_OF_EXPENSE;
+                operationType = OperationType.EXPENSE;
+            } else {
+                reply = "Неверная команда";
+            }
+        } else if (chatStatus == ChatStatus.WAITING_FOR_AMOUNT_OF_INCOME) {
+            try {
+                amount = new BigDecimal(message);
+                Income income = new Income();
+                income.setChatId(id);
+                income.setAmount(amount);
+                income.setEntryDate(new Date());
+                incomeDao.save(income);
+                reply = "Доход в размере " + amount + " был успешно добавлен";
+                chatStatus = ChatStatus.WAITING_FOR_COMMAND;
+                operationType = null;
+            } catch (NumberFormatException e) {
+                reply = "Неверный формат суммы\nПожалуйста, отправьте мне сумму полученного дохода";
+            }
+        } else if (chatStatus == ChatStatus.WAITING_FOR_AMOUNT_OF_EXPENSE) {
+            try {
+                amount = new BigDecimal(message);
+                Expense expense = new Expense();
+                expense.setChatId(id);
+                expense.setAmount(amount);
+                expense.setEntryDate(new Date());
+                expenseDao.save(expense);
+                reply = "Расход в размере " + amount + " был успешно добавлен";
+                chatStatus = ChatStatus.WAITING_FOR_COMMAND;
+                operationType = null;
+            } catch (NumberFormatException e) {
+                reply = "Неверный формат суммы\nПожалуйста, отправьте мне сумму расходов";
+            }
+        } else {
+            assert false : "Unexpected chat status";
+        }
+        return reply;
     }
 
     @Override
@@ -55,5 +101,6 @@ public class Chat {
 
     protected Chat() {
         accounts = new HashMap<>();
+        chatStatus = ChatStatus.WAITING_FOR_COMMAND;
     }
 }
