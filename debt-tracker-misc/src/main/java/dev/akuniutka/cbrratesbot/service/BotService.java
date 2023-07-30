@@ -43,7 +43,7 @@ public class BotService extends TelegramLongPollingBot {
         Message message = update.getMessage();
         Long chatId = message.getChatId();
         // TODO: to add retrieving telegram user_id from chat_id
-        Chat chat = chatService.getChat(chatId);
+        Chat chat = chatService.getChatOrCreateNew(chatId);
         log.debug("Message from chat: {}", chat);
         String command = message.getText();
         log.debug("New command from Telegram chat {}: {}", chatId, command);

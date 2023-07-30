@@ -17,7 +17,7 @@ public class Chat {
     @MapKey(name = "name")
     private Map<String, Account> accounts;
 
-    public static Chat getChatByIdOrCreateNew(Long id, Dao<Chat> dao) {
+    public static Chat getChatOrCreateNew(Long id, Dao<Chat> dao) {
         if (id == null && dao == null) {
             throw new IllegalArgumentException("Id and DAO object are null");
         } else if (id == null) {

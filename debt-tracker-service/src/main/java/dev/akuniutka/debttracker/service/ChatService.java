@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class ChatService {
     private final ChatRepository chatRepository;
 
-    public Chat getChat(Long id) {
-        return Chat.getChatByIdOrCreateNew(id, chatRepository);
+    public Chat getChatOrCreateNew(Long id) {
+        return Chat.getChatOrCreateNew(id, chatRepository);
     }
 }

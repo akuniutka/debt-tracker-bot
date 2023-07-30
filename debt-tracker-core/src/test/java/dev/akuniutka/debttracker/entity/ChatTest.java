@@ -15,26 +15,26 @@ class ChatTest {
     private final static ChatDao NULL_DAO = null;
 
     @Test
-    void testGetChatByIdOrCreateNew$ChatDoesNotExist() {
+    void testGetChatOrCreateNew$ChatDoesNotExist() {
         CHAT_DAO.clear();
-        Chat chat = Chat.getChatByIdOrCreateNew(ID, CHAT_DAO);
+        Chat chat = Chat.getChatOrCreateNew(ID, CHAT_DAO);
         assertNotNull(chat);
         assertEquals(ID, chat.getId());
         assertSame(chat, CHAT_DAO.chat);
     }
 
     @Test
-    void testGetChatByIdOrCreateNew$ChatAlreadyExists() {
+    void testGetChatOrCreateNew$ChatAlreadyExists() {
         CHAT_DAO.clear();
-        Chat expected = Chat.getChatByIdOrCreateNew(ID, CHAT_DAO);
-        Chat actual = Chat.getChatByIdOrCreateNew(ID, CHAT_DAO);
+        Chat expected = Chat.getChatOrCreateNew(ID, CHAT_DAO);
+        Chat actual = Chat.getChatOrCreateNew(ID, CHAT_DAO);
         assertSame(expected, actual);
     }
 
     @Test
-    void testGetChatByIdOrCreateNew$BothIdAndDaoAreNull() {
+    void testGetChatOrCreateNew$BothIdAndDaoAreNull() {
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> Chat.getChatByIdOrCreateNew(NULL_ID, NULL_DAO)
+                () -> Chat.getChatOrCreateNew(NULL_ID, NULL_DAO)
         );
         String expected = "Id and DAO object are null";
         String actual = exception.getMessage();
@@ -42,9 +42,9 @@ class ChatTest {
     }
 
     @Test
-    void testGetChatByIdOrCreateNew$IdIsNull() {
+    void testGetChatOrCreateNew$IdIsNull() {
         Exception exception = assertThrows(
-                IllegalArgumentException.class, () -> Chat.getChatByIdOrCreateNew(NULL_ID, CHAT_DAO)
+                IllegalArgumentException.class, () -> Chat.getChatOrCreateNew(NULL_ID, CHAT_DAO)
         );
         String expected = "Id is null";
         String actual = exception.getMessage();
@@ -52,9 +52,9 @@ class ChatTest {
     }
 
     @Test
-    void testGetChatByIdOrCreateNew$DaoIsNull() {
+    void testGetChatOrCreateNew$DaoIsNull() {
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> Chat.getChatByIdOrCreateNew(ID, NULL_DAO)
+                () -> Chat.getChatOrCreateNew(ID, NULL_DAO)
         );
         String expected = "DAO object is null";
         String actual = exception.getMessage();
