@@ -116,6 +116,13 @@ class ChatTest {
             return chat;
         }
 
+        @Override
+        public void delete(Chat chat) {
+            if (this.chat != null && this.chat.equals(chat)) {
+                this.chat = null;
+            }
+        }
+
         void clear() {
             chat = null;
         }

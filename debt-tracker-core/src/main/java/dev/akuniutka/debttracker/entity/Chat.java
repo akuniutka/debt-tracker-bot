@@ -3,6 +3,8 @@ package dev.akuniutka.debttracker.entity;
 import dev.akuniutka.debttracker.dao.Dao;
 
 import javax.persistence.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @Entity
@@ -11,6 +13,9 @@ public class Chat {
     private Long id;
     @Transient
     private Dao<Chat> dao;
+    @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @MapKey(name = "name")
+    private Map<String, Account> accounts;
 
     public static Chat getChatByIdOrCreateNew(Long id, Dao<Chat> dao) {
         if (id == null && dao == null) {
@@ -48,5 +53,7 @@ public class Chat {
         return id != null ? id.hashCode() : 0;
     }
 
-    protected Chat() {}
+    protected Chat() {
+        accounts = new HashMap<>();
+    }
 }
