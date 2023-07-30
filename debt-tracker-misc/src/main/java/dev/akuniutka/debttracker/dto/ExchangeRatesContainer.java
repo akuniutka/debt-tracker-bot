@@ -1,6 +1,5 @@
 package dev.akuniutka.debttracker.dto;
 
-import dev.akuniutka.debttracker.dto.ExchangeRate;
 import lombok.Data;
 
 import javax.xml.bind.annotation.*;

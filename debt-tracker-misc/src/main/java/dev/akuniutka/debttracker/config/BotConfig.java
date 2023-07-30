@@ -19,9 +19,9 @@ import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPException;
 
 @Configuration
-@EntityScan(basePackages = {"dev.akuniutka.debttracker", "dev.akuniutka.cbrratesbot"})
-@EnableJpaRepositories(basePackages = {"dev.akuniutka.debttracker", "dev.akuniutka.cbrratesbot"})
-@ComponentScan(basePackages = {"dev.akuniutka.debttracker", "dev.akuniutka.cbrratesbot"})
+@EntityScan(basePackages = {"dev.akuniutka.debttracker"})
+@EnableJpaRepositories(basePackages = {"dev.akuniutka.debttracker"})
+@ComponentScan(basePackages = {"dev.akuniutka.debttracker"})
 @Slf4j
 public class BotConfig {
 

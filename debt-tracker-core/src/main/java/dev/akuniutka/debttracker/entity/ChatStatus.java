@@ -5,7 +5,7 @@ public enum ChatStatus {
     WAITING_FOR_AMOUNT_OF_INCOME("B"),
     WAITING_FOR_AMOUNT_OF_EXPENSE("C");
 
-    private String code;
+    private final String code;
     ChatStatus(String code) {
         this.code = code;
     }

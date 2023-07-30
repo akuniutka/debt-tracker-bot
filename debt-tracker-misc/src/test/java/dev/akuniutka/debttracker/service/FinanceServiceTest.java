@@ -2,7 +2,6 @@ package dev.akuniutka.debttracker.service;
 
 import dev.akuniutka.debttracker.repository.ExpenseRepository;
 import dev.akuniutka.debttracker.repository.IncomeRepository;
-import dev.akuniutka.debttracker.service.FinanceService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

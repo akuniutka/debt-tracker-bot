@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.akuniutka.debttracker.config.BotTestsConfig;
 import dev.akuniutka.debttracker.dto.ExchangeRate;
 import dev.akuniutka.debttracker.service.CbrService;
-import dev.akuniutka.debttracker.controller.ExchangeRateController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

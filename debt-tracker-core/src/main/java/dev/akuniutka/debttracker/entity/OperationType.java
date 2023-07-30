@@ -4,7 +4,7 @@ public enum OperationType {
     INCOME("I"),
     EXPENSE("E");
 
-    private String code;
+    private final String code;
 
     OperationType(String code) {
         this.code = code;

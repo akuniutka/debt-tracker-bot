@@ -3,7 +3,6 @@ package dev.akuniutka.debttracker.controller;
 import dev.akuniutka.debttracker.dto.FilterCriteria;
 import dev.akuniutka.debttracker.dto.SimpleFilterCriteria;
 import dev.akuniutka.debttracker.service.ReportService;
-import dev.akuniutka.debttracker.controller.ReportController;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

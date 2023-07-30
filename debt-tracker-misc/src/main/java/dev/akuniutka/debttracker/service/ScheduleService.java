@@ -3,8 +3,6 @@ package dev.akuniutka.debttracker.service;
 import dev.akuniutka.debttracker.dto.ExchangeRate;
 import dev.akuniutka.debttracker.entity.ActiveChat;
 import dev.akuniutka.debttracker.repository.ActiveChatRepository;
-import dev.akuniutka.debttracker.service.BotService;
-import dev.akuniutka.debttracker.service.CbrService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
