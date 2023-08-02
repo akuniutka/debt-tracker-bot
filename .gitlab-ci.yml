@@ -12,4 +12,4 @@ build:
 test:
   stage: test
   script:
-    = ./mvnw test
+    - ./mvnw test
