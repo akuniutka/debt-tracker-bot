@@ -1,7 +1,7 @@
 image: eclipse-temurin:11-jdk
 services:
   - name: docker:dind
-    command: [ "--tls-false"]
+    command: [ "--tls=false"]
 
 variables:
   DOCKER_HOST: "tcp://docker:2375"
