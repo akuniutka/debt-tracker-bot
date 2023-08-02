@@ -9,15 +9,15 @@ variables:
   DOCKER_DRIVER: overlay2
 
 stages:
-  - build
+#  - build
   - test
 
-build:
-  stage: build
-  script:
-    - ./mvnw compile
+#build:
+#  stage: build
+#  script:
+#    - ./mvnw compile
 
 test:
   stage: test
   script:
-    - ./mvnw test
+    - ./mvnw clean test
