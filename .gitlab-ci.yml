@@ -1,4 +1,6 @@
 image: eclipse-temurin:11-jdk
+services:
+  - docker:dind
 
 stages:
   - build
