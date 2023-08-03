@@ -4,8 +4,7 @@ import dev.akuniutka.debttracker.dto.FilterCriteria;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -15,8 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DataJpaTest
-@Import(ReportRepository.class)
+@SpringBootTest
 class ReportRepositoryTest {
     private static List<Long> chatIds;
     private static List<LocalDate> datesFrom;
