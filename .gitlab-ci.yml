@@ -14,10 +14,6 @@ variables:
     --show-version
     --no-transfer-progress
 
-cache:
-  paths:
-    - .m2/repository
-
 stages:
   - build
   - test
