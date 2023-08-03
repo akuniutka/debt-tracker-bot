@@ -6,11 +6,9 @@ import java.util.Objects;
 @Entity
 @Table(name = "ACTIVE_CHATS")
 public class ActiveChat {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "CHAT_ID", nullable = false)
     private Long chatId;
 
