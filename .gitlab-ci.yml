@@ -7,17 +7,27 @@ variables:
   DOCKER_HOST: "tcp://docker:2375"
   DOCKER_TLS_CERTDIR: ""
   DOCKER_DRIVER: overlay2
+  MAVEN_CLI_OPTS: >-
+    --batch-mode
+    --errors
+    --fail-at-end
+    --show-version
+    --no-transfer-progress
+
+cache:
+  paths:
+    - .m2/repository
 
 stages:
-#  - build
+  - build
   - test
 
-#build:
-#  stage: build
-#  script:
-#    - ./mvnw compile
+build:
+  stage: build
+  script:
+    - './mvnw $MAVEN_CLI_OPTS compile'
 
 test:
   stage: test
   script:
-    - ./mvnw clean test
+    - './mvnw $MAVEN_CLI_OPTS verify'
