@@ -1,7 +1,7 @@
 package dev.akuniutka.debttracker.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Account {
@@ -11,7 +11,15 @@ public class Account {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CHAT_ID", nullable = false)
     private Chat chat;
+    @Column(nullable = false)
     private String name;
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Entry> entries;
+
+    public Account(Chat chat, String name) {
+        this.chat = chat;
+        this.name = name;
+    }
 
     public Long getId() {
         return id;
@@ -19,14 +27,6 @@ public class Account {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Chat getChat() {
-        return chat;
-    }
-
-    public void setChat(Chat chat) {
-        this.chat = chat;
     }
 
     public String getName() {
@@ -37,23 +37,5 @@ public class Account {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Account account = (Account) o;
-
-        if (!Objects.equals(id, account.id)) return false;
-        if (!Objects.equals(chat, account.chat)) return false;
-        return Objects.equals(name, account.name);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (chat != null ? chat.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        return result;
-    }
+    protected Account() {}
 }

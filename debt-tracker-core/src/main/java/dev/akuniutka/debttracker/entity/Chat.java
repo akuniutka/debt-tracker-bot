@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @Entity
 public class Chat {
@@ -17,7 +16,10 @@ public class Chat {
     private ChatStatus chatStatus;
     @Column(name = "OPERATION_TYPE")
     private OperationType operationType;
-    @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Column(name = "ENTRY_TYPE")
+    private EntryType entryType;
+    private BigDecimal amount;
+    @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @MapKey(name = "name")
     private Map<String, Account> accounts;
 
@@ -29,16 +31,14 @@ public class Chat {
         this.id = id;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public String getReply(String message, Dao<Income> incomeDao, Dao<Expense> expenseDao) {
         String reply = "";
         BigDecimal amount;
         if (chatStatus == ChatStatus.WAITING_FOR_COMMAND) {
             if ("/currentrates".equals(message)) {
                 reply = "Пока не реализовано";
+//                String accountName = "test account 2";
+//                accounts.putIfAbsent(accountName, new Account(this, accountName));
             } else if ("/addincome".equals(message)) {
                 reply = "Отправьте мне сумму полученного дохода";
                 chatStatus = ChatStatus.WAITING_FOR_AMOUNT_OF_INCOME;
@@ -82,21 +82,6 @@ public class Chat {
             assert false : "Unexpected chat status";
         }
         return reply;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Chat chat = (Chat) o;
-
-        return Objects.equals(id, chat.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
     }
 
     protected Chat() {
