@@ -10,7 +10,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class ActiveChatRepositoryTest {
+class ActiveChatRepositoryIT {
 
     @Autowired
     private ActiveChatRepository activeChatRepository;

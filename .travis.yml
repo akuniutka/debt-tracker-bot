@@ -1,6 +1,6 @@
 language: java
 jdk:
-  -oraclejdk11
+  - oraclejdk11
 services:
-  -docker
-script: mvn clean install
+  - docker
+script: ./mvnw verify

@@ -10,7 +10,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class ExpenseRepositoryTest {
+class ExpenseRepositoryIT {
 
     @Autowired
     private ExpenseRepository expenseRepository;

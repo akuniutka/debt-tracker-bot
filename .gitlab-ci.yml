@@ -17,6 +17,7 @@ variables:
 stages:
   - build
   - test
+  - integration-test
 
 build:
   stage: build
@@ -25,5 +26,10 @@ build:
 
 test:
   stage: test
+  script:
+    - './mvnw $MAVEN_CLI_OPTS test'
+
+integration-test:
+  stage: integration-test
   script:
     - './mvnw $MAVEN_CLI_OPTS verify'
