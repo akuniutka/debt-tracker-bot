@@ -1,7 +1,5 @@
 package dev.akuniutka.debttracker.entity;
 
-import dev.akuniutka.debttracker.dao.Dao;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.*;
