@@ -7,6 +7,7 @@ import dev.akuniutka.debttracker.repository.IncomeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,13 +17,12 @@ public class ChatService {
     private final IncomeRepository incomeRepository;
     private final ExpenseRepository expenseRepository;
 
-    public String getReplyForChat(Long chatId, String message) {
+    public List<String> getReplyForChat(Long chatId, String message) {
         Chat chat = chatRepository.findById(chatId).orElse(new Chat(chatId));
-        String reply = chat.getReply(message, incomeRepository, expenseRepository);
+        List<String> reply = chat.getReply(message);
         chatRepository.save(chat);
         return reply;
     }
-
 
     public Optional<Chat> getChat(Long id) {
         return chatRepository.findById(id);
