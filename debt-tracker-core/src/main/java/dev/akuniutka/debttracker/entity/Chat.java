@@ -8,7 +8,7 @@ import java.util.*;
 public class Chat {
     @Id
     private Long id;
-    @Column(name = "CHAT_STATUS", nullable = false)
+    @Column(name = "CHAT_STATE", nullable = false)
     private ChatState chatState;
     @Column(name = "ENTRY_TYPE")
     private EntryType entryType;
