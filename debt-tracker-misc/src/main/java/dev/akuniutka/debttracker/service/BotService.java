@@ -31,27 +31,16 @@ public class BotService extends TelegramLongPollingBot {
         log.debug("New command from Telegram chat {}: {}", chatId, command);
         try {
             List<String> answer = chatService.getReplyForChat(chatId, command);
-            for (String line : answer) {
-                SendMessage response = new SendMessage();
-                response.setChatId(String.valueOf(chatId));
-                response.setText(line);
-                execute(response);
+            if (answer != null) {
+                for (String line : answer) {
+                    SendMessage response = new SendMessage();
+                    response.setChatId(String.valueOf(chatId));
+                    response.setText(line);
+                    execute(response);
+                }
             }
         } catch (TelegramApiException e) {
             log.error("Error while sending message to Telegram", e);
-        }
-    }
-
-    public void sendNotificationToAllActiveChats(String message, Set<Long> chatIds) {
-        for (Long id : chatIds) {
-            SendMessage sendMessage = new SendMessage();
-            sendMessage.setChatId(String.valueOf(id));
-            sendMessage.setText(message);
-            try {
-                execute(sendMessage);
-            } catch (TelegramApiException e) {
-                log.error("Error while sending message to Telegram", e);
-            }
         }
     }
 

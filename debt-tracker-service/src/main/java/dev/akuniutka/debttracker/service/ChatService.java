@@ -1,6 +1,7 @@
 package dev.akuniutka.debttracker.service;
 
 import dev.akuniutka.debttracker.entity.Chat;
+import dev.akuniutka.debttracker.entity.ChatReply;
 import dev.akuniutka.debttracker.repository.ChatRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,9 +16,9 @@ public class ChatService {
 
     public List<String> getReplyForChat(Long chatId, String message) {
         Chat chat = chatRepository.findById(chatId).orElse(new Chat(chatId));
-        List<String> reply = chat.getReply(message);
+        ChatReply chatReply = chat.getReplyToMessage(message);
         chatRepository.save(chat);
-        return reply;
+        return chatReply.getReply();
     }
 
     public Optional<Chat> getChat(Long id) {

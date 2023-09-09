@@ -9,31 +9,27 @@ public class Chat {
     @Id
     private Long id;
     @Column(name = "CHAT_STATE", nullable = false)
-    private ChatState chatState;
+    private ChatState chatState = ChatState.WAITING_FOR_START;
     @Column(name = "ENTRY_TYPE")
     private EntryType entryType;
     private BigDecimal amount;
     @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @MapKey(name = "name")
-    private Map<String, Account> accounts;
+    private Map<String, Account> accounts = new HashMap<>();
 
     public Chat(Long id) {
-        this();
         if (id == null) {
             throw new IllegalArgumentException("Id is null");
         }
         this.id = id;
     }
 
-    public List<String> getReply(String message) {
+    public ChatReply getReplyToMessage(String message) {
         chatState = processMessage(message);
-        return getMessage();
+        return new ChatReply(ReplyToMessage(), null);
     }
 
-    protected Chat() {
-        accounts = new HashMap<>();
-        chatState = ChatState.WAITING_FOR_COMMAND;
-    }
+    protected Chat() {};
 
     private ChatState processMessage(String message) {
         ChatState result = null;
@@ -47,6 +43,7 @@ public class Chat {
             case WAITING_FOR_CORRECT_AMOUNT:
                 result = ChatState.WAITING_FOR_ACCOUNT;
                 break;
+            case WAITING_FOR_START:
             case WAITING_FOR_ACCOUNT:
             case WAITING_FOR_CORRECT_ACCOUNT:
                 result = ChatState.WAITING_FOR_COMMAND;
@@ -55,7 +52,7 @@ public class Chat {
         return result;
     }
 
-    private List<String> getMessage() {
+    private List<String> ReplyToMessage() {
         List<String> message = new ArrayList<>();
         switch (chatState) {
             case WAITING_FOR_COMMAND:
