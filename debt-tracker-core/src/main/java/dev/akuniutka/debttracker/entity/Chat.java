@@ -10,8 +10,6 @@ public class Chat {
     private Long id;
     @Column(name = "CHAT_STATUS", nullable = false)
     private ChatState chatState;
-    @Column(name = "OPERATION_TYPE")
-    private OperationType operationType;
     @Column(name = "ENTRY_TYPE")
     private EntryType entryType;
     private BigDecimal amount;
