@@ -1,22 +1,12 @@
 package dev.akuniutka.debttracker.entity;
 
-public enum ChatState {
-    WAITING_FOR_START("A"),
-    WAITING_FOR_COMMAND("B"),
-    WAITING_FOR_CORRECT_COMMAND("C"),
-    SHOWING_CURRENT_STATUS("D"),
-    WAITING_FOR_AMOUNT("E"),
-    WAITING_FOR_CORRECT_AMOUNT("F"),
-    WAITING_FOR_ACCOUNT("G"),
-    WAITING_FOR_CORRECT_ACCOUNT("H");
+import java.io.Serializable;
+import java.util.List;
 
-    private final String code;
+public interface ChatState extends Serializable {
+    void processMessage(Chat chat, String message);
 
-    ChatState(String code) {
-        this.code = code;
-    }
+    List<String> getReply();
 
-    public String getCode() {
-        return code;
-    }
+    List<String> getPossibleAnswers();
 }
