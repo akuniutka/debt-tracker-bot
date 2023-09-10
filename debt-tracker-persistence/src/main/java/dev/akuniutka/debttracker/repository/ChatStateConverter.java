@@ -1,42 +1,34 @@
 package dev.akuniutka.debttracker.repository;
 
+import dev.akuniutka.debttracker.entity.ChatScript;
 import dev.akuniutka.debttracker.entity.ChatState;
-import dev.akuniutka.debttracker.entity.WaitingForCommandChatState;
-import dev.akuniutka.debttracker.entity.WaitingForCorrectCommandChatState;
-import dev.akuniutka.debttracker.entity.WaitingForStartChatState;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 @Converter(autoApply = true)
-public class ChatStateConverter implements AttributeConverter<ChatState, String> {
+public class ChatStateConverter implements AttributeConverter<ChatState, Integer> {
+    private final ChatScript chatScript;
+
+    public ChatStateConverter(ChatScript chatScript) {
+        this.chatScript = chatScript;
+    }
+
     @Override
-    public String convertToDatabaseColumn(ChatState chatState) {
+    public Integer convertToDatabaseColumn(ChatState chatState) {
         if (chatState == null) {
             return null;
-        } else if (chatState instanceof WaitingForStartChatState) {
-            return "A";
-        } else if (chatState instanceof WaitingForCorrectCommandChatState) {
-            return "C";
-        } else if (chatState instanceof WaitingForCommandChatState) {
-            return "B";
         } else {
-            throw new IllegalArgumentException("unknown chat state type");
+            return chatScript.getChatStateId(chatState);
         }
     }
 
     @Override
-    public ChatState convertToEntityAttribute(String code) {
-        if (code == null) {
+    public ChatState convertToEntityAttribute(Integer id) {
+        if (id == null) {
             return null;
-        } else if ("A".equals(code)) {
-            return new WaitingForStartChatState();
-        } else if ("B".equals(code)) {
-            return new WaitingForCommandChatState();
-        } else if ("C".equals(code)) {
-            return new WaitingForCorrectCommandChatState();
         } else {
-            throw new IllegalArgumentException("unknown code for chat state");
+            return chatScript.getChatState(id);
         }
     }
 }

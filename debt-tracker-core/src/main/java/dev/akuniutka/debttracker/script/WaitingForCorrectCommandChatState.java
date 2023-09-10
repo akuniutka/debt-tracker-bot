@@ -1,9 +1,13 @@
-package dev.akuniutka.debttracker.entity;
+package dev.akuniutka.debttracker.script;
 
 import java.util.List;
 
-public class WaitingForCorrectCommandChatState extends WaitingForCommandChatState {
+class WaitingForCorrectCommandChatState extends WaitingForCommandChatState {
     private static final String WRONG_COMMAND_MESSAGE = "The command is unknown.";
+
+    WaitingForCorrectCommandChatState(DebtTrackerChatScript chatScript) {
+        super(chatScript);
+    }
 
     @Override
     public List<String> getReply() {
