@@ -6,11 +6,11 @@ enum DebtTrackerChatState {
     WAITING_FOR_START(new WaitingForStartChatState()),
     WAITING_FOR_COMMAND(new WaitingForCommandChatState()),
     WAITING_FOR_CORRECT_COMMAND(new WaitingForCorrectCommandChatState()),
-    SHOWING_CURRENT_STATUS(null),
-    WAITING_FOR_AMOUNT(null),
-    WAITING_FOR_CORRECT_AMOUNT(null),
-    WAITING_FOR_NAME(null),
-    WAITING_FOR_CORRECT_NAME(null);
+    SHOWING_CURRENT_STATUS(new ShowingCurrentStatusChatState()),
+    WAITING_FOR_AMOUNT(new WaitingForAmountChatState()),
+    WAITING_FOR_CORRECT_AMOUNT(new WaitingForCorrectAmountChatState()),
+    WAITING_FOR_NAME(new WaitingForNameChatState()),
+    WAITING_FOR_CORRECT_NAME(new WaitingForCorrectNameChatState());
 
     private final ChatState chatState;
 

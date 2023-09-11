@@ -12,27 +12,27 @@ class WaitingForCommandChatState extends AbstractDebtTrackerChatState {
     private static final String LENT_COMMAND = "/lent";
     private static final String REPAID_COMMAND = "/repaid";
     private static final String GOT_BACK_COMMAND = "/gotBack";
-    private static final String SHOW_CURRENT_STATUS = "/showCurrentStatus";
+    private static final String SHOW_CURRENT_STATUS_COMMAND = "/showCurrentStatus";
 
     WaitingForCommandChatState() {
         reply.add(MESSAGE_FOR_USER);
         possibleAnswers.addAll(
-                Arrays.asList(BORROWED_COMMAND, LENT_COMMAND, REPAID_COMMAND, GOT_BACK_COMMAND, SHOW_CURRENT_STATUS)
+                Arrays.asList(BORROWED_COMMAND, LENT_COMMAND, REPAID_COMMAND, GOT_BACK_COMMAND, SHOW_CURRENT_STATUS_COMMAND)
         );
     }
 
     @Override
     protected DebtTrackerChatState nextChatState(Chat chat, String message) {
         if (BORROWED_COMMAND.equals(message)) {
-            return WAITING_FOR_COMMAND;
+            return WAITING_FOR_AMOUNT;
         } else if (LENT_COMMAND.equals(message)) {
-            return WAITING_FOR_COMMAND;
+            return WAITING_FOR_AMOUNT;
         } else if (REPAID_COMMAND.equals(message)) {
-            return WAITING_FOR_COMMAND;
+            return WAITING_FOR_AMOUNT;
         } else if (GOT_BACK_COMMAND.equals(message)) {
-            return WAITING_FOR_COMMAND;
-        } else if (SHOW_CURRENT_STATUS.equals(message)) {
-            return WAITING_FOR_COMMAND;
+            return WAITING_FOR_AMOUNT;
+        } else if (SHOW_CURRENT_STATUS_COMMAND.equals(message)) {
+            return SHOWING_CURRENT_STATUS;
         } else {
             return WAITING_FOR_CORRECT_COMMAND;
         }
