@@ -1,22 +1,24 @@
 package dev.akuniutka.debttracker.script;
 
+import dev.akuniutka.debttracker.entity.ChatState;
+
 enum DebtTrackerChatState {
-    WAITING_FOR_START(0),
-    WAITING_FOR_COMMAND(1),
-    WAITING_FOR_CORRECT_COMMAND(2),
-    SHOWING_CURRENT_STATUS(3),
-    WAITING_FOR_AMOUNT(4),
-    WAITING_FOR_CORRECT_AMOUNT(5),
-    WAITING_FOR_NAME(6),
-    WAITING_FOR_CORRECT_NAME(7);
+    WAITING_FOR_START(new WaitingForStartChatState()),
+    WAITING_FOR_COMMAND(new WaitingForCommandChatState()),
+    WAITING_FOR_CORRECT_COMMAND(new WaitingForCorrectCommandChatState()),
+    SHOWING_CURRENT_STATUS(null),
+    WAITING_FOR_AMOUNT(null),
+    WAITING_FOR_CORRECT_AMOUNT(null),
+    WAITING_FOR_NAME(null),
+    WAITING_FOR_CORRECT_NAME(null);
 
-    private final int id;
+    private final ChatState chatState;
 
-    DebtTrackerChatState(int id) {
-        this.id = id;
+    DebtTrackerChatState(ChatState chatState) {
+        this.chatState = chatState;
     }
 
-    public int getId() {
-        return id;
+    public ChatState getChatState() {
+        return chatState;
     }
 }
