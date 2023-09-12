@@ -1,7 +1,5 @@
 package dev.akuniutka.debttracker.script;
 
-import dev.akuniutka.debttracker.entity.ChatState;
-
 enum DebtTrackerChatState {
     WAITING_FOR_START(new WaitingForStartChatState()),
     WAITING_FOR_COMMAND(new WaitingForCommandChatState()),
@@ -12,13 +10,13 @@ enum DebtTrackerChatState {
     WAITING_FOR_NAME(new WaitingForNameChatState()),
     WAITING_FOR_CORRECT_NAME(new WaitingForCorrectNameChatState());
 
-    private final ChatState chatState;
+    private final AbstractDebtTrackerChatState chatState;
 
-    DebtTrackerChatState(ChatState chatState) {
+    DebtTrackerChatState(AbstractDebtTrackerChatState chatState) {
         this.chatState = chatState;
     }
 
-    public ChatState getChatState() {
+    public AbstractDebtTrackerChatState getChatState() {
         return chatState;
     }
 }

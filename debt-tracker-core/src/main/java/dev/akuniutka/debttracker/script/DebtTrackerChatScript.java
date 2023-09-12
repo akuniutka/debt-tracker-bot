@@ -10,6 +10,13 @@ import static dev.akuniutka.debttracker.script.DebtTrackerChatState.*;
 public class DebtTrackerChatScript implements ChatScript {
     private final DebtTrackerChatState initialChatState = WAITING_FOR_START;
 
+    public DebtTrackerChatScript() {}
+
+    public DebtTrackerChatScript(EntryDao dao) {
+        Stream.of(DebtTrackerChatState.values())
+                .forEach(s -> s.getChatState().setDao(dao));
+    }
+
     @Override
     public ChatState getInitialChatState() {
         return initialChatState.getChatState();

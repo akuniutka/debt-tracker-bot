@@ -9,6 +9,7 @@ import java.util.List;
 abstract class AbstractDebtTrackerChatState implements ChatState {
     protected final List<String> reply = new ArrayList<>();
     protected final List<String> possibleAnswers = new ArrayList<>();
+    protected transient EntryDao dao;
 
     protected abstract DebtTrackerChatState nextChatState(Chat chat, String message);
 
@@ -25,5 +26,9 @@ abstract class AbstractDebtTrackerChatState implements ChatState {
     @Override
     public final List<String> getPossibleAnswers() {
         return possibleAnswers.isEmpty() ? null : new ArrayList<>(possibleAnswers);
+    }
+
+    public void setDao(EntryDao dao) {
+        this.dao = dao;
     }
 }
