@@ -1,31 +1,28 @@
 package dev.akuniutka.debttracker.entity;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.util.*;
 
 @Entity
 public class Chat {
     @Id
-    private Long id;
+    @Column(name = "USER_ID")
+    private Long userId;
     @Column(name = "CHAT_STATE", nullable = false)
     private ChatState chatState;
-    @Column(name = "ENTRY_TYPE")
-    private EntryType entryType;
-    private BigDecimal amount;
-    @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @MapKey(name = "name")
-    private Map<String, Account> accounts = new HashMap<>();
 
-    public Chat(Long id, ChatState initialChatState) {
-        if (id == null) {
+    public Chat(Long userId, ChatState initialChatState) {
+        if (userId == null) {
             throw new IllegalArgumentException("id is null");
         }
         if (initialChatState == null) {
             throw new IllegalArgumentException("initial chat state is null");
         }
-        this.id = id;
+        this.userId = userId;
         chatState = initialChatState;
+    }
+
+    public Long getUserId() {
+        return userId;
     }
 
     public void setChatState(ChatState chatState) {

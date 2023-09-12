@@ -1,4 +1,4 @@
-package dev.akuniutka.debttracker.entity;
+package dev.akuniutka.debttracker.script;
 
 public enum EntryType {
     BORROWED("B"),

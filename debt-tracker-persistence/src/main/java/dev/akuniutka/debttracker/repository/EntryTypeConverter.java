@@ -1,6 +1,6 @@
 package dev.akuniutka.debttracker.repository;
 
-import dev.akuniutka.debttracker.entity.EntryType;
+import dev.akuniutka.debttracker.script.EntryType;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
