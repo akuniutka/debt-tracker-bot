@@ -5,6 +5,7 @@ import dev.akuniutka.debttracker.entity.Chat;
 import static dev.akuniutka.debttracker.script.DebtTrackerChatState.*;
 
 class WaitingForStartChatState extends AbstractDebtTrackerChatState {
+    private static final long serialVersionUID = 8825308663921253433L;
     private static final String START_COMMAND = "/start";
 
     WaitingForStartChatState() {

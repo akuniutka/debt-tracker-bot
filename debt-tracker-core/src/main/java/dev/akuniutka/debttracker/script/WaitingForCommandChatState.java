@@ -7,6 +7,7 @@ import java.util.Arrays;
 import static dev.akuniutka.debttracker.script.DebtTrackerChatState.*;
 
 class WaitingForCommandChatState extends AbstractDebtTrackerChatState {
+    private static final long serialVersionUID = 4476736422512580730L;
     private static final String MESSAGE_FOR_USER = "Please, enter the command.";
     private static final String BORROWED_COMMAND = "/borrowed";
     private static final String LENT_COMMAND = "/lent";

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 abstract class AbstractDebtTrackerChatState implements ChatState {
+    private static final long serialVersionUID = 2737180508062742800L;
     protected final List<String> reply = new ArrayList<>();
     protected final List<String> possibleAnswers = new ArrayList<>();
     protected transient EntryDao dao;
@@ -14,8 +15,13 @@ abstract class AbstractDebtTrackerChatState implements ChatState {
     protected abstract DebtTrackerChatState nextChatState(Chat chat, String message);
 
     @Override
+    public long getId() {
+        return serialVersionUID;
+    }
+
+    @Override
     public final void processMessage(Chat chat, String message) {
-        chat.setChatState(nextChatState(chat, message).getChatState());
+        chat.setState(nextChatState(chat, message).getChatState());
     }
 
     @Override

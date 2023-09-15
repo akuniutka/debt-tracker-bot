@@ -23,20 +23,20 @@ public class DebtTrackerChatScript implements ChatScript {
     }
 
     @Override
-    public ChatState getChatState(int id) {
+    public ChatState getChatState(long id) {
         return Stream.of(DebtTrackerChatState.values())
-                .filter(a -> id == a.ordinal())
                 .map(DebtTrackerChatState::getChatState)
+                .filter(chatState -> id == chatState.getId())
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("chat state not found"));
     }
 
-    @Override
-    public int getChatStateId(ChatState chatState) {
-        return Stream.of(DebtTrackerChatState.values())
-                .filter(a -> chatState == a.getChatState())
-                .map(DebtTrackerChatState::ordinal)
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("chat state not found"));
-    }
+//    @Override
+//    public int getChatStateId(ChatState chatState) {
+//        return Stream.of(DebtTrackerChatState.values())
+//                .filter(a -> chatState == a.getChatState())
+//                .map(DebtTrackerChatState::ordinal)
+//                .findFirst()
+//                .orElseThrow(() -> new IllegalArgumentException("chat state not found"));
+//    }
 }

@@ -7,7 +7,7 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 @Converter(autoApply = true)
-public class ChatStateConverter implements AttributeConverter<ChatState, Integer> {
+public class ChatStateConverter implements AttributeConverter<ChatState, Long> {
     private final ChatScript chatScript;
 
     public ChatStateConverter(ChatScript chatScript) {
@@ -15,16 +15,16 @@ public class ChatStateConverter implements AttributeConverter<ChatState, Integer
     }
 
     @Override
-    public Integer convertToDatabaseColumn(ChatState chatState) {
+    public Long convertToDatabaseColumn(ChatState chatState) {
         if (chatState == null) {
             return null;
         } else {
-            return chatScript.getChatStateId(chatState);
+            return chatState.getId();
         }
     }
 
     @Override
-    public ChatState convertToEntityAttribute(Integer id) {
+    public ChatState convertToEntityAttribute(Long id) {
         if (id == null) {
             return null;
         } else {

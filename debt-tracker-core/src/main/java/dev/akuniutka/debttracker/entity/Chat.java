@@ -8,30 +8,37 @@ public class Chat {
     @Column(name = "USER_ID")
     private Long userId;
     @Column(name = "CHAT_STATE", nullable = false)
-    private ChatState chatState;
+    private ChatState state;
 
-    public Chat(Long userId, ChatState initialChatState) {
+    public Chat(Long userId, ChatState initialState) {
         if (userId == null) {
             throw new IllegalArgumentException("id is null");
         }
-        if (initialChatState == null) {
+        if (initialState == null) {
             throw new IllegalArgumentException("initial chat state is null");
         }
         this.userId = userId;
-        chatState = initialChatState;
+        state = initialState;
     }
 
     public Long getUserId() {
         return userId;
     }
 
-    public void setChatState(ChatState chatState) {
-        this.chatState = chatState;
+    public ChatState getState() {
+        return state;
+    }
+
+    public void setState(ChatState state) {
+        if (state == null) {
+            throw new IllegalArgumentException("chat state is null");
+        }
+        this.state = state;
     }
 
     public ChatReply getReplyToMessage(String message) {
-        chatState.processMessage(this, message);
-        return new ChatReply(chatState.getReply(), chatState.getPossibleAnswers());
+        state.processMessage(this, message);
+        return new ChatReply(state.getReply(), state.getPossibleAnswers());
     }
 
     protected Chat() {
