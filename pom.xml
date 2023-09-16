@@ -23,6 +23,7 @@
         <module>debt-tracker-service</module>
         <module>debt-tracker-web</module>
         <module>chat-bot-core</module>
+        <module>simple-chat-bot</module>
     </modules>
 
     <properties>
