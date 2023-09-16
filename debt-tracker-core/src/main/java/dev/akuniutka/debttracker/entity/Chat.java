@@ -1,13 +1,7 @@
 package dev.akuniutka.debttracker.entity;
 
-import javax.persistence.*;
-
-@Entity
 public class Chat {
-    @Id
-    @Column(name = "USER_ID")
     private Long userId;
-    @Column(name = "CHAT_STATE", nullable = false)
     private ChatState state;
 
     public Chat(Long userId, ChatState initialState) {
