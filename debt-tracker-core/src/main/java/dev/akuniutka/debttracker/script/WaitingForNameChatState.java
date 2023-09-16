@@ -15,6 +15,11 @@ class WaitingForNameChatState extends AbstractDebtTrackerChatState {
     }
 
     @Override
+    public long getId() {
+        return serialVersionUID;
+    }
+
+    @Override
     protected DebtTrackerChatState nextChatState(Chat chat, String message) {
         if (message.isEmpty()) {
             return WAITING_FOR_CORRECT_NAME;

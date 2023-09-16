@@ -15,6 +15,11 @@ class WaitingForAmountChatState extends AbstractDebtTrackerChatState {
     }
 
     @Override
+    public long getId() {
+        return serialVersionUID;
+    }
+
+    @Override
     protected DebtTrackerChatState nextChatState(Chat chat, String message) {
         if (CANCEL_COMMAND.equals(message)) {
             return WAITING_FOR_COMMAND;

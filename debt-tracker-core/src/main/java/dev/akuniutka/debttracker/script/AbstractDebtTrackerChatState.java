@@ -15,11 +15,6 @@ abstract class AbstractDebtTrackerChatState implements ChatState {
     protected abstract DebtTrackerChatState nextChatState(Chat chat, String message);
 
     @Override
-    public long getId() {
-        return serialVersionUID;
-    }
-
-    @Override
     public final void processMessage(Chat chat, String message) {
         chat.setState(nextChatState(chat, message).getChatState());
     }
