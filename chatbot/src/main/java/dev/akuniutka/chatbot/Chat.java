@@ -1,4 +1,4 @@
-package dev.akuniutka.debttracker.entity;
+package dev.akuniutka.chatbot;
 
 public class Chat {
     private Long userId;

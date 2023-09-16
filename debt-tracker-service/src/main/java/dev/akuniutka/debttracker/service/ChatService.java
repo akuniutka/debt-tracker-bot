@@ -1,7 +1,7 @@
 package dev.akuniutka.debttracker.service;
 
-import dev.akuniutka.debttracker.entity.Chat;
-import dev.akuniutka.debttracker.entity.ChatReply;
+import dev.akuniutka.chatbot.Chat;
+import dev.akuniutka.chatbot.ChatReply;
 import dev.akuniutka.debttracker.entity.ChatScript;
 import dev.akuniutka.debttracker.repository.ChatRepository;
 import org.springframework.stereotype.Service;

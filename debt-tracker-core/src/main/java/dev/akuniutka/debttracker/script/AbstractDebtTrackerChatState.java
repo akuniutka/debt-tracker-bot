@@ -1,7 +1,7 @@
 package dev.akuniutka.debttracker.script;
 
-import dev.akuniutka.debttracker.entity.Chat;
-import dev.akuniutka.debttracker.entity.ChatState;
+import dev.akuniutka.chatbot.Chat;
+import dev.akuniutka.chatbot.ChatState;
 
 import java.util.ArrayList;
 import java.util.List;

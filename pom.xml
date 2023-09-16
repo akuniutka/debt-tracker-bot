@@ -22,6 +22,7 @@
         <module>debt-tracker-persistence</module>
         <module>debt-tracker-service</module>
         <module>debt-tracker-web</module>
+        <module>chatbot</module>
     </modules>
 
     <properties>

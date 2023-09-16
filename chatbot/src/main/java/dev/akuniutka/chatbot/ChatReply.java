@@ -1,4 +1,4 @@
-package dev.akuniutka.debttracker.entity;
+package dev.akuniutka.chatbot;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package dev.akuniutka.debttracker.script;
 
-import dev.akuniutka.debttracker.entity.Chat;
+import dev.akuniutka.chatbot.Chat;
 
 import static dev.akuniutka.debttracker.script.DebtTrackerChatState.*;
 

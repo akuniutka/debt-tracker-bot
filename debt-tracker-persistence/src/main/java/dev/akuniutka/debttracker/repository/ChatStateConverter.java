@@ -1,7 +1,7 @@
 package dev.akuniutka.debttracker.repository;
 
 import dev.akuniutka.debttracker.entity.ChatScript;
-import dev.akuniutka.debttracker.entity.ChatState;
+import dev.akuniutka.chatbot.ChatState;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
