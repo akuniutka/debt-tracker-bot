@@ -1,4 +1,4 @@
-package dev.akuniutka.chatbot;
+package dev.akuniutka.chatbot.core;
 
 public class Chat {
     private Long userId;

@@ -1,6 +1,6 @@
 package dev.akuniutka.debttracker.entity;
 
-import dev.akuniutka.chatbot.ChatReply;
+import dev.akuniutka.chatbot.core.ChatReply;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

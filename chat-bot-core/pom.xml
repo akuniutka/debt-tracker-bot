@@ -9,6 +9,6 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>chatbot</artifactId>
+    <artifactId>chat-bot-core</artifactId>
 
 </project>

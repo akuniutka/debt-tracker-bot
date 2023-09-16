@@ -1,13 +1,12 @@
 package dev.akuniutka.debttracker.script;
 
-import dev.akuniutka.chatbot.Chat;
+import dev.akuniutka.chatbot.core.Chat;
 
 import java.util.Arrays;
 
 import static dev.akuniutka.debttracker.script.DebtTrackerChatState.*;
 
 class WaitingForCommandChatState extends AbstractDebtTrackerChatState {
-    private static final long serialVersionUID = 4476736422512580730L;
     private static final String MESSAGE_FOR_USER = "Please, enter the command.";
     private static final String BORROWED_COMMAND = "/borrowed";
     private static final String LENT_COMMAND = "/lent";
@@ -20,11 +19,6 @@ class WaitingForCommandChatState extends AbstractDebtTrackerChatState {
         possibleAnswers.addAll(
                 Arrays.asList(BORROWED_COMMAND, LENT_COMMAND, REPAID_COMMAND, GOT_BACK_COMMAND, SHOW_CURRENT_STATUS_COMMAND)
         );
-    }
-
-    @Override
-    public long getId() {
-        return serialVersionUID;
     }
 
     @Override

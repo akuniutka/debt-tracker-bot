@@ -1,6 +1,6 @@
 package dev.akuniutka.debttracker.entity;
 
-import dev.akuniutka.chatbot.Chat;
+import dev.akuniutka.chatbot.core.Chat;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

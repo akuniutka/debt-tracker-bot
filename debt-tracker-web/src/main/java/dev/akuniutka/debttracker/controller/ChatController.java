@@ -1,6 +1,6 @@
 package dev.akuniutka.debttracker.controller;
 
-import dev.akuniutka.chatbot.Chat;
+import dev.akuniutka.chatbot.core.Chat;
 import dev.akuniutka.debttracker.service.ChatService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;

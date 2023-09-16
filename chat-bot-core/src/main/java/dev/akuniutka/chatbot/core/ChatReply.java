@@ -1,4 +1,4 @@
-package dev.akuniutka.chatbot;
+package dev.akuniutka.chatbot.core;
 
 import java.util.ArrayList;
 import java.util.List;

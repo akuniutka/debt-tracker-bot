@@ -1,6 +1,6 @@
 package dev.akuniutka.debttracker.repository;
 
-import dev.akuniutka.chatbot.Chat;
+import dev.akuniutka.chatbot.core.Chat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

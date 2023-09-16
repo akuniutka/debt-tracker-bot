@@ -1,7 +1,7 @@
 package dev.akuniutka.debttracker.script;
 
 import dev.akuniutka.debttracker.entity.ChatScript;
-import dev.akuniutka.chatbot.ChatState;
+import dev.akuniutka.chatbot.core.ChatState;
 
 import java.util.stream.Stream;
 
@@ -23,20 +23,20 @@ public class DebtTrackerChatScript implements ChatScript {
     }
 
     @Override
-    public ChatState getChatState(long id) {
+    public ChatState getChatState(int id) {
         return Stream.of(DebtTrackerChatState.values())
+                .filter(chatState -> id == chatState.ordinal())
                 .map(DebtTrackerChatState::getChatState)
-                .filter(chatState -> id == chatState.getId())
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("chat state not found"));
     }
 
-//    @Override
-//    public int getChatStateId(ChatState chatState) {
-//        return Stream.of(DebtTrackerChatState.values())
-//                .filter(a -> chatState == a.getChatState())
-//                .map(DebtTrackerChatState::ordinal)
-//                .findFirst()
-//                .orElseThrow(() -> new IllegalArgumentException("chat state not found"));
-//    }
+    @Override
+    public int getChatStateId(ChatState chatState) {
+        return Stream.of(DebtTrackerChatState.values())
+                .filter(a -> chatState == a.getChatState())
+                .map(DebtTrackerChatState::ordinal)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("chat state not found"));
+    }
 }
