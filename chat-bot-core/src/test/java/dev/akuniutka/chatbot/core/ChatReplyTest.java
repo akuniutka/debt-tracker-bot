@@ -1,6 +1,5 @@
-package dev.akuniutka.debttracker.entity;
+package dev.akuniutka.chatbot.core;
 
-import dev.akuniutka.chatbot.core.ChatReply;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -9,50 +8,50 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ChatReplyTest {
+public class ChatReplyTest {
     private static final List<String> REPLY = Arrays.asList("the first line", "the second line");
     private static final List<String> POSSIBLE_ANSWERS = Arrays.asList("agree", "reject");
 
     @Test
-    void testChatReplyWhenReplyIsNull() {
+    public void testChatReplyWhenReplyIsNull() {
         assertDoesNotThrow(() -> new ChatReply(null, new ArrayList<>(POSSIBLE_ANSWERS)));
     }
 
     @Test
-    void testChatReplyWhenPossibleAnswersIsNull() {
+    public void testChatReplyWhenPossibleAnswersIsNull() {
         assertDoesNotThrow(() -> new ChatReply(new ArrayList<>(REPLY), null));
     }
 
     @Test
-    void testChatReplyWhenBothReplyAndPossibleAnswersAreNull() {
+    public void testChatReplyWhenBothReplyAndPossibleAnswersAreNull() {
         assertDoesNotThrow(() -> new ChatReply(null, null));
     }
 
     @Test
-    void testChatReplyWhenBothReplyAndPossibleAnswersAreNotNull() {
+    public void testChatReplyWhenBothReplyAndPossibleAnswersAreNotNull() {
         assertDoesNotThrow(() -> new ChatReply(new ArrayList<>(REPLY), new ArrayList<>(POSSIBLE_ANSWERS)));
     }
 
     @Test
-    void testGetReplyWhenReplyIsNull() {
+    public void testGetReplyWhenReplyIsNull() {
         ChatReply chatReply = new ChatReply(null, new ArrayList<>(POSSIBLE_ANSWERS));
         assertNull(chatReply.getReply());
     }
 
     @Test
-    void testGetReplyWhenReplyIsNotNull() {
+    public void testGetReplyWhenReplyIsNotNull() {
         ChatReply chatReply = new ChatReply(new ArrayList<>(REPLY), new ArrayList<>(POSSIBLE_ANSWERS));
         assertEquals(REPLY, chatReply.getReply());
     }
 
     @Test
-    void testGetPossibleAnswersWhenPossibleAnswersIsNull() {
+    public void testGetPossibleAnswersWhenPossibleAnswersIsNull() {
         ChatReply chatReply = new ChatReply(new ArrayList<>(REPLY), null);
         assertNull(chatReply.getPossibleAnswers());
     }
 
     @Test
-    void testGetPossibleAnswersWhenPossibleAnswersIsNotnull() {
+    public void testGetPossibleAnswersWhenPossibleAnswersIsNotnull() {
         ChatReply chatReply = new ChatReply(new ArrayList<>(REPLY), new ArrayList<>(POSSIBLE_ANSWERS));
         assertEquals(POSSIBLE_ANSWERS, chatReply.getPossibleAnswers());
     }

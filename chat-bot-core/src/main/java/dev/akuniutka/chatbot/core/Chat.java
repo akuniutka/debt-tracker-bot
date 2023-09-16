@@ -19,15 +19,15 @@ public class Chat {
         return userId;
     }
 
-    public ChatState getState() {
-        return state;
-    }
-
     public void setState(ChatState state) {
         if (state == null) {
             throw new IllegalArgumentException("chat state is null");
         }
         this.state = state;
+    }
+
+    public ChatState getState() {
+        return state;
     }
 
     public ChatReply getReplyToMessage(String message) {
