@@ -1,8 +1,8 @@
 package dev.akuniutka.debttracker.service;
 
-import dev.akuniutka.chatbot.core.Chat;
 import dev.akuniutka.chatbot.core.ChatReply;
 import dev.akuniutka.debttracker.entity.ChatScript;
+import dev.akuniutka.debttracker.entity.DebtTrackerChat;
 import dev.akuniutka.debttracker.repository.ChatRepository;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +23,15 @@ public class ChatService {
     }
 
     public List<String> getReplyForChat(Long chatId, String message) {
-        Chat chat = chatRepository.findById(chatId).orElse(new Chat(chatId, chatScript.getInitialChatState()));
+        DebtTrackerChat chat = chatRepository.findByUserId(chatId).orElse(
+                new DebtTrackerChat(chatId, chatScript.getInitialChatState())
+        );
         ChatReply chatReply = chat.getReplyToMessage(message);
         chatRepository.save(chat);
         return chatReply.getReply();
     }
 
-    public Optional<Chat> getChat(Long id) {
+    public Optional<DebtTrackerChat> getChat(Long id) {
         return chatRepository.findById(id);
     }
 }

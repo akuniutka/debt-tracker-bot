@@ -1,22 +1,13 @@
 package dev.akuniutka.chatbot.core;
 
 public class Chat {
-    private Long userId;
-    private ChatState state;
+    protected ChatState state;
 
-    public Chat(Long userId, ChatState initialState) {
-        if (userId == null) {
-            throw new IllegalArgumentException("id is null");
-        }
+    public Chat(ChatState initialState) {
         if (initialState == null) {
             throw new IllegalArgumentException("initial chat state is null");
         }
-        this.userId = userId;
         state = initialState;
-    }
-
-    public Long getUserId() {
-        return userId;
     }
 
     public void setState(ChatState state) {

@@ -6,10 +6,8 @@ import dev.akuniutka.chatbot.core.ChatReply;
 import java.util.Scanner;
 
 public class SimpleChatBot {
-    private static final long userId = 1L;
-
     public static void main(String[] args) {
-        Chat chat = new Chat(userId, new HelloState());
+        Chat chat = new Chat(new HelloState());
         Scanner scanner = new Scanner(System.in);
         System.out.println("Send message to bot or 'exit' to quit:");
         String message = scanner.nextLine();
