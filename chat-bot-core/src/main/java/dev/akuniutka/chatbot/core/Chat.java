@@ -1,7 +1,7 @@
 package dev.akuniutka.chatbot.core;
 
 public class Chat {
-    protected ChatState state;
+    private ChatState state;
 
     public Chat(ChatState initialState) {
         if (initialState == null) {
