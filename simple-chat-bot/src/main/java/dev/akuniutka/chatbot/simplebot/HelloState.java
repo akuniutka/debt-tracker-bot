@@ -22,9 +22,4 @@ public class HelloState implements ChatState {
     public List<String> getReply() {
         return Arrays.asList("Hello!", "Nice to see you!");
     }
-
-    @Override
-    public List<String> getPossibleAnswers() {
-        return Arrays.asList("Hi", "Hello");
-    }
 }

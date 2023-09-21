@@ -22,9 +22,4 @@ public class AskToRephraseState implements ChatState {
     public List<String> getReply() {
         return Arrays.asList("Sorry! I have not understood it.", "Could you rephrase it?");
     }
-
-    @Override
-    public List<String> getPossibleAnswers() {
-        return Arrays.asList("Hi", "Hello");
-    }
 }

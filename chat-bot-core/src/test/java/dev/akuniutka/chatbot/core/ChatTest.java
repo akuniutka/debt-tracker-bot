@@ -61,19 +61,15 @@ class ChatTest {
     @Test
     void testGetReplyToMessage() {
         String message = "Hello";
-        List<String> reply = Arrays.asList("Hi!", "Nice to see you!");
-        List<String> possibleAnswers = Arrays.asList("Thanks!", "Bye!");
+        List<String> expected = Arrays.asList("Hi!", "Nice to see you!");
         ChatState chatState = mock(ChatState.class);
         Chat chat = new Chat(chatState);
         doNothing().when(chatState).processMessage(chat, message);
-        when(chatState.getReply()).thenReturn(new ArrayList<>(reply));
-        when(chatState.getPossibleAnswers()).thenReturn(new ArrayList<>(possibleAnswers));
-        ChatReply chatReply = chat.getReplyToMessage(message);
-        assertEquals(reply, chatReply.getReply());
-        assertEquals(possibleAnswers, chatReply.getPossibleAnswers());
+        when(chatState.getReply()).thenReturn(new ArrayList<>(expected));
+        List<String> actual = chat.getReplyToMessage(message);
+        assertEquals(expected, actual);
         verify(chatState).processMessage(chat, message);
         verify(chatState).getReply();
-        verify(chatState).getPossibleAnswers();
         verifyNoMoreInteractions(ignoreStubs(chatState));
     }
 }

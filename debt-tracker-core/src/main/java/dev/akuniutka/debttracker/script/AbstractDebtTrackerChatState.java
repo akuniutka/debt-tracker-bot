@@ -23,11 +23,6 @@ abstract class AbstractDebtTrackerChatState implements ChatState {
         return reply.isEmpty() ? null : new ArrayList<>(reply);
     }
 
-    @Override
-    public final List<String> getPossibleAnswers() {
-        return possibleAnswers.isEmpty() ? null : new ArrayList<>(possibleAnswers);
-    }
-
     public void setDao(EntryDao dao) {
         this.dao = dao;
     }

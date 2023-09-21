@@ -24,6 +24,7 @@
         <module>debt-tracker-web</module>
         <module>chat-bot-core</module>
         <module>simple-chat-bot</module>
+        <module>chat-bot-telegram-ui</module>
     </modules>
 
     <properties>

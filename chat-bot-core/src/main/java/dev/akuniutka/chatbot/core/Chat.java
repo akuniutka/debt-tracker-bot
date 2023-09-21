@@ -1,5 +1,7 @@
 package dev.akuniutka.chatbot.core;
 
+import java.util.List;
+
 public class Chat {
     private ChatState state;
 
@@ -21,9 +23,9 @@ public class Chat {
         return state;
     }
 
-    public ChatReply getReplyToMessage(String message) {
+    public List<String> getReplyToMessage(String message) {
         state.processMessage(this, message);
-        return new ChatReply(state.getReply(), state.getPossibleAnswers());
+        return state.getReply();
     }
 
     protected Chat() {

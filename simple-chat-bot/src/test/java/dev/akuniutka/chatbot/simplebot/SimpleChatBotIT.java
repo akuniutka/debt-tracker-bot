@@ -23,12 +23,6 @@ class SimpleChatBotIT {
     private static final String REPLY_TO_UNKNOWN = "Bot:" + SEPARATOR +
             "\t" + "Sorry! I have not understood it." + SEPARATOR +
             "\t" + "Could you rephrase it?" + SEPARATOR;
-    private static final String ANSWERS_FOR_HELLO = "Possible answers:" + SEPARATOR +
-            "\t" + "Hi" + SEPARATOR +
-            "\t" + "Hello" + SEPARATOR;
-    private static final String ANSWERS_FOR_HI = "Possible answers:" + SEPARATOR +
-            "\t" + "Hello" + SEPARATOR +
-            "\t" + "Hi" + SEPARATOR;
     private static final InputStream SYS_IN_BACKUP = System.in;
     private static final PrintStream SYS_OUT_BACKUP = System.out;
     private static final PrintStream SYS_ERR_BACKUP = System.err;
@@ -63,7 +57,7 @@ class SimpleChatBotIT {
 
     @Test
     void testMainWhenHelloAndExit() {
-        String expected = PROMPT + REPLY_TO_HELLO + ANSWERS_FOR_HELLO + PROMPT;
+        String expected = PROMPT + REPLY_TO_HELLO + PROMPT;
         String input = "Hello" + SEPARATOR + "exit" + SEPARATOR;
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
@@ -75,7 +69,7 @@ class SimpleChatBotIT {
 
     @Test
     void testMainWhenHiAndExit() {
-        String expected = PROMPT + REPLY_TO_HI + ANSWERS_FOR_HI + PROMPT;
+        String expected = PROMPT + REPLY_TO_HI + PROMPT;
         String input = "Hi" + SEPARATOR + "exit" + SEPARATOR;
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
@@ -87,7 +81,7 @@ class SimpleChatBotIT {
 
     @Test
     void testMainWhenNeitherHelloNorHiAndExit() {
-        String expected = PROMPT + REPLY_TO_UNKNOWN + ANSWERS_FOR_HELLO + PROMPT;
+        String expected = PROMPT + REPLY_TO_UNKNOWN + PROMPT;
         String input = "OK" + SEPARATOR + "exit" + SEPARATOR;
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
@@ -99,9 +93,9 @@ class SimpleChatBotIT {
 
     @Test
     void testMainWhenSeveralCommandsAndExit() {
-        String expected = PROMPT + REPLY_TO_HELLO + ANSWERS_FOR_HELLO + PROMPT +
-                REPLY_TO_HI + ANSWERS_FOR_HI + PROMPT +
-                REPLY_TO_UNKNOWN + ANSWERS_FOR_HELLO + PROMPT;
+        String expected = PROMPT + REPLY_TO_HELLO + PROMPT +
+                REPLY_TO_HI + PROMPT +
+                REPLY_TO_UNKNOWN + PROMPT;
         String input = "Hello" + SEPARATOR + "Hi" + SEPARATOR + "OK" + SEPARATOR + "exit" + SEPARATOR;
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);

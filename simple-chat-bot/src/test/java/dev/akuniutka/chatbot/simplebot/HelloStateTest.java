@@ -53,12 +53,4 @@ class HelloStateTest {
         List<String> actual = chatState.getReply();
         assertEquals(expected, actual);
     }
-
-    @Test
-    void testGetPossibleAnswers() {
-        List<String> expected = Arrays.asList("Hi", "Hello");
-        ChatState chatState = new HelloState();
-        List<String> actual = chatState.getPossibleAnswers();
-        assertEquals(expected, actual);
-    }
 }

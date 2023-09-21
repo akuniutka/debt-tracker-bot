@@ -1,7 +1,7 @@
 package dev.akuniutka.debttracker.controller;
 
 import dev.akuniutka.chatbot.core.Chat;
-import dev.akuniutka.debttracker.service.ChatService;
+import dev.akuniutka.debttracker.service.DebtTrackerChatService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,14 +15,15 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 @RequestMapping("/chats")
 public class ChatController {
-    private final ChatService chatService;
+    private final DebtTrackerChatService debtTrackerChatService;
 
     // TODO: return 404 if no currency found
     @GetMapping("/{id}")
     @Operation(summary = "retrieve chat by id")
     public Chat getChat(@PathVariable Long id) {
-        return chatService.getChat(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Chat " + id + " not found")
-        );
+//        return debtTrackerChatService.getChat(id).orElseThrow(() ->
+//                new ResponseStatusException(HttpStatus.NOT_FOUND, "Chat " + id + " not found")
+//        );
+        return debtTrackerChatService.getChat(id);
     }
 }

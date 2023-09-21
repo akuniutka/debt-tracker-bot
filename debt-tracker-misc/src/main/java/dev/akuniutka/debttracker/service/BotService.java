@@ -1,5 +1,6 @@
 package dev.akuniutka.debttracker.service;
 
+import dev.akuniutka.chatbot.core.Chat;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +18,7 @@ import java.util.*;
 @Slf4j
 @RequiredArgsConstructor
 public class BotService extends TelegramLongPollingBot {
-    private final ChatService chatService;
+    private final DebtTrackerChatService debtTrackerChatService;
     @Value("${bot.api.key}")
     private String apiKey;
     @Value("${bot.name}")
@@ -30,7 +31,8 @@ public class BotService extends TelegramLongPollingBot {
         String command = message.getText();
         log.debug("New command from Telegram chat {}: {}", chatId, command);
         try {
-            List<String> answer = chatService.getReplyForChat(chatId, command);
+            Chat chat = debtTrackerChatService.getChat(chatId);
+            List<String> answer = chat.getReplyToMessage(command);
             if (answer != null) {
                 for (String line : answer) {
                     SendMessage response = new SendMessage();
