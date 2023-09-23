@@ -29,8 +29,10 @@ public class BotService extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         Message message = update.getMessage();
         Long userId = message.getChatId();
+        String command = message.getText();
+        // TODO: add log.debug
         Chat chat = chatService.getChat(userId);
-        List<String> reply = chat.getReplyToMessage(message.getText());
+        List<String> reply = chat.getReplyToMessage(command);
         if (reply != null && !reply.isEmpty()) {
             for (String line : reply) {
                 SendMessage response = new SendMessage();
@@ -39,6 +41,7 @@ public class BotService extends TelegramLongPollingBot {
                 try {
                     execute(response);
                 } catch (TelegramApiException e) {
+                    // TODO add log.error
                     System.out.println("Error while sending message to Telegram");
                 }
             }

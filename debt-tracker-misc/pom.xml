@@ -105,9 +105,9 @@
             <type>pom</type>
         </dependency>
         <dependency>
-            <groupId>com.github.xabgesagtx</groupId>
-            <artifactId>telegram-spring-boot-starter</artifactId>
-            <version>0.26</version>
+            <groupId>org.telegram</groupId>
+            <artifactId>telegrambots-spring-boot-starter</artifactId>
+            <version>6.8.0</version>
         </dependency>
         <dependency>
             <!-- Swagger UI: /swagger-ui/  -->
