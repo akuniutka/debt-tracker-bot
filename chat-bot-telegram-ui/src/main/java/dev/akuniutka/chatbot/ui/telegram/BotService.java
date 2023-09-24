@@ -1,6 +1,5 @@
 package dev.akuniutka.chatbot.ui.telegram;
 
-import dev.akuniutka.chatbot.core.Chat;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -29,10 +28,9 @@ public class BotService extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         Message message = update.getMessage();
         Long userId = message.getChatId();
-        String command = message.getText();
+        String userMessage = message.getText();
         // TODO: add log.debug
-        Chat chat = chatService.getChat(userId);
-        List<String> reply = chat.getReplyToMessage(command);
+        List<String> reply = chatService.getReplyForUser(userId, userMessage);
         if (reply != null && !reply.isEmpty()) {
             for (String line : reply) {
                 SendMessage response = new SendMessage();

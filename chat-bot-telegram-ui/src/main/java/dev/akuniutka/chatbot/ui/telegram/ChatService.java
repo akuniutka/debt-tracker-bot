@@ -1,7 +1,7 @@
 package dev.akuniutka.chatbot.ui.telegram;
 
-import dev.akuniutka.chatbot.core.Chat;
+import java.util.List;
 
 public interface ChatService {
-    Chat getChat(Long userId);
+    List<String> getReplyForUser(Long userId, String userMessage);
 }
