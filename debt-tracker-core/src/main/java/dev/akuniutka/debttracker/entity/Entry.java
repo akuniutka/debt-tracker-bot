@@ -1,4 +1,4 @@
-package dev.akuniutka.debttracker.script;
+package dev.akuniutka.debttracker.entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -24,5 +24,6 @@ public class Entry {
         this.date = date;
     }
 
-    protected Entry() {}
+    protected Entry() {
+    }
 }

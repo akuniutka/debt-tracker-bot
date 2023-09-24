@@ -1,6 +1,6 @@
 package dev.akuniutka.debttracker.repository;
 
-import dev.akuniutka.debttracker.script.EntryType;
+import dev.akuniutka.debttracker.entity.EntryType;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
@@ -25,6 +25,5 @@ public class EntryTypeConverter implements AttributeConverter<EntryType, String>
                 .filter(t -> t.getCode().equals(code))
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);
-
     }
 }
