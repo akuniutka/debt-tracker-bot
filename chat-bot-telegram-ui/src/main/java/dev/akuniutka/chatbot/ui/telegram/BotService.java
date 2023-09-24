@@ -1,5 +1,7 @@
 package dev.akuniutka.chatbot.ui.telegram;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -9,6 +11,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.List;
 
 public class BotService extends TelegramLongPollingBot {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BotService.class);
     private final ChatService chatService;
     private final String botUsername;
 
@@ -22,6 +25,7 @@ public class BotService extends TelegramLongPollingBot {
         }
         this.botUsername = botUsername;
         this.chatService = chatService;
+        LOGGER.info("Username: {}, token: [***]", botUsername);
     }
 
     @Override
@@ -29,7 +33,7 @@ public class BotService extends TelegramLongPollingBot {
         Message message = update.getMessage();
         Long userId = message.getChatId();
         String userMessage = message.getText();
-        // TODO: add log.debug
+        LOGGER.debug("message from Telegram user {}: {}", userId, userMessage);
         List<String> reply = chatService.getReplyForUser(userId, userMessage);
         if (reply != null && !reply.isEmpty()) {
             for (String line : reply) {
@@ -39,8 +43,7 @@ public class BotService extends TelegramLongPollingBot {
                 try {
                     execute(response);
                 } catch (TelegramApiException e) {
-                    // TODO add log.error
-                    System.out.println("Error while sending message to Telegram");
+                    LOGGER.error("Error while sending message to Telegram", e);
                 }
             }
         }
