@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 
 public class LoggerListener extends ListAppender<ILoggingEvent> {
     private Logger logger;
-    private Level storedLevel;
 
     public void attach(Class<?> clazz) {
         list.clear();
@@ -32,17 +31,5 @@ public class LoggerListener extends ListAppender<ILoggingEvent> {
 
     public Level getLevel(int i) {
         return list.get(i).getLevel();
-    }
-
-    public void changeLevel(Level level) {
-        if (storedLevel == null) {
-            storedLevel = logger.getLevel();
-        }
-        logger.setLevel(level);
-    }
-
-    public void restoreLevel() {
-        logger.setLevel(storedLevel);
-        storedLevel = null;
     }
 }

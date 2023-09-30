@@ -27,7 +27,6 @@ class ChatTest {
 
     @AfterEach
     public void tearDown() {
-        logged.restoreLevel();
         logged.detach();
     }
 
