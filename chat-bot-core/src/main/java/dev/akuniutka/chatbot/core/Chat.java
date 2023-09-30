@@ -12,6 +12,7 @@ public class Chat {
     private static final String USER_ID_AND_CHAT_STATE_ARE_NULL = "Setting user id and chat state to null";
     private static final String USER_ID_IS_NULL = "Setting user id to null";
     private static final String CHAT_STATE_IS_NULL = "Setting chat state to null";
+    private static final String CHAT_STATE_IS_NOT_SET = "Calling to chat while chat state is not set";
     private Long userId;
     private ChatState state;
 
@@ -59,7 +60,8 @@ public class Chat {
 
     public List<String> getReplyToMessage(String message) {
         if (state == null) {
-            throw new RuntimeException("Chat state not set");
+            LOGGER.error(CHAT_STATE_IS_NOT_SET);
+            throw new RuntimeException(CHAT_STATE_IS_NOT_SET);
         }
         state.processMessage(this, message);
         return state.getReply();
