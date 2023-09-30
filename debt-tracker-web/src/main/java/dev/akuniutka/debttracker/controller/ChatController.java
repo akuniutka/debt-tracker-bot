@@ -1,6 +1,6 @@
 package dev.akuniutka.debttracker.controller;
 
-import dev.akuniutka.debttracker.entity.DebtTrackerChat;
+import dev.akuniutka.chatbot.core.Chat;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ public class ChatController {
     // TODO: return 404 if no currency found
     @GetMapping("/{id}")
     @Operation(summary = "retrieve chat by id")
-    public DebtTrackerChat getChat(@PathVariable Long id) {
+    public Chat getChat(@PathVariable Long id) {
         return null;
     }
 }

@@ -1,9 +1,9 @@
 package dev.akuniutka.debttracker.service;
 
+import dev.akuniutka.chatbot.core.Chat;
 import dev.akuniutka.chatbot.ui.telegram.ChatService;
 import dev.akuniutka.debttracker.entity.ChatScript;
-import dev.akuniutka.debttracker.entity.DebtTrackerChat;
-import dev.akuniutka.debttracker.repository.DebtTrackerChatRepository;
+import dev.akuniutka.debttracker.repository.ChatRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,27 +11,27 @@ import java.util.List;
 @Service
 public class DebtTrackerChatService implements ChatService {
     private final ChatScript chatScript;
-    private final DebtTrackerChatRepository debtTrackerChatRepository;
+    private final ChatRepository chatRepository;
 
-    public DebtTrackerChatService(ChatScript chatScript, DebtTrackerChatRepository debtTrackerChatRepository) {
+    public DebtTrackerChatService(ChatScript chatScript, ChatRepository chatRepository) {
         if (chatScript == null) {
             throw new IllegalArgumentException("chat script is null");
         }
         this.chatScript = chatScript;
-        this.debtTrackerChatRepository = debtTrackerChatRepository;
+        this.chatRepository = chatRepository;
     }
 
     @Override
     public List<String> getReplyForUser(Long userId, String userMessage) {
-        DebtTrackerChat chat = getChat(userId);
+        Chat chat = getChat(userId);
         List<String> reply = chat.getReplyToMessage(userMessage);
-        debtTrackerChatRepository.save(chat);
+        chatRepository.save(chat);
         return reply;
     }
 
-    private DebtTrackerChat getChat(Long userId) {
-        return debtTrackerChatRepository.findByUserId(userId).orElse(
-                new DebtTrackerChat(userId, chatScript.getInitialChatState())
+    private Chat getChat(Long userId) {
+        return chatRepository.findByUserId(userId).orElse(
+                new Chat(userId, chatScript.getInitialChatState())
         );
     }
 }

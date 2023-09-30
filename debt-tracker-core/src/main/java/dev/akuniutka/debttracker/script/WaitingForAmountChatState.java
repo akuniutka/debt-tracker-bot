@@ -1,7 +1,6 @@
 package dev.akuniutka.debttracker.script;
 
 import dev.akuniutka.chatbot.core.Chat;
-import dev.akuniutka.debttracker.entity.DebtTrackerChat;
 import dev.akuniutka.debttracker.exception.WrongAmountException;
 
 import java.math.BigDecimal;
@@ -24,7 +23,6 @@ class WaitingForAmountChatState extends AbstractDebtTrackerChatState {
         } else {
             try {
                 BigDecimal amount = new BigDecimal(message);
-                ((DebtTrackerChat) chat).setCachedAmount(amount);
                 return WAITING_FOR_NAME;
             } catch (NumberFormatException | WrongAmountException e) {
                 return WAITING_FOR_CORRECT_AMOUNT;

@@ -7,8 +7,8 @@ import java.util.Scanner;
 
 public class SimpleChatBot {
     public static void main(String[] args) {
-        Chat chat = new Chat(new HelloState());
         Scanner scanner = new Scanner(System.in);
+        Chat chat = new Chat((long) scanner.hashCode(), new HelloState());
         System.out.println("Send message to bot or 'exit' to quit:");
         String message = scanner.nextLine();
         while (!"exit".equals(message)) {
