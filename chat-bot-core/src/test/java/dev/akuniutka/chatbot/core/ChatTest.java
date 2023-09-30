@@ -185,11 +185,21 @@ class ChatTest {
     void testGetReplyToMessageWhenChatStateIsNotSet() {
         String message = "Hello";
         Chat chat = new Chat();
-        Exception e = assertThrows(RuntimeException.class, () -> chat.getReplyToMessage(message));
+        String expectedDebugMessage = null;
+        Exception e = null;
+        try {
+            expectedDebugMessage = getStackTrace();
+            chat.getReplyToMessage(message);
+        } catch (RuntimeException ex) {
+            e = ex;
+        }
+        assertNotNull(e);
         assertEquals(CHAT_STATE_IS_NOT_SET, e.getMessage());
-        assertEquals(1, logged.getSize());
+        assertEquals(2, logged.getSize());
         assertEquals(Level.ERROR, logged.getLevel(0));
         assertEquals(CHAT_STATE_IS_NOT_SET, logged.getMessage(0));
+        assertEquals(Level.DEBUG, logged.getLevel(1));
+        assertEquals(expectedDebugMessage, logged.getMessage(1));
     }
 
     @Test

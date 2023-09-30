@@ -61,6 +61,7 @@ public class Chat {
     public List<String> getReplyToMessage(String message) {
         if (state == null) {
             LOGGER.error(CHAT_STATE_IS_NOT_SET);
+            LOGGER.debug(stackTrace());
             throw new RuntimeException(CHAT_STATE_IS_NOT_SET);
         }
         state.processMessage(this, message);
