@@ -12,8 +12,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableScheduling
 @SpringBootApplication
-public class Bot {
+public class DebtTrackerBot {
     public static void main(String[] args) {
-        SpringApplication.run(Bot.class, args);
+        SpringApplication.run(DebtTrackerBot.class, args);
     }
 }

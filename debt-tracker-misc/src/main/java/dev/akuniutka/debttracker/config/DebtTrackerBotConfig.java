@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class BotConfig {
+public class DebtTrackerBotConfig {
     @Value("${bot.name}")
     private String botUsername;
     @Value("${bot.api.key}")
