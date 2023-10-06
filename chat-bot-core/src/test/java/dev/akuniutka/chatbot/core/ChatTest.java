@@ -209,12 +209,12 @@ class ChatTest {
         ChatState chatState = mock(ChatState.class);
         Chat chat = new Chat(1L, chatState);
         doNothing().when(chatState).processMessage(chat, message);
-        when(chatState.getReply()).thenReturn(new ArrayList<>(expected));
+        when(chatState.getReply(chat)).thenReturn(new ArrayList<>(expected));
         List<String> actual = chat.getReplyToMessage(message);
         assertEquals(expected, actual);
         assertEquals(0, logged.getSize());
         verify(chatState).processMessage(chat, message);
-        verify(chatState).getReply();
+        verify(chatState).getReply(chat);
         verifyNoMoreInteractions(ignoreStubs(chatState));
     }
 

@@ -6,5 +6,5 @@ import java.util.List;
 public interface ChatState extends Serializable {
     void processMessage(Chat chat, String message);
 
-    List<String> getReply();
+    List<String> getReply(Chat chat);
 }

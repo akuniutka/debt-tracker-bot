@@ -47,9 +47,11 @@ class HelloStateTest {
 
     @Test
     void testGetReply() {
+        Chat chat = mock(Chat.class);
         List<String> expected = Arrays.asList("Hello!", "Nice to see you!");
         ChatState chatState = new HelloState();
-        List<String> actual = chatState.getReply();
+        List<String> actual = chatState.getReply(chat);
         assertEquals(expected, actual);
+        verifyNoMoreInteractions(ignoreStubs(chat));
     }
 }

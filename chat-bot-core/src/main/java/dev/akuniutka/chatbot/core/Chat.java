@@ -65,7 +65,7 @@ public class Chat {
             throw new RuntimeException(CHAT_STATE_IS_NOT_SET);
         }
         state.processMessage(this, message);
-        return state.getReply();
+        return state.getReply(this);
     }
 
     private String stackTrace() {

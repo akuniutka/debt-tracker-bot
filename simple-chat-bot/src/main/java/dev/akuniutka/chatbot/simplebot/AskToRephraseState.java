@@ -19,7 +19,7 @@ public class AskToRephraseState implements ChatState {
     }
 
     @Override
-    public List<String> getReply() {
+    public List<String> getReply(Chat chat) {
         return Arrays.asList("Sorry! I have not understood it.", "Could you rephrase it?");
     }
 }

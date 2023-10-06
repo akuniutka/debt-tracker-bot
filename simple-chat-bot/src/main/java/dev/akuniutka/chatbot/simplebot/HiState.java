@@ -19,7 +19,7 @@ public class HiState implements ChatState {
     }
 
     @Override
-    public List<String> getReply() {
+    public List<String> getReply(Chat chat) {
         return Arrays.asList("Hi!", "Nice to see you!");
     }
 }

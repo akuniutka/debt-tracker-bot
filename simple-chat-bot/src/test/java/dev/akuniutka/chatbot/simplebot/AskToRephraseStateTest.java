@@ -47,9 +47,11 @@ class AskToRephraseStateTest {
 
     @Test
     void testGetReply() {
+        Chat chat = mock(Chat.class);
         List<String> expected = Arrays.asList("Sorry! I have not understood it.", "Could you rephrase it?");
         ChatState chatState = new AskToRephraseState();
-        List<String> actual = chatState.getReply();
+        List<String> actual = chatState.getReply(chat);
         assertEquals(expected, actual);
+        verifyNoMoreInteractions(ignoreStubs(chat));
     }
 }
