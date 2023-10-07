@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Service
 public class EntryServiceImplementation implements EntryService {
@@ -52,5 +53,10 @@ public class EntryServiceImplementation implements EntryService {
         Entry entry = new Entry(userId, entryDraft.getType(), entryDraft.getAmount(), account, OffsetDateTime.now());
         entryRepository.save(entry);
         entryDraftRepository.delete(entryDraft);
+    }
+
+    @Override
+    public List<Entry> getAllEntries(Long userId) {
+        return entryRepository.findAllByUserId(userId);
     }
 }

@@ -19,7 +19,7 @@ abstract class AbstractDebtTrackerChatState implements ChatState {
     }
 
     @Override
-    public final List<String> getReply(Chat chat) {
+    public List<String> getReply(Chat chat) {
         return reply.isEmpty() ? null : new ArrayList<>(reply);
     }
 

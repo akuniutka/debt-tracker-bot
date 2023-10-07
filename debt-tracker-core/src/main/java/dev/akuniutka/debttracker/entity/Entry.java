@@ -24,6 +24,18 @@ public class Entry {
         this.date = date;
     }
 
+    public EntryType getType() {
+        return type;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
     protected Entry() {
     }
 }
