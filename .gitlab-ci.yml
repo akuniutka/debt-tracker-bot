@@ -33,6 +33,13 @@ test:
     reports:
       junit:
         - chat-bot-core/target/surefire-reports/*.xml
+        - chat-bot-telegram-ui/target/surefire-reports/*.xml
+        - debt-tracker-core/target/surefire-reports/*.xml
+        - debt-tracker-misc/target/surefire-reports/*.xml
+        - debt-tracker-persistence/target/surefire-reports/*.xml
+        - debt-tracker-service/target/surefire-reports/*.xml
+        - debt-tracker-web/target/surefire-reports/*.xml
+        - simple-chat-bot/target/surefire-reports/*.xml
 
 integration-test:
   stage: integration-test
