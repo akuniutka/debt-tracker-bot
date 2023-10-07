@@ -13,5 +13,7 @@ public interface EntryService {
 
     void updateDraft(Long userId, String account);
 
+    void dropDraft(Long userId);
+
     List<Entry> getAllEntries(Long userId);
 }

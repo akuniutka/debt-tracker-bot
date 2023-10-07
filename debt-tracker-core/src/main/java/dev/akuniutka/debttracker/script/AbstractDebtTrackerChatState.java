@@ -8,7 +8,6 @@ import java.util.List;
 
 abstract class AbstractDebtTrackerChatState implements ChatState {
     protected final List<String> reply = new ArrayList<>();
-    protected final List<String> possibleAnswers = new ArrayList<>();
     protected transient EntryService entryService;
 
     protected abstract DebtTrackerChatState nextChatState(Chat chat, String message);

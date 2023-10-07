@@ -13,7 +13,6 @@ public class DebtTrackerBotConfig {
     private String botUsername;
     @Value("${bot.api.key}")
     private String botToken;
-    // TODO: limit Swagger to custom endpoints only (with Docket bean)
 
     @Bean
     @Autowired

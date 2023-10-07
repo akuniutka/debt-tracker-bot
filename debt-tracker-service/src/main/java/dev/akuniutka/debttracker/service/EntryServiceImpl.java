@@ -14,11 +14,11 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 @Service
-public class EntryServiceImplementation implements EntryService {
+public class EntryServiceImpl implements EntryService {
     private final EntryDraftRepository entryDraftRepository;
     private final EntryRepository entryRepository;
 
-    public EntryServiceImplementation(EntryDraftRepository entryDraftRepository, EntryRepository entryRepository) {
+    public EntryServiceImpl(EntryDraftRepository entryDraftRepository, EntryRepository entryRepository) {
         if (entryDraftRepository == null && entryRepository == null) {
             throw new IllegalArgumentException("entryDraftRepository and entryRepository cannot be null");
         } else if (entryDraftRepository == null) {
@@ -52,6 +52,14 @@ public class EntryServiceImplementation implements EntryService {
         );
         Entry entry = new Entry(userId, entryDraft.getType(), entryDraft.getAmount(), account, OffsetDateTime.now());
         entryRepository.save(entry);
+        entryDraftRepository.delete(entryDraft);
+    }
+
+    @Override
+    public void dropDraft(Long userId) {
+        EntryDraft entryDraft = entryDraftRepository.findByUserId(userId).orElseThrow(
+                () -> new RuntimeException("Entry draft not found")
+        );
         entryDraftRepository.delete(entryDraft);
     }
 
