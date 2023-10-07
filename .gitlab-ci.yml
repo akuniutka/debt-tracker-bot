@@ -28,6 +28,11 @@ test:
   stage: test
   script:
     - './mvnw $MAVEN_CLI_OPTS test'
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - chat-bot-core/target/surefire-reports/*.xml
 
 integration-test:
   stage: integration-test
