@@ -12,9 +12,7 @@ public class SimpleChatBot {
         while (!"exit".equals(message)) {
             if (!message.isEmpty()) {
                 System.out.println("Bot:");
-                chat.getReplyToMessage(message).stream()
-                        .map("\t"::concat)
-                        .forEach(System.out::println);
+                chat.getReplyToMessage(message).forEach(s -> System.out.println("\t" + s));
             }
             System.out.println("Send message to bot or 'exit' to quit:");
             message = scanner.nextLine();
