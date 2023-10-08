@@ -32,16 +32,28 @@ test:
     when: always
     reports:
       junit:
-        - chat-bot-core/target/surefire-reports/*.xml
-        - chat-bot-telegram-ui/target/surefire-reports/*.xml
-        - debt-tracker-core/target/surefire-reports/*.xml
-        - debt-tracker-misc/target/surefire-reports/*.xml
-        - debt-tracker-persistence/target/surefire-reports/*.xml
-        - debt-tracker-service/target/surefire-reports/*.xml
-        - debt-tracker-web/target/surefire-reports/*.xml
-        - simple-chat-bot/target/surefire-reports/*.xml
+        - chat-bot-core/target/surefire-reports/TEST-*.xml
+        - chat-bot-telegram-ui/target/surefire-reports/TEST-*.xml
+        - debt-tracker-core/target/surefire-reports/TEST-*.xml
+        - debt-tracker-misc/target/surefire-reports/TEST-*.xml
+        - debt-tracker-persistence/target/surefire-reports/TEST-*.xml
+        - debt-tracker-service/target/surefire-reports/TEST-*.xml
+        - debt-tracker-web/target/surefire-reports/TEST-*.xml
+        - simple-chat-bot/target/surefire-reports/TEST-*.xml
 
 integration-test:
   stage: integration-test
   script:
     - './mvnw $MAVEN_CLI_OPTS verify'
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - chat-bot-core/target/failsafe-reports/TEST-*.xml
+        - chat-bot-telegram-ui/target/failsafe-reports/TEST-*.xml
+        - debt-tracker-core/target/failsafe-reports/TEST-*.xml
+        - debt-tracker-misc/target/failsafe-reports/TEST-*.xml
+        - debt-tracker-persistence/target/failsafe-reports/TEST-*.xml
+        - debt-tracker-service/target/failsafe-reports/TEST-*.xml
+        - debt-tracker-web/target/failsafe-reports/TEST-*.xml
+        - simple-chat-bot/target/failsafe-reports/TEST-*.xml
