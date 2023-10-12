@@ -24,11 +24,6 @@
         </dependency>
         <dependency>
             <groupId>dev.akuniutka</groupId>
-            <artifactId>debt-tracker-service</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>dev.akuniutka</groupId>
             <artifactId>debt-tracker-web</artifactId>
             <version>${project.version}</version>
         </dependency>
