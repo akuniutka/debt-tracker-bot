@@ -22,7 +22,6 @@ public class Chat {
     private static final String BOT_SERVICE_IS_NOT_SET = "Sending a message while the bot service is not set";
 
     @Id
-    @Column(name = "user_id")
     private Long userId;
 
     @Column(name = "chat_state", nullable = false)

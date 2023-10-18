@@ -6,7 +6,7 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "ENTRY_DRAFT")
+@Table(name = "entry_draft")
 public class EntryDraft {
     @Id
     private Long userId;

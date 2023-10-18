@@ -9,7 +9,7 @@ public class Entry {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    @JoinColumn(name = "USER_ID", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private Long userId;
     private EntryType type;
     private BigDecimal amount;

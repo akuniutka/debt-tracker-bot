@@ -1,35 +1,35 @@
-CREATE SEQUENCE HIBERNATE_SEQUENCE AS BIGINT INCREMENT BY 1 START WITH 1 OWNED BY NONE;
+create sequence hibernate_sequence as bigint increment by 1 start with 1 owned by none;
 
-CREATE TABLE CHAT
+create table chat
 (
-    USER_ID    BIGINT,
-    CHAT_STATE INT NOT NULL,
-    CONSTRAINT CHAT_PKEY PRIMARY KEY (USER_ID)
+    user_id    bigint,
+    chat_state int not null,
+    constraint chat_pkey primary key (user_id)
 );
 
-CREATE TABLE ENTRY_DRAFT
+create table entry_draft
 (
-    USER_ID BIGINT,
-    TYPE    VARCHAR(1)     NULL,
-    AMOUNT  NUMERIC(15, 2) NULL,
-    CONSTRAINT ENTRY_DRAFT_PKEY PRIMARY KEY (USER_ID),
-    CONSTRAINT ENTRY_DRAFT_CHAT_USER_ID_FK FOREIGN KEY (USER_ID) REFERENCES CHAT (USER_ID)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT ENTRY_AMOUNT_CHECK CHECK (AMOUNT > 0)
+    user_id bigint,
+    type    varchar(1)     null,
+    amount  numeric(15, 2) null,
+    constraint entry_draft_pkey primary key (user_id),
+    constraint entry_draft_chat_user_id_fk foreign key (user_id) references chat (user_id)
+        on delete cascade on update cascade,
+    constraint entry_amount_check check (amount > 0)
 );
 
-CREATE TABLE ENTRY
+create table entry
 (
-    ID      BIGINT,
-    USER_ID BIGINT         NOT NULL,
-    TYPE    VARCHAR(1)     NOT NULL,
-    AMOUNT  NUMERIC(15, 2) NOT NULL,
-    ACCOUNT VARCHAR(32)    NOT NULL,
-    DATE    TIMESTAMP      NOT NULL,
-    CONSTRAINT ENTRY_PKEY PRIMARY KEY (ID),
-    CONSTRAINT ENTRY_CHAT_USER_ID_FK FOREIGN KEY (USER_ID) REFERENCES CHAT (USER_ID)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT ENTRY_AMOUNT_CHECK CHECK (AMOUNT > 0)
+    id      bigint,
+    user_id bigint         not null,
+    type    varchar(1)     not null,
+    amount  numeric(15, 2) not null,
+    account varchar(32)    not null,
+    date    timestamp      not null,
+    constraint entry_pkey primary key (id),
+    constraint entry_chat_user_id_fk foreign key (user_id) references chat (user_id)
+        on delete cascade on update cascade,
+    constraint entry_amount_check check (amount > 0)
 );
 
-CREATE INDEX ENTRY_USER_ID_IDX ON ENTRY (USER_ID);
+create index entry_user_id_idx on entry (user_id);
