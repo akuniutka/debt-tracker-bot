@@ -24,6 +24,9 @@ public class Entry {
         this.date = date;
     }
 
+    protected Entry() {
+    }
+
     public EntryType getType() {
         return type;
     }
@@ -34,8 +37,5 @@ public class Entry {
 
     public String getAccount() {
         return account;
-    }
-
-    protected Entry() {
     }
 }

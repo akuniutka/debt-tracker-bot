@@ -20,13 +20,13 @@ public enum Command {
         this.command = command;
     }
 
-    public String getCommand() {
-        return command;
-    }
-
     public static Optional<Command> getCommand(String string) {
         return Stream.of(Command.values())
                 .filter(c -> c.getCommand().equals(string))
                 .findAny();
+    }
+
+    public String getCommand() {
+        return command;
     }
 }

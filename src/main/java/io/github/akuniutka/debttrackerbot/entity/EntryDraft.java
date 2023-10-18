@@ -17,26 +17,26 @@ public class EntryDraft {
         this.userId = userId;
     }
 
-    public Long getUserId() {
-        return userId;
+    protected EntryDraft() {
     }
 
-    public void setType(EntryType type) {
-        this.type = type;
+    public Long getUserId() {
+        return userId;
     }
 
     public EntryType getType() {
         return type;
     }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
+    public void setType(EntryType type) {
+        this.type = type;
     }
 
     public BigDecimal getAmount() {
         return amount;
     }
 
-    protected EntryDraft() {
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 }
