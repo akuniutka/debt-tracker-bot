@@ -1,0 +1,41 @@
+package io.github.akuniutka.debttrackerbot.script;
+
+import io.github.akuniutka.debttrackerbot.entity.Chat;
+
+import java.util.Optional;
+
+class WaitingForNameState extends AbstractState {
+    @Override
+    public void addUserMessage(Chat chat, String message) {
+        Optional<Command> command = Command.getCommand(message);
+        if (command.isPresent()) {
+            switch (command.get()) {
+                case STATUS:
+                    chat.sendMessageToUser(getCurrentDebtsReport(chat));
+                case START:
+                case CANCEL:
+                    entryService.dropDraft(chat.getUserId());
+                    chat.sendMessageToUser(ENTER_COMMAND);
+                    chat.setState(ChatState.WAITING_FOR_COMMAND);
+                    break;
+                case BORROWED:
+                case REPAID:
+                case LENT:
+                case REDEEMED:
+                    entryService.dropDraft(chat.getUserId());
+                    entryService.updateDraft(chat.getUserId(), entryTypeFromCommand(command.get()));
+                    chat.sendMessageToUser(ENTER_AMOUNT);
+                    chat.setState(ChatState.WAITING_FOR_AMOUNT);
+                    break;
+                case HELP:
+                case SETTINGS:
+                default:
+                    throw new RuntimeException("Not implemented yet");
+            }
+        } else {
+            entryService.updateDraft(chat.getUserId(), message);
+            chat.sendMessageToUser(ENTER_COMMAND);
+            chat.setState(ChatState.WAITING_FOR_COMMAND);
+        }
+    }
+}
