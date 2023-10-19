@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@DisplayName("Chat entity")
+@DisplayName("Chat Entity")
 class ChatTest {
     private static final String USER_ID_AND_STATE_ARE_NULL = "Setting the user id and the chat state to null";
     private static final String USER_ID_IS_NULL = "Setting the user id to null";
@@ -68,7 +68,7 @@ class ChatTest {
     }
 
     @Test
-    @DisplayName("Fail to set the state to the null value")
+    @DisplayName("Fail to set the state to null")
     void testSetStateWhenStateIsNull() {
         Chat chat = new Chat();
         Exception e = assertThrows(IllegalArgumentException.class, () -> chat.setState(null));
@@ -85,7 +85,7 @@ class ChatTest {
     }
 
     @Test
-    @DisplayName("Fail to set the bot service to the null value")
+    @DisplayName("Fail to set the bot service to null")
     void testSetBotServiceWhenBotServiceIsNull() {
         Chat chat = new Chat();
         Exception e = assertThrows(IllegalArgumentException.class, () -> chat.setBotService(null));
