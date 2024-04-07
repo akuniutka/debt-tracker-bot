@@ -7,17 +7,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Entry Entity")
 class EntryTest {
-    @DisplayName("")
+    @DisplayName("Entry.getType() Test")
     @Test
     void testGetType() {
     }
 
-    @DisplayName("")
+    @DisplayName("Entry.getAmount() Test")
     @Test
     void testGetAmount() {
     }
 
-    @DisplayName("")
+    @DisplayName("Entry.getAccount() Test")
     @Test
     void testGetAccount() {
     }

@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:13.2-alpine
+    environment:
+      - POSTGRES_USER=${BOT_USERNAME}
+      - POSTGRES_PASSWORD=${BOT_PASSWORD}
+      - POSTGRES_DB=telegrambot
+    volumes:
+      - data:/var/lib/postgresql/data
+
+  api:
+    image: debt-tracker-bot:1.0.0-SNAPSHOT
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/telegrambot
+      - SPRING_DATASOURCE_USERNAME=${BOT_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${BOT_PASSWORD}
+      - BOT_API_KEY=${BOT_API_KEY}
+      - JAVA_OPTS=-Xms50M -Xmx100M
+    depends_on:
+      - db
+
+volumes:
+  data:
